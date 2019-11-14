@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name = "branch">
+        <item>여의도</item>
+        <item>시청</item>
+        <item>교대</item>
+        <item>잠실</item>
+    </string-array>
+
+    <string-array name = "credit">
+        <item>4회</item>
+        <item>8회</item>
+    </string-array>
+</resources>

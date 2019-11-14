@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/candidate"
+    tools:context=".LoginActivity"
+    tools:layout_editor_absoluteY="81dp"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/idText"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:fontFamily="@font/fontfamily"
+        android:hint="아이디"
+        android:inputType="textPersonName"
+        android:textSize="20dp"
+        />
+
+    <EditText
+        android:id="@+id/passwordText"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="비밀번호"
+        android:inputType="textPassword"
+        android:fontFamily="@font/fontfamily"
+        android:textSize="20dp"
+         />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="로그인"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:fontFamily="@font/fontfamily"
+        android:textSize="15dp"
+         />
+
+    <TextView
+        android:id="@+id/registerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:text="회원가입"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+        android:fontFamily="@font/fontfamily"
+        android:textSize="15dp"
+
+        />
+
+
+
+
+
+
+</LinearLayout>
