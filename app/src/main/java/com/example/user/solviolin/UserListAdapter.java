@@ -1,16 +1,13 @@
 package com.example.user.solviolin;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -27,7 +24,7 @@ public class UserListAdapter extends BaseAdapter{
 
     private Context context;
     private List<User> userList;
-    private Activity parentActivity;
+    private AppCompatActivity parentActivity;
     private List<User> saveList;
     public static String AdminUserID;
 
@@ -36,7 +33,7 @@ public class UserListAdapter extends BaseAdapter{
 
 
 
-    public UserListAdapter(Context context, List<User> userList, Activity parentActivity, List<User> saveList){
+    public UserListAdapter(Context context, List<User> userList, AppCompatActivity parentActivity, List<User> saveList){
         this.context = context;
         this.userList = userList;
         this.parentActivity = parentActivity;

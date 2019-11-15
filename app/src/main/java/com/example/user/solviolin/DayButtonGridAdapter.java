@@ -4,7 +4,6 @@ package com.example.user.solviolin;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -24,21 +23,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import static android.content.Intent.getIntent;
 import static com.example.user.solviolin.DayFragment.canceledCourseDate;
 import static com.example.user.solviolin.DayFragment.delayStatus;
 import static com.example.user.solviolin.DayFragment.newlyBookedDate;
 import static com.example.user.solviolin.MainActivity.userBranch;
-import static com.example.user.solviolin.MainActivity.userCredit;
 import static com.example.user.solviolin.MainActivity.userDuration;
 import static com.example.user.solviolin.MainActivity.userID;
 import static com.example.user.solviolin.MainActivity.userName;
-import static com.example.user.solviolin.MainActivity.delaycredit;
 import static com.example.user.solviolin.mMySQL.DataParser1.BookedList;
-import static com.example.user.solviolin.mMySQL.DataParser3.amountofGoing;
 import static com.example.user.solviolin.mMySQL.DataParser3.personalDayBookedList;
 import static com.example.user.solviolin.mMySQL.DataParser3.personalDayBookedListcur;
-import static com.example.user.solviolin.mMySQL.DataParser3.reservationInThisMonth;
 
 public class DayButtonGridAdapter extends BaseAdapter{
     Context context = null;
@@ -240,8 +234,8 @@ public class DayButtonGridAdapter extends BaseAdapter{
 
 
                                                 } else {
-                                                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(parent.getContext());
-                                                    android.app.AlertDialog dialog = builder.setMessage("변경이 불가능합니다.")
+                                                    AlertDialog.Builder builder = new AlertDialog.Builder(parent.getContext());
+                                                    AlertDialog dialog = builder.setMessage("변경이 불가능합니다.")
                                                             .setNegativeButton("확인", null)
                                                             .create();
                                                     dialog.show();

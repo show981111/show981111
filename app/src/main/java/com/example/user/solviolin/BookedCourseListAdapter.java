@@ -1,12 +1,9 @@
 package com.example.user.solviolin;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.view.LayoutInflater;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -22,19 +19,14 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-
-import static com.example.user.solviolin.MainActivity.userCredit;
-import static com.example.user.solviolin.MainActivity.userID;
 import static com.example.user.solviolin.MainActivity.userName;
-import static com.example.user.solviolin.R.layout.notification_template_part_chronometer;
-import static com.example.user.solviolin.R.layout.result;
 
 
 public class BookedCourseListAdapter extends BaseAdapter{
 
     private Context context;
     private List<BookedCourse> BookedList;
-    private Activity parentActivity;
+    private AppCompatActivity parentActivity;
 
 
 
@@ -42,7 +34,7 @@ public class BookedCourseListAdapter extends BaseAdapter{
 
 
 
-    public BookedCourseListAdapter(Context context, List<BookedCourse> BookedCourseList, Activity parentActivity){
+    public BookedCourseListAdapter(Context context, List<BookedCourse> BookedCourseList, AppCompatActivity parentActivity){
         this.context = context;
         this.BookedList = BookedCourseList;
         this.parentActivity = parentActivity;

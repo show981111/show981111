@@ -1,12 +1,12 @@
 package com.example.user.solviolin;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -14,9 +14,7 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
-import com.example.user.solviolin.mMySQL.Downloader;
 import com.example.user.solviolin.mMySQL.Downloader1;
-import com.example.user.solviolin.mMySQL.Downloader2;
 import com.example.user.solviolin.mMySQL.Downloader3;
 
 import org.json.JSONObject;
@@ -26,9 +24,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
-import static com.example.user.solviolin.mMySQL.DataParser1.BookedList;
 import static com.example.user.solviolin.mMySQL.DataParser3.personalDayBookedList;
 
 public class MainActivity extends AppCompatActivity {

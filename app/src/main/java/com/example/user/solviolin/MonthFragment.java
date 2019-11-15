@@ -1,12 +1,8 @@
 package com.example.user.solviolin;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -19,7 +15,6 @@ import android.widget.DatePicker;
 import android.widget.GridView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import static com.example.user.solviolin.MainActivity.userBranch;
 import static com.example.user.solviolin.LoginActivity.InputURL;
@@ -36,28 +31,15 @@ import static com.example.user.solviolin.mMySQL.DataParser1.bookedCourseIDList_S
 
 
 import static com.example.user.solviolin.mMySQL.DataParser.courseTime;
-import static com.example.user.solviolin.mMySQL.DataParser.courseBranch;
-
-
 
 
 import com.example.user.solviolin.mMySQL.Downloader;
 import com.example.user.solviolin.mMySQL.Downloader1;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
-import java.util.List;
 
 
 /**
