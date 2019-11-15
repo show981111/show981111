@@ -3,6 +3,7 @@ package com.example.user.solviolin;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -101,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         Button reservationButton = (Button) findViewById(R.id.reservationButton);
         Button resultButton = (Button) findViewById(R.id.resultButton);
         Button initializeButton = (Button) findViewById(R.id.initializeButton);
+        Button linkButton = (Button)findViewById(R.id.gotohompageButton);
 
         reservationButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,6 +201,14 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent resultIntent = new Intent(MainActivity.this, Result.class);
                 MainActivity.this.startActivity(resultIntent);
+            }
+        });
+
+        linkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.solviolin.com"));
+                startActivity(myIntent);
             }
         });
 

@@ -47,7 +47,7 @@ public class DataParser2 extends AsyncTask<Void, Void, Integer>{
         super.onPreExecute();
 
         pd = new ProgressDialog(c);
-        pd.setTitle("데이터를 불러오는중");
+        pd.setTitle("데이터를 불러오는중(2)");
         pd.setMessage("잠시만 기다려주세요.");
         pd.show();
     }
@@ -65,10 +65,10 @@ public class DataParser2 extends AsyncTask<Void, Void, Integer>{
 
         if(result == 0)
         {
-            //Toast.makeText(c,"Unable to Parse", Toast.LENGTH_SHORT).show();
+            Toast.makeText(c,"Unable to Parse", Toast.LENGTH_SHORT).show();
         }else
         {
-            //Toast.makeText(c,"Parsed Successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(c,"Parsed Successfully", Toast.LENGTH_SHORT).show();
             // Bind
 
 

@@ -53,7 +53,7 @@ public class DataParser1 extends AsyncTask<Void, Void, Integer>{ //For
         super.onPreExecute();
 
         pd = new ProgressDialog(c);
-        pd.setTitle("데이터를 불러오는중");
+        pd.setTitle("데이터를 불러오는중(1)");
         pd.setMessage("잠시만 기다려주세요.");
        // pd.show();
     }

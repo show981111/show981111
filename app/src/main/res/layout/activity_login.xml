@@ -4,22 +4,71 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/candidate"
+    android:background="@drawable/formain"
     tools:context=".LoginActivity"
     tools:layout_editor_absoluteY="81dp"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical|center"
+        android:layout_marginTop="100dp"
+        android:fontFamily="@font/fontfamily"
+        android:text="안녕하세요 :)"
+        android:textSize="20dp"
+        android:textColor="#eee9e9"
+
+        />
+    <TextView
+        android:id="@+id/description3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical|center"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/fontfamily"
+        android:text="솔바이올린 공식 예약 변경 어플입니다."
+        android:textSize="20dp"
+        android:textColor="#eee9e9"
+
+        />
+    <TextView
+    android:id="@+id/description1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal|center_vertical|center"
+    android:layout_marginTop="10dp"
+    android:fontFamily="@font/fontfamily"
+    android:text="솔바이올린 예약센터는"
+    android:textSize="15dp"
+    android:textColor="#eee9e9"
+
+    />
+    <TextView
+        android:id="@+id/description2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical|center"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/fontfamily"
+        android:text="웹사이트/ 안드로이드 앱을 통해 운영 됩니다."
+        android:textSize="15dp"
+        android:textColor="#eee9e9"
+
+        />
     <EditText
         android:id="@+id/idText"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="30dp"
         android:ems="10"
         android:fontFamily="@font/fontfamily"
-        android:hint="아이디"
+        android:hint="수강생 이름"
         android:inputType="textPersonName"
         android:textSize="20dp"
+        android:textColorHint="#cdc9c9"
         />
 
     <EditText
@@ -29,10 +78,11 @@
         android:layout_gravity="center"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:hint="비밀번호"
+        android:hint="핸드폰 뒷 4자리"
         android:inputType="textPassword"
         android:fontFamily="@font/fontfamily"
         android:textSize="20dp"
+        android:textColorHint="#cdc9c9"
          />
 
     <Button
@@ -60,6 +110,8 @@
         android:textSize="15dp"
 
         />
+
+
 
 
 

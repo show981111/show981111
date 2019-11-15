@@ -35,7 +35,7 @@ public class Downloader extends AsyncTask<Void,Void,String>{
 
         pd = new ProgressDialog(c);
         pd.setTitle("Fetch");
-        pd.setMessage("Fetching.... Please Wait");
+        pd.setMessage("Fetching.... Please Wait(0)");
         pd.show();
 
     }
@@ -53,7 +53,7 @@ public class Downloader extends AsyncTask<Void,Void,String>{
         pd.dismiss();
 
         if(s == null){
-            Toast.makeText(c,"Unable to Retrieve", Toast.LENGTH_SHORT).show();
+            Toast.makeText(c,"Unable to Retrieve(Downloader)", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(c,"Success", Toast.LENGTH_SHORT).show();
 

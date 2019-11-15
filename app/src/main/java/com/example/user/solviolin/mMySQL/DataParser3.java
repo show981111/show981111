@@ -49,7 +49,7 @@ public class DataParser3 extends AsyncTask<Void, Void, Integer>{ //For
         super.onPreExecute();
 
         pd = new ProgressDialog(c);
-        pd.setTitle("데이터를 불러오는중");
+        pd.setTitle("데이터를 불러오는중(3)");
         pd.setMessage("잠시만 기다려주세요.");
         pd.show();
     }
@@ -108,16 +108,14 @@ public class DataParser3 extends AsyncTask<Void, Void, Integer>{ //For
                        BookedList.add(bookedCourse);
                    }
                }*/
-                if(bookedUserID.equals(userID) && (dataStatus.equals("cur")))
-                {
-                    personaldayBookingCoursecur = new DayBookingCourse(canceledCourseDate, newlyBookedDate, bookedUserID, bookedUserName, DayBookingTeacher, bookedCourseBranch, endDate,dataStatus );
-                    personalDayBookedListcur.add(personaldayBookingCoursecur);
-                }
-
-                if(bookedUserID.equals(userID))
+                if(bookedUserID.equals(userID) )
                 {
                     personaldayBookingCourse = new DayBookingCourse(canceledCourseDate, newlyBookedDate, bookedUserID, bookedUserName, DayBookingTeacher, bookedCourseBranch, endDate, dataStatus );
                     personalDayBookedList.add(personaldayBookingCourse);
+                    if(dataStatus.equals("cur")) {
+                        personaldayBookingCoursecur = new DayBookingCourse(canceledCourseDate, newlyBookedDate, bookedUserID, bookedUserName, DayBookingTeacher, bookedCourseBranch, endDate, dataStatus);
+                        personalDayBookedListcur.add(personaldayBookingCoursecur);
+                    }
                 }else if(userName.equals("admin"))
                 {
                     if(bookedUserID.equals(AdminUserID))
@@ -126,6 +124,7 @@ public class DataParser3 extends AsyncTask<Void, Void, Integer>{ //For
                         personalDayBookedList.add(personaldayBookingCourse);
                     }
                 }
+
 
             }
 

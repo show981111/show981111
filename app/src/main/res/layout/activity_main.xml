@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/cand4"
+    android:background="@drawable/submain"
     tools:context=".MainActivity">
 
     <Button
@@ -28,7 +28,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="100dp"
-        android:text="예약하기"
+        android:text="레슨예약"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -41,12 +41,123 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="예약확인"
+        android:layout_marginTop="16dp"
+        android:text="예약내역"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/reservationButton"
         android:fontFamily="@font/fontfamily"/>
+
+    <Button
+        android:id="@+id/gotohompageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/fontfamily"
+        android:text="홈페이지"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/resultButton" />
+
+    <TextView
+        android:id="@+id/usingtip0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/fontfamily"
+        android:text="헉! 수업 못갈각!!!!!!!!!"
+        android:textColor="#ff4500"
+        android:textSize="23dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/managementButton"
+        app:layout_constraintVertical_bias="0.325" />
+
+    <TextView
+        android:id="@+id/usingtip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/fontfamily"
+        android:text="레슨예약 > 미안해요 쌤 클릭 > 취소할 레슨에서 날짜선택 >"
+        android:textColor="#eee9e9"
+        android:textSize="17dp"
+        android:layout_gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usingtip0" />
+    <TextView
+        android:id="@+id/usingtip1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/fontfamily"
+        android:text="**바로 예약한다! : 예약할레슨에서 날짜선택"
+        android:textColor="#eee9e9"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usingtip" />
+
+    <TextView
+        android:id="@+id/usingtip2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/fontfamily"
+        android:text="**취소만 하고 싶다! : 맨아래 단순취소 버튼클릭"
+        android:textColor="#eee9e9"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usingtip1" />
+
+    <TextView
+        android:id="@+id/usingtip3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/fontfamily"
+        android:text="**이미 취소한 레슨이 있다! : JYP 이마에 '보강예약' 버튼클릭 -> 취소했던 날짜가 뜨면 예약할 레슨에서 날짜선택"
+        android:textColor="#eee9e9"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usingtip2" />
+    <TextView
+        android:id="@+id/usingtip4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/fontfamily"
+        android:text="정기예약 변경은 바꿔줘요 쌤을 통해서 신청!!!"
+        android:textColor="#dda0dd"
+        android:textSize="23dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usingtip3" />
 
     <Button
         android:id="@+id/initializeButton"

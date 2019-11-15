@@ -62,6 +62,7 @@ import static com.example.user.solviolin.mMySQL.DataParser.courseID;
 import static com.example.user.solviolin.mMySQL.DataParser.courseTeacher;
 import static com.example.user.solviolin.mMySQL.DataParser.courseTime;
 import static com.example.user.solviolin.mMySQL.DataParser1.BookedList;
+import static com.example.user.solviolin.mMySQL.DataParser1.bookedCourseIDList_G;
 import static com.example.user.solviolin.mMySQL.DataParser1.bookedCourseIDList_J;
 import static com.example.user.solviolin.mMySQL.DataParser1.bookedCourseIDList_K;
 import static com.example.user.solviolin.mMySQL.DataParser1.bookedCourseIDList_S;
@@ -568,6 +569,11 @@ public class DayFragment extends Fragment {
                                 availableTimeList.add(courseTime.get(timeIndex.get(j)));
                             }
                             break;
+                        case "광화문":
+                            if (!bookedCourseIDList_G.contains(courseID.get(timeIndex.get(j)))) {
+                                availableTimeList.add(courseTime.get(timeIndex.get(j)));
+                            }
+                            break;
                     }
                 }
                 //이 다음 예약할 선생님과 새로 고른 날짜가 취소된 날짜와 취소된 선생과 일치하다면 그 시간 추가 그러나 그 선생,날짜.시간대가 새로 예약된 에 잇으면 빼주기기
@@ -672,36 +678,38 @@ public class DayFragment extends Fragment {
 
                                 if(newlyBookednum >= closestartDate && newlyBookednum <= closeendDate)
                                 {
-                                    Toast.makeText(getContext(),"PASS", Toast.LENGTH_SHORT).show();
-                                    for(int j = 0; j < availableTimeList.size(); j++)
-                                    {
 
-                                        if(newlyBookednum == closestartDate || newlyBookednum == closeendDate)
-                                        {
-                                            //Toast.makeText(getContext(),"PASS SEC", Toast.LENGTH_SHORT).show();
-                                            String removedTime = availableTimeList.get(j);
-                                            int getTestedTime = Integer.parseInt(availableTimeList.get(j).substring(0,2))*100 + Integer.parseInt(availableTimeList.get(j).substring(3,availableTimeList.get(j).length()));
-                                            int closestartTime = Integer.parseInt(exclusionList.get(i).getClosedStartDate().substring(11,13)+exclusionList.get(i).getClosedStartDate().substring(14,16));
-                                            int closeendTime = Integer.parseInt(exclusionList.get(i).getClosedEndDate().substring(11,13)+exclusionList.get(i).getClosedEndDate().substring(14,16));
-                                            if(getTestedTime > closestartTime && newlyBookednum == closestartDate )//클로즈 시작날과 겹쳣을떄
-                                            {
-                                                availableTimeList.remove(removedTime);
-                                                j = j - 1;
+                                    if(availableTimeList.size() > 0) {
+                                        for (int j = 0; j < availableTimeList.size(); j++) {
+
+                                            if (newlyBookednum == closestartDate || newlyBookednum == closeendDate) {
+                                                //Toast.makeText(getContext(),"PASS SEC", Toast.LENGTH_SHORT).show();
+                                                String removedTime = availableTimeList.get(j);
+                                                int endindex = availableTimeList.get(j).length();
+                                                int preventredun = 0;
+                                                int getTestedTime = Integer.parseInt(availableTimeList.get(j).substring(0, 2)) * 100 + Integer.parseInt(availableTimeList.get(j).substring(3, endindex));
+                                                int closestartTime = Integer.parseInt(exclusionList.get(i).getClosedStartDate().substring(11, 13) + exclusionList.get(i).getClosedStartDate().substring(14, 16));
+                                                int closeendTime = Integer.parseInt(exclusionList.get(i).getClosedEndDate().substring(11, 13) + exclusionList.get(i).getClosedEndDate().substring(14, 16));
+                                                if (getTestedTime > closestartTime && newlyBookednum == closestartDate)//클로즈 시작날과 겹쳣을떄
+                                                {
+                                                    availableTimeList.remove(removedTime);
+                                                    j = j - 1;
+                                                    preventredun = 1;
+                                                }
+                                                if (getTestedTime < closeendTime && newlyBookednum == closeendDate)//클로즈 끝나는 날과 겹쳣을떄
+                                                {
+                                                    if(preventredun == 1) continue;
+                                                    availableTimeList.remove(removedTime);
+                                                    j = j - 1;
+
+
+                                                }
+                                            } else {
+                                                availableTimeList.clear();
                                             }
-                                            if(getTestedTime < closeendTime && newlyBookednum == closeendDate )//클로즈 끝나는 날과 겹쳣을떄
-                                            {
-                                                availableTimeList.remove(removedTime);
-                                                j = j - 1;
 
 
-                                            }
-                                        }else
-                                        {
-                                            availableTimeList.clear();
                                         }
-
-
-
                                     }
 
 

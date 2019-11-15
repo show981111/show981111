@@ -33,7 +33,7 @@ public class Downloader1 extends AsyncTask<Void,Void,String>{
 
         pd = new ProgressDialog(c);
         pd.setTitle("Fetch");
-        pd.setMessage("Fetching.... Please Wait");
+        pd.setMessage("Fetching.... Please Wait(1)");
        // pd.show();
 
     }

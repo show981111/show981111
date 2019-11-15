@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -23,6 +24,7 @@ import org.json.JSONObject;
 import java.sql.Time;
 import java.util.ArrayList;
 
+import static android.support.v4.content.ContextCompat.startActivity;
 import static com.example.user.solviolin.MainActivity.userBranch;
 import static com.example.user.solviolin.MainActivity.userCredit;
 import static com.example.user.solviolin.MainActivity.userID;
@@ -33,6 +35,7 @@ import static com.example.user.solviolin.MonthFragment.selectedDay;
 import static com.example.user.solviolin.MonthFragment.selectedTeacher;
 import static com.example.user.solviolin.MonthFragment.startDate;
 import static com.example.user.solviolin.mMySQL.DataParser.courseID;
+import static com.example.user.solviolin.mMySQL.DataParser.courseTeacher;
 import static com.example.user.solviolin.mMySQL.DataParser.courseTime;
 import static com.example.user.solviolin.mMySQL.DataParser1.BookedList;
 
@@ -107,8 +110,27 @@ public class ButtonGridAdapter extends BaseAdapter{
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 int count = BookedList.size();
-                                if (count < userCredit) {
-                                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+                                if (count > 0) {
+                                    startDate = startDate + " "+ selectedTime;
+                                    Intent email = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                                            "mailto","solvn@naver.com", null));
+
+                                    // email setting 배열로 해놔서 복수 발송 가능
+                                    //String[] address = {"solvn@naver.com"};
+                                    //email.putExtra(Intent.EXTRA_EMAIL, address);
+                                    email.putExtra(Intent.EXTRA_SUBJECT,"["+userName+ "] 정기예약 변경 요청");
+                                    email.putExtra(Intent.EXTRA_TEXT,"아이디 : "+ userID +"\n 지점: "+ userBranch + "\n 선생님: "+ selectedTeacher + "\n 요일: "+ selectedDay + "\n 시간: " + selectedTime + "\n dow: " + dow + "\n 시작 날짜: " + startDate + " 으로 변경 요청합니다." );
+                                    try{
+                                        context.startActivity(email);
+                                        Toast.makeText(parent.getContext(), "이메일로 이동합니다.", Toast.LENGTH_LONG).show();
+                                        notifyDataSetChanged();
+                                        finalButton.setEnabled(false);
+                                        ((Activity)context).finish();
+                                    }catch (android.content.ActivityNotFoundException ex){
+                                        Toast.makeText(parent.getContext(),"변경 요청을 보낼 수 없습니다.",Toast.LENGTH_LONG).show();
+                                    }
+
+                                    /*Response.Listener<String> responseListener = new Response.Listener<String>() {
                                         @Override
                                         public void onResponse(String response) {
 
@@ -116,7 +138,16 @@ public class ButtonGridAdapter extends BaseAdapter{
                                                 JSONObject jsonResponse = new JSONObject(response);
                                                 boolean success = jsonResponse.getBoolean("success");
                                                 if (success) {
-                                                    Toast.makeText(parent.getContext(), "예약이 완료되었습니다", Toast.LENGTH_LONG).show();
+                                                    Intent email = new Intent(Intent.ACTION_SEND);
+                                                    email.setType("plain/text");
+                                                    // email setting 배열로 해놔서 복수 발송 가능
+                                                    String[] address = {"show981111@naver.com"};
+                                                    email.putExtra(Intent.EXTRA_EMAIL, address);
+                                                    email.putExtra(Intent.EXTRA_SUBJECT,"보내질 email 제목");
+                                                    email.putExtra(Intent.EXTRA_TEXT,"보낼 email 내용을 미리 적어 놓을 수 있습니다.\n");
+                                                    context.startActivity(email);
+
+                                                    Toast.makeText(parent.getContext(), "변경 요청이 완료되었습니다", Toast.LENGTH_LONG).show();
                                                     notifyDataSetChanged();
                                                     finalButton.setEnabled(false);
                                                     ((Activity)context).finish();
@@ -136,15 +167,15 @@ public class ButtonGridAdapter extends BaseAdapter{
                                             }
 
                                         }
-                                    };
-                                    startDate = startDate + " "+ selectedTime;
-                                    AddRequest addRequest = new AddRequest(userID, courseID.get(IDindex) + " ", userBranch, userName, selectedTeacher, selectedDay, selectedTime, dow+ "", startDate, responseListener);// 여기에 해당 코스 아이디 삽입 필요
+                                    };*/
+
+                                    /*AddRequest addRequest = new AddRequest(userID, courseID.get(IDindex) + " ", userBranch, userName, selectedTeacher, selectedDay, selectedTime, dow+ "", startDate, responseListener);// 여기에 해당 코스 아이디 삽입 필요
                                     RequestQueue queue = Volley.newRequestQueue(parent.getContext());
-                                    queue.add(addRequest);
+                                    queue.add(addRequest);*/
                                 }else{
                                     AlertDialog.Builder builder = new AlertDialog.Builder(parent.getContext());
                                     selectedTime = "";
-                                    AlertDialog dialog1 = builder.setMessage("레슨을 예약할 수 없습니다(수강가능 횟수가 초과하였습니다.)")
+                                    AlertDialog dialog1 = builder.setMessage("기존에 수업이 있는지 확인해주세요.")
                                             .setNegativeButton("확인",null)
                                             .create();
                                     dialog1.show();
