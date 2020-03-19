@@ -1,18 +1,18 @@
 package com.example.user.solviolin;
 
-import android.content.Context;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.example.user.solviolin.mMySQL.Downloader1;
-import com.example.user.solviolin.mMySQL.Downloader3;
+import com.google.android.material.tabs.TabLayout;
 
-import static com.example.user.solviolin.MainActivity.userBranch;
 import static com.example.user.solviolin.mMySQL.DataParser1.BookedList;
 
 public class ReservationActivity extends AppCompatActivity {
@@ -24,21 +24,35 @@ public class ReservationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservation);
 
-        final Button monthReservationButton = (Button) findViewById(R.id.monthReservation);
-        final Button dayReservationButton = (Button) findViewById(R.id.dayReservation);
-        final LinearLayout base = (LinearLayout) findViewById(R.id.base);
+        Fragment[] arrFragments = new Fragment[2];
+
+        arrFragments[0] = new MonthFragment();
+        arrFragments[1] = new DayFragment();
 
 
-        if(BookedList.size() <= 0)
+
+        ViewPager viewPager =(ViewPager) findViewById(R.id.vp_pager);
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
+
+        Vp_adapter adapter = new Vp_adapter(getSupportFragmentManager(),arrFragments);
+        viewPager.setAdapter(adapter);
+
+        //final Button monthReservationButton = (Button) findViewById(R.id.monthReservation);
+        //final Button dayReservationButton = (Button) findViewById(R.id.dayReservation);
+        //final LinearLayout base = (LinearLayout) findViewById(R.id.base);
+
+
+        /*if(BookedList.size() <= 0)
         {
             dayReservationButton.setEnabled(false);
-        }
+        }*/
 
 
 
 
 
-        monthReservationButton.setOnClickListener(new View.OnClickListener() {
+        /*monthReservationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 base.setVisibility(View.GONE);
@@ -63,7 +77,7 @@ public class ReservationActivity extends AppCompatActivity {
                 fragmentTransaction.replace(R.id.fragment, new DayFragment());
                 fragmentTransaction.commit();
             }
-        });
+        });*/
 
 
 

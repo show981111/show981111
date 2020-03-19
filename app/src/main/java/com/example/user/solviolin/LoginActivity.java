@@ -1,8 +1,8 @@
 package com.example.user.solviolin;
 
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,18 +12,10 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
-import com.example.user.solviolin.mMySQL.DataParser;
-import com.example.user.solviolin.mMySQL.Downloader1;
-import com.example.user.solviolin.mMySQL.Downloader3;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import static com.example.user.solviolin.MainActivity.userID;
-import static com.example.user.solviolin.MainActivity.userName;
-import static com.example.user.solviolin.UserListAdapter.AdminUserID;
 
 public class LoginActivity extends AppCompatActivity {
 

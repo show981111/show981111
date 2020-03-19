@@ -4,7 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -254,8 +254,8 @@ public class MonthFragment extends Fragment {
                 }
                 if(!startDayofWeek[0].equals(selectedDay))
                 {
-                    android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getContext());
-                    android.support.v7.app.AlertDialog dialog = builder.setMessage("시작 요일과 수업 요일이 일치하지 않습니다.")
+                    androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(getContext());
+                    androidx.appcompat.app.AlertDialog dialog = builder.setMessage("시작 요일과 수업 요일이 일치하지 않습니다.")
                             .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {

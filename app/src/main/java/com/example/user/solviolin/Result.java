@@ -1,29 +1,20 @@
 package com.example.user.solviolin;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.user.solviolin.mMySQL.Downloader1;
 import com.example.user.solviolin.mMySQL.Downloader3;
 
-import java.util.ArrayList;
-
 import static com.example.user.solviolin.MainActivity.curcount;
 import static com.example.user.solviolin.MainActivity.delaycredit;
 import static com.example.user.solviolin.MainActivity.userBranch;
-import static com.example.user.solviolin.MainActivity.userID;
 import static com.example.user.solviolin.MainActivity.userName;
 import static com.example.user.solviolin.mMySQL.DataParser1.BookedList;//예약한 리스트 임포트하는 부분
 //import static com.example.user.solviolin.LoginActivity.BookedList;
-import static com.example.user.solviolin.mMySQL.DataParser3.DayBookedList;
 import static com.example.user.solviolin.mMySQL.DataParser3.personalDayBookedList;
-import static com.example.user.solviolin.mMySQL.DataParser3.personalDayBookedListcur;
 
 
 public class Result extends AppCompatActivity {

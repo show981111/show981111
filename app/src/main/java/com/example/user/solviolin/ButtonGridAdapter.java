@@ -5,28 +5,19 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AlertDialog;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONObject;
-
-import java.sql.Time;
 import java.util.ArrayList;
 
-import static android.support.v4.content.ContextCompat.startActivity;
+import static androidx.core.content.ContextCompat.startActivity;
 import static com.example.user.solviolin.MainActivity.userBranch;
-import static com.example.user.solviolin.MainActivity.userCredit;
 import static com.example.user.solviolin.MainActivity.userID;
 import static com.example.user.solviolin.MainActivity.userName;
 import static com.example.user.solviolin.MonthFragment.Timeindex;
@@ -34,8 +25,6 @@ import static com.example.user.solviolin.MonthFragment.dow;
 import static com.example.user.solviolin.MonthFragment.selectedDay;
 import static com.example.user.solviolin.MonthFragment.selectedTeacher;
 import static com.example.user.solviolin.MonthFragment.startDate;
-import static com.example.user.solviolin.mMySQL.DataParser.courseID;
-import static com.example.user.solviolin.mMySQL.DataParser.courseTeacher;
 import static com.example.user.solviolin.mMySQL.DataParser.courseTime;
 import static com.example.user.solviolin.mMySQL.DataParser1.BookedList;
 
