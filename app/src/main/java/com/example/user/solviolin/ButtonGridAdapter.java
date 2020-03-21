@@ -16,16 +16,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import static androidx.core.content.ContextCompat.startActivity;
-import static com.example.user.solviolin.MainActivity.userBranch;
-import static com.example.user.solviolin.MainActivity.userID;
 import static com.example.user.solviolin.MainActivity.userName;
-import static com.example.user.solviolin.MonthFragment.Timeindex;
-import static com.example.user.solviolin.MonthFragment.dow;
-import static com.example.user.solviolin.MonthFragment.selectedDay;
-import static com.example.user.solviolin.MonthFragment.selectedTeacher;
-import static com.example.user.solviolin.MonthFragment.startDate;
-import static com.example.user.solviolin.mMySQL.DataParser.courseTime;
 import static com.example.user.solviolin.mMySQL.DataParser1.BookedList;
 
 public class ButtonGridAdapter extends BaseAdapter{
@@ -84,13 +75,6 @@ public class ButtonGridAdapter extends BaseAdapter{
             public void onClick(View v) {
 
                 selectedTime = finalButton.getText().toString();
-                for(int i = 0 ; i < Timeindex.size(); i++)
-                {
-                    if(courseTime.get(Timeindex.get(i)).equals(selectedTime))
-                    {
-                        IDindex = Timeindex.get(i);
-                    }
-                }
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(parent.getContext());
                 AlertDialog dialog = builder.setMessage("레슨을 예약하시겠습니까?")
@@ -100,7 +84,7 @@ public class ButtonGridAdapter extends BaseAdapter{
                             public void onClick(DialogInterface dialog, int which) {
                                 int count = BookedList.size();
                                 if (count > 0) {
-                                    startDate = startDate + " "+ selectedTime;
+                                    ///startDate = startDate + " "+ selectedTime;
                                     Intent email = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                                             "mailto","solvn@naver.com", null));
 
@@ -108,7 +92,8 @@ public class ButtonGridAdapter extends BaseAdapter{
                                     //String[] address = {"solvn@naver.com"};
                                     //email.putExtra(Intent.EXTRA_EMAIL, address);
                                     email.putExtra(Intent.EXTRA_SUBJECT,"["+userName+ "] 정기예약 변경 요청");
-                                    email.putExtra(Intent.EXTRA_TEXT,"아이디 : "+ userID +"\n 지점: "+ userBranch + "\n 선생님: "+ selectedTeacher + "\n 요일: "+ selectedDay + "\n 시간: " + selectedTime + "\n dow: " + dow + "\n 시작 날짜: " + startDate + " 으로 변경 요청합니다." );
+                                    int dow = 1;//SHOULD BE FIXED
+                                    //email.putExtra(Intent.EXTRA_TEXT,"아이디 : "+ userID +"\n 지점: "+ userBranch + "\n 선생님: "+ selectedTeacher + "\n 요일: "+ selectedDay + "\n 시간: " + selectedTime + "\n dow: " + dow + "\n 시작 날짜: " + startDate + " 으로 변경 요청합니다." );
                                     try{
                                         context.startActivity(email);
                                         Toast.makeText(parent.getContext(), "이메일로 이동합니다.", Toast.LENGTH_LONG).show();
@@ -182,56 +167,6 @@ public class ButtonGridAdapter extends BaseAdapter{
                         })
                         .create();
                 dialog.show();
-
-
-
-               /* Response.Listener<String> responseListener = new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try
-                        {
-                            JSONObject jsonResponse = new JSONObject(response);
-                            boolean success = jsonResponse.getBoolean("success");
-                            if(success){
-                                AlertDialog.Builder builder = new AlertDialog.Builder(parent.getContext());
-                                AlertDialog dialog = builder.setMessage("레슨을 예약하시겠습니까?")
-                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                Toast.makeText(parent.getContext(),"예약이 완료되었습니다",Toast.LENGTH_LONG).show();
-                                                
-                                            }
-                                        })
-                                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                Toast.makeText(parent.getContext(),"취소하였습니다.",Toast.LENGTH_LONG).show();
-                                            }
-                                        })
-                                        .create();
-
-                                dialog.show();
-
-                            }
-                            else{
-                                AlertDialog.Builder builder = new AlertDialog.Builder(parent.getContext());
-                                AlertDialog dialog = builder.setMessage("레슨을 예약할 수 없습니다.")
-                                        .setNegativeButton("확인",null)
-                                        .create();
-                                dialog.show();
-
-                            }
-
-                        }catch(Exception e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
-                };*/
-                /*AddRequest addRequest = new AddRequest(userID, courseID.get(IDindex) + " ", userBranch, userName, selectedTeacher,responseListener);// 여기에 해당 코스 아이디 삽입 필요
-                RequestQueue queue = Volley.newRequestQueue(parent.getContext());
-                queue.add(addRequest);*/
-
             }
         });
 
