@@ -114,14 +114,14 @@ public class DayFragment extends Fragment {
 
     }
 
-    public static String canceledCourseDate;
-    public static String newlyBookedDate;
-    public static String delayDate;
-    public static boolean delayStatus = false;
+    //public static String canceledCourseDate;
+    //public static String newlyBookedDate;
+    //public static String delayDate;
+    //public static boolean delayStatus = false;
 
 
     public void onActivityCreated(Bundle b) {
-        Downloader3 download = new Downloader3(getContext(), "http://show981111.cafe24.com/DayBookedList.php");
+        /*Downloader3 download = new Downloader3(getContext(), "http://show981111.cafe24.com/DayBookedList.php");
         download.execute();
         super.onActivityCreated(b);
 
@@ -145,10 +145,6 @@ public class DayFragment extends Fragment {
         {
             delayDoneButton.setEnabled(false);
         }
-
-
-
-
         final TextView selectedCancelDate = (TextView) getView().findViewById(R.id.selectedDate);
         final TextView canceltimetext = (TextView) getView().findViewById(R.id.canceltimetext);
         final Button chooseCancelDateButton = (Button) getView().findViewById(R.id.chooseCancelDate);
@@ -311,76 +307,6 @@ public class DayFragment extends Fragment {
 
             final String[] selectedCancelTime = new String[1];
 
-
-        /*lookUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Downloader2(getContext(),InputURL).execute();//시간대를 받기위한 데이터 파싱
-                delayButton.setEnabled(true);
-
-                cancelTimeList.clear();
-                Boolean timeout = false;
-                for(int i = 0;i < BookedList.size(); i++)
-                {
-
-
-                    if(cancelDayofWeek[0].equals(BookedList.get(i).getBookedCourseDay()))
-                    {
-                        cancelTimeList.add(BookedList.get(i).getBookedCourseTime());
-                    }
-                    int curtime;
-
-                    if(curYear == Integer.parseInt(cancelYear[0]) && (curMonth + 1)== Integer.parseInt(cancelMonth[0]) && curDay == Integer.parseInt(cancelDay[0]))
-                    {
-                        Calendar calendar2 = Calendar.getInstance();
-
-                        curtime =  calendar2.get(Calendar.HOUR_OF_DAY)*100 + calendar2.get(Calendar.MINUTE);
-                        int point = BookedList.get(i).getBookedCourseTime().lastIndexOf(":");
-                        int timeforcancel = Integer.parseInt(BookedList.get(i).getBookedCourseTime().substring(0,point))*100 + Integer.parseInt(BookedList.get(i).getBookedCourseTime().substring(point + 1,BookedList.get(i).getBookedCourseTime().length()));
-
-
-                        if(timeforcancel - curtime <400)
-                        {
-                            cancelTimeList.remove(BookedList.get(i).getBookedCourseTime());
-                            timeout =true;
-
-                        }
-
-                    }
-
-                }
-                for(int i = 0; i < personalDayBookedList.size() ; i++)
-                {
-                    int point = personalDayBookedList.get(i).getCanceledCourseDate().lastIndexOf(" ");
-                    if(!personalDayBookedList.get(i).getCanceledCourseDate().equals("null") && !DayBookedList.get(i).getCanceledCourseDate().isEmpty() ) {
-                        if (personalDayBookedList.get(i).getCanceledCourseDate().substring(0, point).equals(cancelYear[0] + "-" + cMM[0] + "-" + cDD[0])) {
-                            cancelTimeList.remove(personalDayBookedList.get(i).getCanceledCourseDate().substring((point + 1), personalDayBookedList.get(i).getCanceledCourseDate().length()));
-                        }
-                    }
-                }
-                if(cancelTimeList.size() == 0)
-                {
-                    if(timeout)
-                    {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                        AlertDialog dialog = builder.setMessage("취소할 수 있는 레슨이 없습니다(4시간 전 까지만 변경이 가능합니다).")
-                                .setNegativeButton("확인", null)
-                                .create();
-                        dialog.show();
-                    }else {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                        AlertDialog dialog = builder.setMessage("취소할 수 있는 레슨이 없습니다(예약현황을 확인해주세요).")
-                                .setNegativeButton("확인", null)
-                                .create();
-                        dialog.show();
-                    }
-                }
-                ArrayAdapter adapter = new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1,cancelTimeList);
-                cancelAvailableTime.setAdapter(adapter);
-
-
-            }
-        });*/
             final Button chooseNewDateButton = (Button) getView().findViewById(R.id.chooseChangedDate);
             chooseNewDateButton.setEnabled(false);
 
@@ -666,93 +592,6 @@ public class DayFragment extends Fragment {
                         }
                     }
 
-                /*for(int i = 0; i < openList.size(); i++)오픈 열어주는곳
-                {
-
-                    if((openList.get(i).getOpenBranch().equals(userBranch) || openList.get(i).getOpenBranch().equals("전체")) && (openList.get(i).getOpenTeacher().equals(BookedList.get(0).getBookedCourseTeacher()) || openList.get(i).getOpenTeacher().equals("전체"))){
-
-                        if(!openList.get(i).getOpenStartDate().equals("null") && !openList.get(i).getOpenStartDate().isEmpty() && !openList.get(i).getOpenEndDate().equals("null") && !openList.get(i).getOpenEndDate().isEmpty())
-                        {
-
-                            int point = openList.get(i).getOpenStartDate().lastIndexOf(" ");
-                            try{
-                                DateFormat format = new SimpleDateFormat("yyyy-mm-dd");
-
-                                Date BookedDateNewly = format.parse(newlyBookedDate);
-                                String BookedDateNewlyS = new SimpleDateFormat("yyyy-mm-dd").format(BookedDateNewly);
-
-
-                                Date openStart = format.parse(openList.get(i).getOpenStartDate().substring(0,point));
-                                Date openEnd =  format.parse(openList.get(i).getOpenEndDate().substring(0,point));
-                                String openStarts = new SimpleDateFormat("yyyy-mm-dd").format(openStart);
-                               // String ClosedEnds = new SimpleDateFormat("yyyy-mm-dd").format(ClosedEnd);
-                                // int compare1 = BookedDateNewly.compareTo( ClosedStart );
-                                //int compare2 = BookedDateNewly.compareTo( ClosedEnd );
-                                //Toast.makeText(getContext(),String.valueOf(openStart), Toast.LENGTH_SHORT).show();
-
-
-
-
-                                if(BookedDateNewlyS.equals(openStarts))
-                                {
-                                     //Toast.makeText(getContext(),String.valueOf(openStart), Toast.LENGTH_SHORT).show();
-                                     String startTime = openList.get(i).getOpenStartDate().substring(point + 1, point+6);
-                                     String endTime = openList.get(i).getOpenEndDate().substring(point + 1, point+6);;
-                                     SimpleDateFormat df = new SimpleDateFormat("HH:mm");
-                                     Date start = df.parse(startTime);
-                                     int getStartTime;
-                                     int getEndTime;
-                                     getStartTime = Integer.parseInt(openList.get(i).getOpenStartDate().substring(point + 1, point + 3))*100 + Integer.parseInt(openList.get(i).getOpenStartDate().substring(point + 4, point+ 6));
-                                     getEndTime = Integer.parseInt(openList.get(i).getOpenEndDate().substring(point + 1, point + 3))*100 + Integer.parseInt(openList.get(i).getOpenEndDate().substring(point + 4, point+ 6));
-                                     int diff = (getEndTime - getStartTime)/50;
-                                    if(availableTimeList.contains(startTime))
-                                    {
-                                        continue;
-                                    }else
-                                    {
-                                        availableTimeList.add(startTime);
-                                    }
-
-                                     for(int x = 1; x < diff ; x++)
-                                     {
-
-
-                                         //Date end = df.parse(endTime);
-                                         Calendar cal = Calendar.getInstance();
-                                         cal.setTime(start);
-                                         cal.add(Calendar.MINUTE, 30);
-                                         String newTime = df.format(cal.getTime());
-                                         if(availableTimeList.contains(newTime))
-                                         {
-                                             continue;
-                                         }else
-                                         {
-                                             availableTimeList.add(newTime);
-                                         }
-
-                                         start = df.parse(newTime);
-                                     }
-
-
-                                    //Toast.makeText(getContext(),String.valueOf(compare1), Toast.LENGTH_SHORT).show();
-                                    //Toast.makeText(getContext(),exclusionList.get(i).getClosedStartDate().substring(0,point), Toast.LENGTH_SHORT).show();
-                                    //Toast.makeText(getContext(),BookedDateNewlyS, Toast.LENGTH_SHORT).show();
-                                    // if(todayDate.after(historyDate) && todayDate.before(futureDate)) {
-                                    // In between
-                                    //}
-
-
-
-                                }
-                            }catch (ParseException e)
-                            {
-                                Toast.makeText(getContext(),"ERROR", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }
-                }*/
-
-
                     if (Integer.parseInt(changedYear[0]) == curYear && Integer.parseInt(changedMonth[0]) == (curMonth + 1) && Integer.parseInt(changedDay[0]) == curDay) {
                         TimeListforshow.clear();
                         int curtime = 0;
@@ -910,20 +749,11 @@ public class DayFragment extends Fragment {
             });
 
 
-        }
+        }*/
+        super.onActivityCreated(b);
 
-
-
-
-
-
-
-
-
-
-
-
-
+        TextView tv_canceledTeacher = (TextView) getView().findViewById(R.id.tv_canceledTeacher);
+        Spinner sp_canceledDate = (Spinner) getView().findViewById(R.id.sp_canceledDate);
     }
 
     @Override

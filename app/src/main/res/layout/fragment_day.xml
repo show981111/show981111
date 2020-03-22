@@ -56,74 +56,85 @@
                 android:layout_height="wrap_content"
                 android:hint="예약된 강사"
                 android:fontFamily="@font/fontfamily"
-                android:id="@+id/dayBookingTeacher"
+                android:id="@+id/tv_canceledTeacher"
                 android:textSize="20dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"/>
 
+
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <Spinner
+            android:id="@+id/sp_canceledDate"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="날짜 선택"
-                android:fontFamily="@font/fontfamily"
-                android:textSize="20dp"
-                android:id="@+id/chooseCancelDate"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="선택된 날짜"
-                android:fontFamily="@font/fontfamily"
-                android:id="@+id/selectedDate"
-                android:textSize="20dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"/>
-        </LinearLayout>
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal">-->
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="취소할 시간"
-                android:fontFamily="@font/fontfamily"
-                android:textSize="15dp"
-                android:id="@+id/canceltimetext"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
-                />
-
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/cancelAvailableTimeSpinner"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
-                android:gravity="right"
-                ></Spinner>
+<!--            <Button-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="10dp"-->
+<!--                android:layout_marginRight="10dp"-->
+<!--                android:layout_marginBottom="10dp"-->
+<!--                android:text="날짜 선택"-->
+<!--                android:fontFamily="@font/fontfamily"-->
+<!--                android:textSize="20dp"-->
+<!--                android:id="@+id/chooseCancelDate"/>-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="선택된 날짜"-->
+<!--                android:fontFamily="@font/fontfamily"-->
+<!--                android:id="@+id/selectedDate"-->
+<!--                android:textSize="20dp"-->
+<!--                android:layout_marginBottom="10dp"-->
+<!--                android:layout_marginLeft="10dp"-->
+<!--                android:layout_marginRight="10dp"/>-->
+<!--        </LinearLayout>-->
 
 
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            >-->
 
-        </LinearLayout>
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="취소할 시간"-->
+<!--                android:fontFamily="@font/fontfamily"-->
+<!--                android:textSize="15dp"-->
+<!--                android:id="@+id/canceltimetext"-->
+<!--                android:layout_marginLeft="10dp"-->
+<!--                android:layout_marginRight="10dp"-->
+<!--                android:layout_marginBottom="10dp"-->
+<!--                />-->
+
+<!--            <Spinner-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:id="@+id/cancelAvailableTimeSpinner"-->
+<!--                android:layout_marginLeft="10dp"-->
+<!--                android:layout_marginRight="10dp"-->
+<!--                android:layout_marginBottom="10dp"-->
+<!--                android:gravity="right"-->
+<!--                ></Spinner>-->
+
+
+
+<!--        </LinearLayout>-->
 
         <TextView
             android:layout_width="wrap_content"
