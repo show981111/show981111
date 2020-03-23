@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -14,6 +15,12 @@ public class waitListAdapter extends RecyclerView.Adapter<waitListHolder> {
 
     private Context context;
     private ArrayList<waitlist_item> waitlistItems;
+    private String pt_courseTeacher;
+    private String pt_courseBranch;
+    private String pt_userID;
+    private String pt_startTime;
+    private String pt_startDateAndDow;
+
 
     public waitListAdapter(Context context, ArrayList<waitlist_item> arrayList) {
         this.context = context;
@@ -26,10 +33,11 @@ public class waitListAdapter extends RecyclerView.Adapter<waitListHolder> {
         View rowView;
         LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         rowView=inflater.inflate(R.layout.waitlist, parent,false);
+        waitListHolder waitListHolder = new waitListHolder(rowView,this);
         //recyclerView full width!!
 //        View baseView = View.inflate(context,R.layout.waitlist,null);
 //        waitListHolder waitListHolder = new waitListHolder(baseView);
-        return new waitListHolder(rowView);
+        return waitListHolder;
     }
 
     @Override
@@ -42,10 +50,25 @@ public class waitListAdapter extends RecyclerView.Adapter<waitListHolder> {
         holder.tv_wl_courseTeacher.setText(waitlist_item.getWl_courseTeacher());
         holder.tv_wl_startDate.setText(waitlist_item.getWl_startDate());
         holder.tv_wl_Time.setText(waitlist_item.getWl_Time());
+
+        pt_courseTeacher = waitlist_item.getWl_courseTeacher();
+        pt_courseBranch = waitlist_item.getWl_userBranch();
+        pt_userID = waitlist_item.getWl_userID();;
+        pt_startTime = waitlist_item.getWl_Time() ;
+        pt_startDateAndDow = waitlist_item.getWl_startDate();
     }
 
     @Override
     public int getItemCount() {
         return waitlistItems.size();
+    }
+
+    public void onAcceptClicked() {
+        acceptRegularTask acceptRegularTask = new acceptRegularTask(context,pt_courseTeacher, pt_courseBranch,pt_userID, pt_startTime, pt_startDateAndDow);
+        acceptRegularTask.execute("http://show981111.cafe24.com/acceptRegular.php");
+    }
+
+    public void onRejectClicked() {
+        Toast.makeText(context,"거절하였습니다",Toast.LENGTH_LONG);
     }
 }

@@ -3,8 +3,12 @@ package com.example.user.solviolin;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,12 +21,18 @@ import android.widget.DatePicker;
 import android.widget.GridView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
+
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
-
-
+import static com.example.user.solviolin.MainActivity.userName;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -73,9 +83,6 @@ public class MonthFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -97,6 +104,9 @@ public class MonthFragment extends Fragment {
     private  Spinner teacherSpinner;
     public static ArrayList<courseTimeLine> courseTimeLineArrayList;
     /* end */
+
+    /*to Get Term*/
+    public static  ArrayList<termList> termListsArray;
 
     /*to make dayspinner*/
     private Spinner daySpinner;
@@ -187,6 +197,7 @@ public class MonthFragment extends Fragment {
                 }
     }
 
+
     public void onActivityCreated(Bundle b){
         super.onActivityCreated(b);
 
@@ -228,6 +239,8 @@ public class MonthFragment extends Fragment {
         },curYear,curMonth,curDay
         );
 
+        FetchTermTask fetchTermTask = new FetchTermTask(datePickerDialog);
+        fetchTermTask.execute("http://show981111.cafe24.com/getTermList.php");
 
         teacherSpinner.setOnItemSelectedListener((new AdapterView.OnItemSelectedListener() {
 

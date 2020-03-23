@@ -24,6 +24,8 @@ import okhttp3.Response;
 
 import static com.example.user.solviolin.MainActivity.userBranch;
 import static com.example.user.solviolin.MainActivity.userDuration;
+import static com.example.user.solviolin.MainActivity.userID;
+import static com.example.user.solviolin.MainActivity.userName;
 
 //fetch teacher list for teacherSpinner in monthFragment
 public class fetchTimeForMonth extends AsyncTask<String, Void, AvailableTimeForMonth[]> {
@@ -67,6 +69,7 @@ public class fetchTimeForMonth extends AsyncTask<String, Void, AvailableTimeForM
                 .add("courseTeacher", this.courseTeacher)
                 .add("startDate",this.startDate)
                 .add("userDuration", userDuration)
+                .add("userName",userName)
                 .build();
         Log.d("userBranchInFetch",userBranch);
 
@@ -99,15 +102,20 @@ public class fetchTimeForMonth extends AsyncTask<String, Void, AvailableTimeForM
     protected void onPostExecute(AvailableTimeForMonth[] times) {
         super.onPostExecute(times);
         timeList.clear();
-        for(AvailableTimeForMonth time : times)
-        {
-            timeList.add(time.getRegular_Time());
-            Log.d("fetchTime",time.getRegular_Time());
-        }
 
-        ButtonGridAdapter buttonGridAdapter = new ButtonGridAdapter(context,timeList, parent);
-        buttonGridAdapter.notifyDataSetChanged();
-        timeButtonGrid.setAdapter(buttonGridAdapter);
+        if(times != null) {
+            for (AvailableTimeForMonth time : times) {
+                timeList.add(time.getRegular_Time());
+                Log.d("fetchTime", time.getRegular_Time());
+            }
+
+            ButtonGridAdapter buttonGridAdapter = new ButtonGridAdapter(context, timeList, parent,courseTeacher,startDate,courseDay);
+            buttonGridAdapter.notifyDataSetChanged();
+            timeButtonGrid.setAdapter(buttonGridAdapter);
+        }else
+        {
+            Log.d("fetchTime","NULL");
+        }
 
 
         /*ArrayAdapter teacheradapter = new ArrayAdapter(context, android.R.layout.simple_list_item_1,HashedTeacherList);

@@ -367,6 +367,10 @@ public class MainActivity extends AppCompatActivity {
             {
                 Log.d("response",s);
                 Toast.makeText(c, "형식을 확인해주세요!",Toast.LENGTH_SHORT).show();
+            }else if(s.equals("redunt"))
+            {
+                Log.d("response",s);
+                Toast.makeText(c, "이미 연장된 날짜입니다.",Toast.LENGTH_SHORT).show();
             }else
             {
                 Log.d("response",s);

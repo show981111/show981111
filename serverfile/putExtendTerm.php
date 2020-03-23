@@ -6,8 +6,8 @@
 	$termEnd = $_POST['termEnd'];
 	$userBranch = "";
 
-	// $termStart = "2020-02-05";
-	// $termEnd = "2020-02-29";
+	// $termStart = "2020-06-01";
+	// $termEnd = "2020-06-29";
 
 	$dateTime = DateTime::createFromFormat('Y-m-d', $termStart);
 	$dateTimes = DateTime::createFromFormat('Y-m-d', $termEnd);
