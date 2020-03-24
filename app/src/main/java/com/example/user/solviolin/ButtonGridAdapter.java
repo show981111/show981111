@@ -11,6 +11,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.Gravity;
@@ -25,10 +26,9 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static com.example.user.solviolin.MainActivity.userBranch;
 import static com.example.user.solviolin.MainActivity.userName;
 
-public class ButtonGridAdapter extends BaseAdapter{
+public class ButtonGridAdapter extends BaseAdapter {
     Context context = null;
     ArrayList<String> buttonNames = null;
     private Fragment parent;
@@ -41,16 +41,20 @@ public class ButtonGridAdapter extends BaseAdapter{
     private String courseDay;
     private String startDate;
 
+    ButtonGridAdapter myself;
 
-    private int IDindex;
 
-    public ButtonGridAdapter(Context context, ArrayList<String> buttonNames, Fragment parent, String courseTeacher, String startDate, String courseDay) {
+    public ButtonGridAdapter(Context context, ArrayList<String> buttonNames, Fragment parent, String courseTeacher, String startDate, String courseDay, String userID, String userBranch, String userDuration) {
         this.context = context;
         this.buttonNames = buttonNames;
         this.parent = parent;
         this.courseTeacher = courseTeacher;
         this.startDate = startDate;
         this.courseDay = courseDay;
+        this.userID = userID;
+        this.courseBranch = userBranch;
+        this.userDuration = userDuration;
+
     }
 
     @Override
@@ -68,14 +72,20 @@ public class ButtonGridAdapter extends BaseAdapter{
         return position;
     }
 
-    public void clearAdapter(){
-        buttonNames.clear();
+    public void refresh(ArrayList<String> buttonNames)
+    {
+
+        this.buttonNames = buttonNames;
+
+        notifyDataSetChanged();
     }
+
 
 
     @Override
     public View getView(int position, View convertView, final ViewGroup parent) {
         Button button = null;
+
 
         if(null != convertView){
             button = (Button)convertView;
@@ -84,45 +94,44 @@ public class ButtonGridAdapter extends BaseAdapter{
             button = new Button(context);
             button.setText(buttonNames.get(position));
         }
-
+        myself = this;
         final Button finalButton = button;
 
+
         button.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
 
                 startTime = finalButton.getText().toString();
+
+                final String url;
                 if(userName.equals("admin"))
                 {
-
+                    url = "http://show981111.cafe24.com/putRegularFromAdmin.php";
                 }else
-                {   //if it is student, post to waitList!
-                    userID = MainActivity.userID;
-                    courseBranch = userBranch;
-                    userDuration = MainActivity.userDuration;
-
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(parent.getContext());
-                    AlertDialog dialog = builder.setMessage(courseTeacher + "선생님 "+courseDay + "요일 "+ startTime + " 시작일 "+startDate +" 으로 레슨을 예약하시겠습니까?")
-                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    postWaitListTask postWaitListTask = new postWaitListTask(context,courseTeacher,courseBranch,userID,startTime,userDuration,courseDay,startDate);
-                                    postWaitListTask.execute("http://show981111.cafe24.com/putWaitList.php");
-
-                                }
-                            })
-                            .setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    startTime = "";
-                                    Toast.makeText(parent.getContext(),"취소하였습니다.",Toast.LENGTH_LONG).show();
-                                }
-                            })
-                            .create();
-                    dialog.show();
+                {
+                    url = "http://show981111.cafe24.com/putWaitList.php";
                 }
+                AlertDialog.Builder builder = new AlertDialog.Builder(parent.getContext());
+                AlertDialog dialog = builder.setMessage(courseTeacher + "선생님 " + courseDay + "요일 " + startTime + " 시작일 " + startDate + " 으로 레슨을 예약하시겠습니까?")
+                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                postWaitListTask postWaitListTask = new postWaitListTask(context, courseTeacher, courseBranch, userID, startTime, userDuration, courseDay, startDate,buttonNames,myself );
+                                postWaitListTask.execute(url);
 
+                            }
+                        })
+                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startTime = "";
+                                Toast.makeText(parent.getContext(), "취소하였습니다.", Toast.LENGTH_LONG).show();
+                            }
+                        })
+                        .create();
+                dialog.show();
             }
         });
 
@@ -141,8 +150,10 @@ public class ButtonGridAdapter extends BaseAdapter{
         private String pt_userDuration;
         private String pt_courseDay;
         private String pt_startDate;
+        ButtonGridAdapter buttonGridAdapter;
 
-        public postWaitListTask(Context context, String pt_courseTeacher, String pt_courseBranch, String pt_userID, String pt_startTime, String pt_userDuration, String pt_courseDay, String pt_startDate) {
+        private ArrayList<String> newtimeList;
+        public postWaitListTask(Context context, String pt_courseTeacher, String pt_courseBranch, String pt_userID, String pt_startTime, String pt_userDuration, String pt_courseDay, String pt_startDate,ArrayList<String> newtimeList, ButtonGridAdapter buttonGridAdapter ) {
             this.context = context;
             this.pt_courseTeacher = pt_courseTeacher;
             this.pt_courseBranch = pt_courseBranch;
@@ -151,6 +162,9 @@ public class ButtonGridAdapter extends BaseAdapter{
             this.pt_userDuration = pt_userDuration;
             this.pt_courseDay = pt_courseDay;
             this.pt_startDate = pt_startDate;
+
+            this.newtimeList = newtimeList;
+            this.buttonGridAdapter = buttonGridAdapter;
         }
 
         @Override
@@ -194,9 +208,21 @@ public class ButtonGridAdapter extends BaseAdapter{
             Log.d("postWaitList",s);
             if(s.equals("success"))
             {
+                for(String time : newtimeList)
+                {
+                    Log.d("selectedbef", time);
+                }
+                newtimeList.remove(pt_startTime);
+                for(String time : newtimeList)
+                {
+                    Log.d("selectedaf", time);
+                }
+                Log.d("selected", pt_startTime);
+                buttonGridAdapter.refresh(newtimeList);
                 Toast toast = Toast.makeText(context,"성공적으로 요청되었습니다.",Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
+
             }else if(s.equals("fail")) {
                 Toast toast = Toast.makeText(context, "시작날짜와 요일을 다시한번 확인해주세요.", Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER, 0, 0);
@@ -214,6 +240,11 @@ public class ButtonGridAdapter extends BaseAdapter{
             }else if(s.equals("alreadyBooked"))
             {
                 Toast toast = Toast.makeText(context, "이미 예약되었습니다.", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+            }else if(s.equals("notEmpty"))
+            {
+                Toast toast = Toast.makeText(context, "비어있는 자리가 아닙니다.", Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
             }

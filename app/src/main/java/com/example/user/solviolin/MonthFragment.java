@@ -1,13 +1,17 @@
 package com.example.user.solviolin;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import android.util.Log;
@@ -18,9 +22,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -32,6 +39,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
+
+import static com.example.user.solviolin.MainActivity.userBranch;
+import static com.example.user.solviolin.MainActivity.userDuration;
+import static com.example.user.solviolin.MainActivity.userID;
 import static com.example.user.solviolin.MainActivity.userName;
 /**
  * A simple {@link Fragment} subclass.
@@ -197,9 +208,121 @@ public class MonthFragment extends Fragment {
                 }
     }
 
+    class getUserDataTask extends AsyncTask<String, Void, userData[]> {
+
+        private Context context;
+        private String get_userID;
+        private String get_userBranch;
+        private ArrayList<userData> userDataArrayList = new ArrayList<>();
+
+        public getUserDataTask(Context context,String get_userID, String get_userBranch) {
+            this.get_userID = get_userID;
+            this.get_userBranch = get_userBranch;
+            this.context = context;
+        }
+
+        @Override
+        protected userData[] doInBackground(String... strings) {
+            String url= strings[0];
+
+            OkHttpClient client = new OkHttpClient();
+            RequestBody formBody = new FormBody.Builder()
+                    .add("userID", get_userID)
+                    .add("userBranch", get_userBranch)
+                    .build();
+            Log.d("getUserDataTask",get_userBranch);
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(formBody)
+                    .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                Log.d("getUserDataTask", "res");
+                Gson gson = new Gson();
+                userData[] userData = gson.fromJson(response.body().charStream(), userData[].class);
+                return userData;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.d("FetchUSer", e.getMessage());
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(userData[] userData) {
+            super.onPostExecute(userData);
+            userDataArrayList.clear();
+            for(userData user : userData)
+            {
+                userDataArrayList.add(user);
+            }
+            Log.d("getUserTasksize", String.valueOf(userDataArrayList.size()));
+            if(userDataArrayList.size() == 1)
+            {
+                Toast.makeText(context,"매치되었습니다.",Toast.LENGTH_SHORT).show();
+                send_userBranch = userDataArrayList.get(0).getUserBranch();
+                send_userID = userDataArrayList.get(0).getUserID();
+                send_userDuration = userDataArrayList.get(0).getUserDuration();
+                Log.d("getUserDataTask",send_userBranch);
+                Log.d("getUserDataTask",send_userID);
+                Log.d("getUserDataTask",send_userDuration);
+
+                fetchTeacherForSpinner fetchCourseTimeLine = new fetchTeacherForSpinner(teacherSpinner,getContext(),send_userBranch);
+                fetchCourseTimeLine.execute("http://show981111.cafe24.com/getCourseTimeLine.php");
+            }else if(userDataArrayList.size() > 1)
+            {
+                Toast.makeText(context,"해당하는 유저가 여러명입니다.",Toast.LENGTH_SHORT).show();
+            }else
+            {
+                Toast.makeText(context,"해당하는 유저가 없습니다.",Toast.LENGTH_SHORT).show();
+            }
+
+        }
+    }
+    public static String send_userBranch = userBranch;
+    public static String send_userID = userID;//if admin is not set the value, than it goes to loginned user
+    public static String send_userDuration = userDuration;
 
     public void onActivityCreated(Bundle b){
         super.onActivityCreated(b);
+
+        LinearLayout linearLayout = (LinearLayout) getView().findViewById(R.id.layout_adminUserRegister);
+        final EditText et_adminUser;
+        final EditText et_adminBranch;
+        Button bt_searchUser;
+        if(!userName.equals("admin"))
+        {
+            linearLayout.setVisibility(View.GONE);
+        }else
+        {
+            et_adminUser = getView().findViewById(R.id.et_adminUser);
+            et_adminBranch = getView().findViewById(R.id.et_adminBranch);
+            bt_searchUser = getView().findViewById(R.id.bt_searchUser);
+
+            bt_searchUser.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    String req_userID = et_adminUser.getText().toString();
+                    String req_userBranch = et_adminBranch.getText().toString();
+                    Log.d("getUser",req_userID);
+                    Log.d("getUser",req_userBranch);
+
+                    getUserDataTask getUserDataTask = new getUserDataTask(getContext(),req_userID,req_userBranch);
+                    getUserDataTask.execute("http://show981111.cafe24.com/getUserData.php");
+
+
+                }
+            });
+
+
+
+        }
+
+
 
         final Button searchButton = (Button) getView().findViewById(R.id.searchButton);
         final Button startDateButton = (Button) getView().findViewById(R.id.startDateButton);
@@ -212,8 +335,11 @@ public class MonthFragment extends Fragment {
 
         /* teacher spinner 세팅 시작하는 지점 */
         teacherSpinner = (Spinner) getView().findViewById(R.id.courseTeacherSpinner);
-        final fetchTeacherForSpinner fetchCourseTimeLine = new fetchTeacherForSpinner(teacherSpinner,getContext());
-        fetchCourseTimeLine.execute("http://show981111.cafe24.com/getCourseTimeLine.php");
+        final fetchTeacherForSpinner fetchCourseTimeLine = new fetchTeacherForSpinner(teacherSpinner,getContext(),send_userBranch);
+        if(!userName.equals("admin"))
+        {
+            fetchCourseTimeLine.execute("http://show981111.cafe24.com/getCourseTimeLine.php");
+        }
         /*spinner setting end*/
 
 
@@ -302,7 +428,7 @@ public class MonthFragment extends Fragment {
                 /*button grid 세팅 시작하는 지점 */
                 if(res == 1)
                 {
-                    fetchTimeForMonth fetchTimeForMonth = new fetchTimeForMonth(timeButtonGrid,getContext(),MonthFragment.this,selectedDay,selectedTeacher,startDate);
+                    fetchTimeForMonth fetchTimeForMonth = new fetchTimeForMonth(timeButtonGrid,getContext(),MonthFragment.this,selectedDay,selectedTeacher,startDate,send_userID,send_userBranch,send_userDuration);
                     fetchTimeForMonth.execute("http://show981111.cafe24.com/getTimeForMonth.php");
                     /*button grid setting end*/
                     timeButtonGrid.setVisibility(View.VISIBLE);

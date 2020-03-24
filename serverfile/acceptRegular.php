@@ -8,6 +8,7 @@
 	$pt_userID = $_POST['pt_userID'];
 	$pt_startTime = $_POST['pt_startTime'];//15:00 ~ 16:00
 	$pt_startDateAndDow = $_POST['pt_startDateAndDow'];// 2020-02-06 월
+	$pt_reject = $_POST['reject'];
 
 	// $pt_courseTeacher = "이채정";
 	// $pt_courseBranch = "교대";
@@ -30,12 +31,16 @@
 	{
 		$startDate = substr($pt_startDateAndDow, 0,10);
 	}
-
-	echo $startDate." ". $startTime." ". $endTime;
+	//echo $pt_courseTeacher." ".$pt_courseBranch." ".$pt_userID. " ".$pt_startTime. " ".$pt_startDateAndDow ;
 	$dow = date('w',strtotime($startDate));
 	$test = new BookingSystem($pt_courseBranch);
-	
-	$test->acceptRegular($pt_courseTeacher, $pt_courseBranch,$startTime, $endTime ,$startDate, $pt_userID, $dow);
+	if($pt_reject == "reject")
+	{
+		$test->deleteWaitList($pt_courseTeacher, $pt_courseBranch,$startTime, $endTime ,$startDate, $pt_userID,$dow,"yes");
+	}else
+	{
+		$test->acceptRegular($pt_courseTeacher, $pt_courseBranch,$startTime, $endTime ,$startDate, $pt_userID, $dow, $pt_userID);
+	}
 	
 
 ?>

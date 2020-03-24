@@ -13,7 +13,41 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-
+        <LinearLayout
+            android:id="@+id/layout_adminUserRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/et_adminUser"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/fontfamily"
+                android:hint="유저아이디">
+            </EditText>
+            <EditText
+                android:id="@+id/et_adminBranch"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="15dp"
+                android:layout_width="wrap_content"
+                android:fontFamily="@font/fontfamily"
+                android:layout_height="wrap_content"
+                android:hint="지점">
+            </EditText>
+            <Button
+                android:id="@+id/bt_searchUser"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="15dp"
+                android:fontFamily="@font/fontfamily"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="검색">
+            </Button>
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

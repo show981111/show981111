@@ -37,6 +37,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import static com.example.user.solviolin.mMySQL.DataParser3.personalDayBookedList;
+import static java.lang.Boolean.TRUE;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -64,29 +65,29 @@ public class MainActivity extends AppCompatActivity {
         //Toast.makeText(getApplicationContext(),"got it!"+userID, Toast.LENGTH_SHORT).show();
         String url = "";
 
-        switch (userBranch) {
-            case "잠실":
-                url = "http://show981111.cafe24.com/BookedCourseList_J.php";
-                break;
-            case "여의도":
-                url = "http://show981111.cafe24.com/BookedCourseList_Y.php";
-                break;
-            case "시청":
-                url = "http://show981111.cafe24.com/BookedCourseList_S.php";
-                break;
-            case "교대":
-                url = "http://show981111.cafe24.com/BookedCourseList_K.php";
-                break;
-            case "광화문":
-                url = "http://show981111.cafe24.com/BookedCourseList_G.php";
-                break;
-        }
-
-        new Downloader1(MainActivity.this, url).execute(); //get booked list by oldversion
-
-
-        Downloader3 download = new Downloader3(MainActivity.this, "http://show981111.cafe24.com/DayBookedList.php");
-        download.execute();
+//        switch (userBranch) {
+//            case "잠실":
+//                url = "http://show981111.cafe24.com/BookedCourseList_J.php";
+//                break;
+//            case "여의도":
+//                url = "http://show981111.cafe24.com/BookedCourseList_Y.php";
+//                break;
+//            case "시청":
+//                url = "http://show981111.cafe24.com/BookedCourseList_S.php";
+//                break;
+//            case "교대":
+//                url = "http://show981111.cafe24.com/BookedCourseList_K.php";
+//                break;
+//            case "광화문":
+//                url = "http://show981111.cafe24.com/BookedCourseList_G.php";
+//                break;
+//        }
+//
+//        new Downloader1(MainActivity.this, url).execute(); //get booked list by oldversion
+//
+//
+//        Downloader3 download = new Downloader3(MainActivity.this, "http://show981111.cafe24.com/DayBookedList.php");
+//        download.execute();
 
         Button reservationButton = (Button) findViewById(R.id.reservationButton);
         Button resultButton = (Button) findViewById(R.id.resultButton);
@@ -94,6 +95,16 @@ public class MainActivity extends AppCompatActivity {
         Button linkButton = (Button)findViewById(R.id.gotohompageButton);
         Button termExtendButton = (Button)findViewById(R.id.bt_termExtend);
         Button bt_waitList = findViewById(R.id.bt_waitList);
+        Button bt_extendRest = findViewById(R.id.bt_extendRest);
+
+        bt_extendRest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                extendTask extendTask = new extendTask(TRUE,MainActivity.this);
+                extendTask.execute("http://show981111.cafe24.com/extendRest.php");
+            }
+        });
+
 
 
         termExtendButton.setOnClickListener(new View.OnClickListener() {
@@ -145,44 +156,44 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String url = "";
 
-                switch (userBranch) {
-                    case "잠실":
-                        url = "http://show981111.cafe24.com/BookedCourseList_J.php";
-                        break;
-                    case "여의도":
-                        url = "http://show981111.cafe24.com/BookedCourseList_Y.php";
-                        break;
-                    case "시청":
-                        url = "http://show981111.cafe24.com/BookedCourseList_S.php";
-                        break;
-                    case "교대":
-                        url = "http://show981111.cafe24.com/BookedCourseList_K.php";
-                        break;
-                    case "광화문":
-                        url = "http://show981111.cafe24.com/BookedCourseList_G.php";
-                        break;
-                }
-
-                new Downloader1(MainActivity.this, url).execute(); //get booked list by oldversion
-                delaycredit = 0;//이월된 보강 갯수
-                curcount = 0;
-                for(int i = 0; i < personalDayBookedList.size(); i++)
-                {
-                    if(personalDayBookedList.get(i).getNewlyBookedDate().equals("다음달 중으로 할 예정(이월된 보강은 다음달까지만 가능합니다)") && (personalDayBookedList.get(i).getDataStatus().equals("going") || personalDayBookedList.get(i).getDataStatus().equals("cur") ))
-                    {
-                        delaycredit = delaycredit + 1;
-
-                    }
-                    if(personalDayBookedList.get(i).getCanceledCourseDate().substring(0,1).equals("[") && personalDayBookedList.get(i).getNewlyBookedDate().equals("다음달 중으로 할 예정(이월된 보강은 다음달까지만 가능합니다)") && (personalDayBookedList.get(i).getDataStatus().equals("going")|| personalDayBookedList.get(i).getDataStatus().equals("cur")))
-                    {
-                        delaycredit = delaycredit + 1;
-
-                    }
-                    if( personalDayBookedList.get(i).getDataStatus().equals("cur"))
-                    {
-                        curcount = curcount + 1;
-                    }
-                }
+//                switch (userBranch) {
+//                    case "잠실":
+//                        url = "http://show981111.cafe24.com/BookedCourseList_J.php";
+//                        break;
+//                    case "여의도":
+//                        url = "http://show981111.cafe24.com/BookedCourseList_Y.php";
+//                        break;
+//                    case "시청":
+//                        url = "http://show981111.cafe24.com/BookedCourseList_S.php";
+//                        break;
+//                    case "교대":
+//                        url = "http://show981111.cafe24.com/BookedCourseList_K.php";
+//                        break;
+//                    case "광화문":
+//                        url = "http://show981111.cafe24.com/BookedCourseList_G.php";
+//                        break;
+//                }
+//
+//                new Downloader1(MainActivity.this, url).execute(); //get booked list by oldversion
+//                delaycredit = 0;//이월된 보강 갯수
+//                curcount = 0;
+//                for(int i = 0; i < personalDayBookedList.size(); i++)
+//                {
+//                    if(personalDayBookedList.get(i).getNewlyBookedDate().equals("다음달 중으로 할 예정(이월된 보강은 다음달까지만 가능합니다)") && (personalDayBookedList.get(i).getDataStatus().equals("going") || personalDayBookedList.get(i).getDataStatus().equals("cur") ))
+//                    {
+//                        delaycredit = delaycredit + 1;
+//
+//                    }
+//                    if(personalDayBookedList.get(i).getCanceledCourseDate().substring(0,1).equals("[") && personalDayBookedList.get(i).getNewlyBookedDate().equals("다음달 중으로 할 예정(이월된 보강은 다음달까지만 가능합니다)") && (personalDayBookedList.get(i).getDataStatus().equals("going")|| personalDayBookedList.get(i).getDataStatus().equals("cur")))
+//                    {
+//                        delaycredit = delaycredit + 1;
+//
+//                    }
+//                    if( personalDayBookedList.get(i).getDataStatus().equals("cur"))
+//                    {
+//                        curcount = curcount + 1;
+//                    }
+//                }
                 Intent reservationIntent = new Intent(MainActivity.this, ReservationActivity.class);
                 MainActivity.this.startActivity(reservationIntent);
             }
@@ -191,46 +202,46 @@ public class MainActivity extends AppCompatActivity {
         resultButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = "";
-                switch (userBranch) {
-                    case "잠실":
-                        url = "http://show981111.cafe24.com/BookedCourseList_J.php";
-                        break;
-                    case "여의도":
-                        url = "http://show981111.cafe24.com/BookedCourseList_Y.php";
-                        break;
-                    case "시청":
-                        url = "http://show981111.cafe24.com/BookedCourseList_S.php";
-                        break;
-                    case "교대":
-                        url = "http://show981111.cafe24.com/BookedCourseList_K.php";
-                        break;
-                    case "광화문":
-                        url = "http://show981111.cafe24.com/BookedCourseList_G.php";
-                        break;
-                }
-                new Downloader1(MainActivity.this, url).execute();
-                delaycredit = 0;//이월된 보강 갯수
-                curcount = 0;
-                for(int i = 0; i < personalDayBookedList.size(); i++)
-                {
-                    if(personalDayBookedList.get(i).getNewlyBookedDate().equals("다음달 중으로 할 예정(이월된 보강은 다음달까지만 가능합니다)") && (personalDayBookedList.get(i).getDataStatus().equals("going") || personalDayBookedList.get(i).getDataStatus().equals("cur") ))
-                    {
-                        delaycredit = delaycredit + 1;
-
-                    }
-                    if(personalDayBookedList.get(i).getCanceledCourseDate().substring(0,1).equals("[") && personalDayBookedList.get(i).getNewlyBookedDate().equals("다음달 중으로 할 예정(이월된 보강은 다음달까지만 가능합니다)") && (personalDayBookedList.get(i).getDataStatus().equals("going")|| personalDayBookedList.get(i).getDataStatus().equals("cur")))
-                    {
-                        delaycredit = delaycredit + 1;
-
-                    }
-                    if( personalDayBookedList.get(i).getDataStatus().equals("cur"))
-                    {
-                        curcount = curcount + 1;
-                    }
-                }
-                Downloader3 download = new Downloader3(MainActivity.this, "http://show981111.cafe24.com/DayBookedList.php");
-                download.execute();
+//                String url = "";
+//                switch (userBranch) {
+//                    case "잠실":
+//                        url = "http://show981111.cafe24.com/BookedCourseList_J.php";
+//                        break;
+//                    case "여의도":
+//                        url = "http://show981111.cafe24.com/BookedCourseList_Y.php";
+//                        break;
+//                    case "시청":
+//                        url = "http://show981111.cafe24.com/BookedCourseList_S.php";
+//                        break;
+//                    case "교대":
+//                        url = "http://show981111.cafe24.com/BookedCourseList_K.php";
+//                        break;
+//                    case "광화문":
+//                        url = "http://show981111.cafe24.com/BookedCourseList_G.php";
+//                        break;
+//                }
+//                new Downloader1(MainActivity.this, url).execute();
+//                delaycredit = 0;//이월된 보강 갯수
+//                curcount = 0;
+//                for(int i = 0; i < personalDayBookedList.size(); i++)
+//                {
+//                    if(personalDayBookedList.get(i).getNewlyBookedDate().equals("다음달 중으로 할 예정(이월된 보강은 다음달까지만 가능합니다)") && (personalDayBookedList.get(i).getDataStatus().equals("going") || personalDayBookedList.get(i).getDataStatus().equals("cur") ))
+//                    {
+//                        delaycredit = delaycredit + 1;
+//
+//                    }
+//                    if(personalDayBookedList.get(i).getCanceledCourseDate().substring(0,1).equals("[") && personalDayBookedList.get(i).getNewlyBookedDate().equals("다음달 중으로 할 예정(이월된 보강은 다음달까지만 가능합니다)") && (personalDayBookedList.get(i).getDataStatus().equals("going")|| personalDayBookedList.get(i).getDataStatus().equals("cur")))
+//                    {
+//                        delaycredit = delaycredit + 1;
+//
+//                    }
+//                    if( personalDayBookedList.get(i).getDataStatus().equals("cur"))
+//                    {
+//                        curcount = curcount + 1;
+//                    }
+//                }
+//                Downloader3 download = new Downloader3(MainActivity.this, "http://show981111.cafe24.com/DayBookedList.php");
+//                download.execute();
 
                 Intent resultIntent = new Intent(MainActivity.this, Result.class);
                 MainActivity.this.startActivity(resultIntent);
@@ -258,6 +269,7 @@ public class MainActivity extends AppCompatActivity {
             initializeButton.setVisibility(View.GONE);
             termExtendButton.setVisibility(View.GONE);
             bt_waitList.setVisibility(View.GONE);
+            bt_extendRest.setVisibility(View.GONE);
         }
 
         initializeButton.setOnClickListener(new View.OnClickListener() {
@@ -321,6 +333,12 @@ public class MainActivity extends AppCompatActivity {
         private String termStart;
         private String termEnd;
         private Context c;
+        private boolean isExtendRest;
+
+        public extendTask(boolean isExtendRest, Context c) {
+            this.isExtendRest = isExtendRest;
+            this.c = c;
+        }
 
         public extendTask(String termStart, String termEnd, Context c) {
             this.termStart = termStart;
@@ -333,20 +351,27 @@ public class MainActivity extends AppCompatActivity {
             String url= strings[0];
 
             OkHttpClient client = new OkHttpClient();
-            RequestBody formBody = new FormBody.Builder()
-                    .add("termStart", termStart)
-                    .add("termEnd", termEnd)
-                    .build();
+            Request request;
 
-            Request request = new Request.Builder()
-                    .url(url)
-                    .post(formBody)
-                    .build();
+            if(isExtendRest){
+                request = new Request.Builder()
+                        .url(url)
+                        .build();
+            }else {
+                RequestBody formBody = new FormBody.Builder()
+                        .add("termStart", termStart)
+                        .add("termEnd", termEnd)
+                        .build();
+                request = new Request.Builder()
+                        .url(url)
+                        .post(formBody)
+                        .build();
+            }
+
 
             try {
                 okhttp3.Response response = client.newCall(request).execute();
                 //Log.d("response", response.body().string());
-
                 return response.body().string();
 
             } catch (IOException e) {
@@ -371,8 +396,11 @@ public class MainActivity extends AppCompatActivity {
             {
                 Log.d("response",s);
                 Toast.makeText(c, "이미 연장된 날짜입니다.",Toast.LENGTH_SHORT).show();
-            }else
+            }else if(s.equals("nothing"))
             {
+                Log.d("response",s);
+                Toast.makeText(c, "연장할 사람이 없습니다.",Toast.LENGTH_SHORT).show();
+            }else {
                 Log.d("response",s);
                 Toast.makeText(c, "날짜를 다시 확인해주세요",Toast.LENGTH_SHORT).show();
             }

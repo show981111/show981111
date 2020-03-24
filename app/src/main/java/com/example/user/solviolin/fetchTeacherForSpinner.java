@@ -18,8 +18,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import static com.example.user.solviolin.MainActivity.userBranch;
-
 //fetch teacher list for teacherSpinner in monthFragment
 public class fetchTeacherForSpinner extends AsyncTask<String, Void, courseTimeLine[]> {
 
@@ -27,11 +25,13 @@ public class fetchTeacherForSpinner extends AsyncTask<String, Void, courseTimeLi
     private static ArrayList<String> TeacherList = new ArrayList<>();
     private Spinner teacherspinner;
     private Context context;
+    private String fetch_userBranch;
 
-    public fetchTeacherForSpinner(Spinner sp, Context c)
+    public fetchTeacherForSpinner(Spinner sp, Context c, String fetch_userBranch)
     {
         this.teacherspinner = sp;
         this.context = c;
+        this.fetch_userBranch = fetch_userBranch;
     }
 
     public static ArrayList<courseTimeLine> getCourseTimeLineArrayList() {
@@ -48,9 +48,9 @@ public class fetchTeacherForSpinner extends AsyncTask<String, Void, courseTimeLi
 
         OkHttpClient client = new OkHttpClient();
         RequestBody formBody = new FormBody.Builder()
-                .add("userBranch", userBranch)
+                .add("userBranch", fetch_userBranch)
                 .build();
-        Log.d("userBranchInFetch",userBranch);
+        Log.d("userBranchInFetch",fetch_userBranch);
 
         Request request = new Request.Builder()
                 .url(url)

@@ -1,5 +1,6 @@
 package com.example.user.solviolin;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -41,13 +42,14 @@ public class waitListHolder extends RecyclerView.ViewHolder implements View.OnCl
     public void onClick(View view) {
 
         int position = getAdapterPosition();
+        Log.d("postWaitListPos", String.valueOf(position));
 
         switch (view.getId()){
             case R.id.bt_accept:
-                waitListAdapter.onAcceptClicked();
+                waitListAdapter.onAcceptClicked(position);
                 break;
             case R.id.bt_reject:
-                waitListAdapter.onRejectClicked();
+                waitListAdapter.onRejectClicked(position);
                 break;
         }
 

@@ -3,17 +3,14 @@ package com.example.user.solviolin;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
-import android.widget.Spinner;
+
 
 import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 
-import javax.xml.parsers.SAXParser;
 
 import androidx.fragment.app.Fragment;
 import okhttp3.FormBody;
@@ -22,9 +19,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import static com.example.user.solviolin.MainActivity.userBranch;
-import static com.example.user.solviolin.MainActivity.userDuration;
-import static com.example.user.solviolin.MainActivity.userID;
 import static com.example.user.solviolin.MainActivity.userName;
 
 //fetch teacher list for teacherSpinner in monthFragment
@@ -40,7 +34,11 @@ public class fetchTimeForMonth extends AsyncTask<String, Void, AvailableTimeForM
     private String courseTeacher;
     private String startDate;
 
-    public fetchTimeForMonth(GridView gv, Context c, Fragment fragment, String courseDay, String courseTeacher, String startDate)
+    private String gv_userID;
+    private String gv_userBranch;
+    private String gv_userDuration;
+
+    public fetchTimeForMonth(GridView gv, Context c, Fragment fragment, String courseDay, String courseTeacher, String startDate, String gv_userID, String gv_userBranch, String gv_userDuration)
     {
         this.timeButtonGrid = gv;
         this.context = c;
@@ -48,6 +46,9 @@ public class fetchTimeForMonth extends AsyncTask<String, Void, AvailableTimeForM
         this.courseDay = courseDay;
         this.courseTeacher = courseTeacher;
         this.startDate = startDate;
+        this.gv_userID = gv_userID;
+        this.gv_userBranch = gv_userBranch;
+        this.gv_userDuration = gv_userDuration;
     }
 
     public static ArrayList<courseTimeLine> getCourseTimeLineArrayList() {
@@ -64,14 +65,20 @@ public class fetchTimeForMonth extends AsyncTask<String, Void, AvailableTimeForM
 
         OkHttpClient client = new OkHttpClient();
         RequestBody formBody = new FormBody.Builder()
-                .add("userBranch", userBranch)
+                .add("userBranch", gv_userBranch)
                 .add("courseDay", this.courseDay)
                 .add("courseTeacher", this.courseTeacher)
                 .add("startDate",this.startDate)
-                .add("userDuration", userDuration)
+                .add("userDuration", gv_userDuration)
                 .add("userName",userName)
                 .build();
-        Log.d("userBranchInFetch",userBranch);
+        Log.d("fetchTimeForMonth",gv_userBranch);
+        Log.d("fetchTimeForMonth",this.courseDay);
+        Log.d("fetchTimeForMonth",this.courseTeacher);
+        Log.d("fetchTimeForMonth",this.startDate);
+        Log.d("fetchTimeForMonth", gv_userDuration);
+        Log.d("fetchTimeForMonth",userName);
+        Log.d("fetchTimeForMonth",gv_userID);
 
         Request request = new Request.Builder()
                 .url(url)
@@ -80,14 +87,14 @@ public class fetchTimeForMonth extends AsyncTask<String, Void, AvailableTimeForM
 
         try {
             Response response = client.newCall(request).execute();
-            Log.d("FetchTimeresponse", "res");
+            Log.d("fetchTimeForMonth", "res");
             Gson gson = new Gson();
             AvailableTimeForMonth[] times = gson.fromJson(response.body().charStream(), AvailableTimeForMonth[].class);
             return times;
 
         } catch (IOException e) {
             e.printStackTrace();
-            Log.d("FetchUSer", e.getMessage());
+            Log.d("fetchTimeForMonth", e.getMessage());
             return null;
         }
 
@@ -106,21 +113,17 @@ public class fetchTimeForMonth extends AsyncTask<String, Void, AvailableTimeForM
         if(times != null) {
             for (AvailableTimeForMonth time : times) {
                 timeList.add(time.getRegular_Time());
-                Log.d("fetchTime", time.getRegular_Time());
+                Log.d("fetchTimeForMonth", time.getRegular_Time());
             }
 
-            ButtonGridAdapter buttonGridAdapter = new ButtonGridAdapter(context, timeList, parent,courseTeacher,startDate,courseDay);
+            ButtonGridAdapter buttonGridAdapter = new ButtonGridAdapter(context, timeList, parent,courseTeacher,startDate,courseDay,gv_userID,gv_userBranch,gv_userDuration);
             buttonGridAdapter.notifyDataSetChanged();
             timeButtonGrid.setAdapter(buttonGridAdapter);
         }else
         {
-            Log.d("fetchTime","NULL");
+            Log.d("fetchTimeForMonth","NULL");
         }
 
-
-        /*ArrayAdapter teacheradapter = new ArrayAdapter(context, android.R.layout.simple_list_item_1,HashedTeacherList);
-        teacheradapter.notifyDataSetChanged();
-        teacherspinner.setAdapter(teacheradapter);*/
     }
 
 }

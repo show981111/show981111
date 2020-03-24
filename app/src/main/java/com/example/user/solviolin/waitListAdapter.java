@@ -1,6 +1,7 @@
 package com.example.user.solviolin;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,11 +52,12 @@ public class waitListAdapter extends RecyclerView.Adapter<waitListHolder> {
         holder.tv_wl_startDate.setText(waitlist_item.getWl_startDate());
         holder.tv_wl_Time.setText(waitlist_item.getWl_Time());
 
-        pt_courseTeacher = waitlist_item.getWl_courseTeacher();
-        pt_courseBranch = waitlist_item.getWl_userBranch();
-        pt_userID = waitlist_item.getWl_userID();;
-        pt_startTime = waitlist_item.getWl_Time() ;
-        pt_startDateAndDow = waitlist_item.getWl_startDate();
+//        pt_courseTeacher = waitlist_item.getWl_courseTeacher();
+//        pt_courseBranch = waitlist_item.getWl_userBranch();
+//        pt_userID = waitlist_item.getWl_userID();
+//        pt_startTime = waitlist_item.getWl_Time() ;
+//        pt_startDateAndDow = waitlist_item.getWl_startDate();
+        Log.d("postWaitListPosi", String.valueOf(position));
     }
 
     @Override
@@ -63,12 +65,32 @@ public class waitListAdapter extends RecyclerView.Adapter<waitListHolder> {
         return waitlistItems.size();
     }
 
-    public void onAcceptClicked() {
-        acceptRegularTask acceptRegularTask = new acceptRegularTask(context,pt_courseTeacher, pt_courseBranch,pt_userID, pt_startTime, pt_startDateAndDow);
+    public void onAcceptClicked(int position) {
+
+        waitlist_item waitlist_item = waitlistItems.get(position);
+        pt_courseTeacher = waitlist_item.getWl_courseTeacher();
+        pt_courseBranch = waitlist_item.getWl_userBranch();
+        pt_userID = waitlist_item.getWl_userID();
+        pt_startTime = waitlist_item.getWl_Time() ;
+        pt_startDateAndDow = waitlist_item.getWl_startDate();
+
+        acceptRegularTask acceptRegularTask = new acceptRegularTask(context,pt_courseTeacher, pt_courseBranch,pt_userID, pt_startTime, pt_startDateAndDow,"accept",this,position,waitlistItems);
         acceptRegularTask.execute("http://show981111.cafe24.com/acceptRegular.php");
+        notifyItemRemoved(position);
+
     }
 
-    public void onRejectClicked() {
-        Toast.makeText(context,"거절하였습니다",Toast.LENGTH_LONG);
+    public void onRejectClicked(int position) {
+        waitlist_item waitlist_item = waitlistItems.get(position);
+        pt_courseTeacher = waitlist_item.getWl_courseTeacher();
+        pt_courseBranch = waitlist_item.getWl_userBranch();
+        pt_userID = waitlist_item.getWl_userID();
+        pt_startTime = waitlist_item.getWl_Time() ;
+        pt_startDateAndDow = waitlist_item.getWl_startDate();
+
+        acceptRegularTask acceptRegularTask = new acceptRegularTask(context,pt_courseTeacher, pt_courseBranch,pt_userID, pt_startTime, pt_startDateAndDow,"reject",this,position,waitlistItems);
+        acceptRegularTask.execute("http://show981111.cafe24.com/acceptRegular.php");
+        notifyItemRemoved(position);
+
     }
 }

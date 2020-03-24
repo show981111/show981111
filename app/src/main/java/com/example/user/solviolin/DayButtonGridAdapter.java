@@ -12,24 +12,8 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.toolbox.Volley;
-import com.example.user.solviolin.mMySQL.Downloader3;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
-import static com.example.user.solviolin.MainActivity.userBranch;
-import static com.example.user.solviolin.MainActivity.userDuration;
-import static com.example.user.solviolin.MainActivity.userID;
-import static com.example.user.solviolin.MainActivity.userName;
-import static com.example.user.solviolin.mMySQL.DataParser1.BookedList;
-import static com.example.user.solviolin.mMySQL.DataParser3.personalDayBookedList;
-import static com.example.user.solviolin.mMySQL.DataParser3.personalDayBookedListcur;
 
 public class DayButtonGridAdapter extends BaseAdapter{
     Context context = null;

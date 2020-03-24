@@ -73,10 +73,10 @@
 			mysqli_close($this->con);
 		}
 
-		function getUser()
+		function getUser($userID,$userBranch)
 		{
 			
-			$query = "SELECT userID,userPhone,userBranch FROM USER";
+			$query = "SELECT userID,userBranch,userDuration,userName FROM USER WHERE userID = '$userID' AND userBranch = '$userBranch' ";
 			$result = mysqli_query($this->con,$query);
 
 			$response = array();
@@ -85,7 +85,7 @@
 			{
 				while($row = mysqli_fetch_array($result)){
 		
-					array_push($response, array("userID"=>$row[0], "userPhone"=>$row[1], "userBranch"=>$row[2]));
+					array_push($response, array("userID"=>$row[0], "userBranch"=>$row[1], "userDuration"=>$row[2],"userName"=>$row[3] ));
 				}
 			}
 
@@ -110,7 +110,7 @@
 			echo json_encode($response,JSON_UNESCAPED_UNICODE);
 		}
 
-		function getTimeForMonth($courseDay, $courseTeacher, $startDate, $userDuration,$userName)
+		function getTimeForMonth($courseDay, $courseTeacher, $startDate, $userDuration,$userName)//BOOKEDLIST 를 기준으로 필터링한다 따라서 다음학기예정인 사람같은 경우는 필터안한다
 		{
 			//echo "step1";
 			$timeList = array();
@@ -126,7 +126,7 @@
 			if($userName != "admin")
 			{
 				$FormattedTermEnd = date("Y-m-d", strtotime($this->cur_termEnd));
-				//if user is student -> if startDate is after future Term -> put fail
+				//if user is student -> if startDate is after future Term start -> put fail
 				if(strtotime(date("Y-m-d", strtotime($startDate) ) ) > strtotime(date("Y-m-d", strtotime($this->future_termStart) )) )
 				{
 					array_push($timeList, array("regular_Time" => "FAIL" ) );
@@ -180,8 +180,10 @@
 							//$combinedDT = date('Y-m-d H:i:s', strtotime("$date $time"));
 							$Formats = date('Y-m-d', $strStartDate);
 							$Formatst = date('H:i', $candidateStartTime);
+							$Formatet = date('H:i', $candidateEndTime);
 
 							$cand_StartDateTime = date('Y-m-d H:i',strtotime("$Formats $Formatst")); 
+							$cand_EndDateTime = date('Y-m-d H:i',strtotime("$Formats $Formatet")); 
 							//echo "candidate DATETIME".$cand_StartDateTime ."//";
 
 							$selectBookedDate =  "SELECT startDate, endDate FROM BOOKEDLIST WHERE courseBranch = '$this->userBranch' AND courseTeacher = '$courseTeacher' AND status = 'BOOKED' ";
@@ -194,8 +196,8 @@
 
 									$formatRow = date('Y-m-d H:i',strtotime($rowDate[0]));
 									$formatRow1 =  date('Y-m-d H:i',strtotime($rowDate[1]));
-
-									if(strtotime($formatRow) <= strtotime($cand_StartDateTime) && strtotime($formatRow1) > strtotime($cand_StartDateTime) )
+									//(strtotime($cand_StartDateTime) >= strtotime($formatRow) && strtotime($cand_StartDateTime)<= strtotime($formatRow1)) || (strtotime($cand_EndDateTime) >= strtotime($formatRow) && strtotime($cand_EndDateTime)<= strtotime($formatRow1))
+									if( (strtotime($cand_StartDateTime) >= strtotime($formatRow) && strtotime($cand_StartDateTime) < strtotime($formatRow1)) || (strtotime($cand_EndDateTime) > strtotime($formatRow) && strtotime($cand_EndDateTime)<= strtotime($formatRow1)) )
 									{
 										$flag = 0;
 										break;
@@ -268,41 +270,50 @@
 			echo json_encode($response,JSON_UNESCAPED_UNICODE);
 		}
 
-		function putExtendTerm($start, $end)
+		function putExtendTerm($start, $end)//학기 연장은 수정이 거의 불가능하니까 존나 신중해야됨 
 		{
 			$response;
-			if(strtotime($this->today) >= strtotime($start) )//오늘보다 이전의 날짜로 연장할수 없음 
+			if($start == "" && $end == "")
 			{
-				$response = "fail";
-				echo $response;
-				return 0;
-			}
+				$this->getTermList("no");
+				$start = $this->future_termStart;
+				$end = $this->future_termEnd;
+			}else{
 
-			$start =  date("Y-m-d", strtotime($start));
-			$end =  date("Y-m-d", strtotime($end));
-			$this->getTermList("no");
+				if(strtotime($this->today) >= strtotime($start) )//오늘보다 이전의 날짜로 연장할수 없음 
+				{
+					$response = "fail";
+					echo $response;
+					return 0;
+				}
 
-			if(strtotime($start) >= strtotime($this->future_termStart) && strtotime($start) < strtotime($this->future_termEnd) )
-			{
-				$response = "redunt";
-				echo $response;
-				return 0;
-			}//already extended in termList
-			if(strtotime($end) >= strtotime($this->future_termStart) && strtotime($end) < strtotime($this->future_termEnd) )
-			{
-				$response = "redunt";
-				echo $response;
-				return 0;
-			}//already extended in termList 
+				$start =  date("Y-m-d", strtotime($start));
+				$end =  date("Y-m-d", strtotime($end));
+				$this->getTermList("no");
 
-			$query = "UPDATE TERMLIST SET startDate = '$start', endDate = '$end' order by UNIX_TIMESTAMP(startDate) ASC LIMIT 1 ";
-			$result = mysqli_query($this->con,$query);
-			if(mysqli_affected_rows($this->con) > 0)
-			{
-				$response = "success";
-			}else
-			{
-				$response = "fail";
+				if(strtotime($start) >= strtotime($this->future_termStart) && strtotime($start) < strtotime($this->future_termEnd) )
+				{
+					$response = "redunt";
+					echo $response;
+					return 0;
+				}//already extended in termList
+				if(strtotime($end) >= strtotime($this->future_termStart) && strtotime($end) < strtotime($this->future_termEnd) )
+				{
+					$response = "redunt";
+					echo $response;
+					return 0;
+				}//already extended in termList 
+
+				$query = "UPDATE TERMLIST SET startDate = '$start', endDate = '$end' order by UNIX_TIMESTAMP(startDate) ASC LIMIT 1 ";
+				$result = mysqli_query($this->con,$query);
+				if(mysqli_affected_rows($this->con) > 0)
+				{
+					$response = "success";
+				}else
+				{
+					$response = "fail";
+					return $response;
+				}
 			}
 			//echo $start." ";
 
@@ -312,6 +323,10 @@
 			$addedStart= strtotime($start);
 			//$dayofweek = date('w', strtotime($startDate));
 			$regularStart;
+
+			if(mysqli_num_rows ( $result1 ) <= 0){
+				$response = "nothing";
+			}
 
 			while($row = mysqli_fetch_array($result1))
 			{
@@ -364,6 +379,7 @@
 
 
 			echo $response;
+			return $response;
 		}
 
 		function getWaitList()
@@ -451,7 +467,7 @@
 
 		}
 
-		function acceptRegular($pt_courseTeacher, $pt_courseBranch,$startTime, $endTime ,$startDate, $pt_userID,$dow)
+		function acceptRegular($pt_courseTeacher, $pt_courseBranch,$startTime, $endTime ,$startDate, $pt_userID,$dow,$userName)
 		{
 			$response;
 			$this->getTermList("no");
@@ -460,42 +476,65 @@
 			if(mysqli_num_rows ( $sameRes ) > 0)
 			{
 				$response = "already";
+				if($userName != "admin")
+				{
+					$response = $this->deleteWaitList($pt_courseTeacher, $pt_courseBranch,$startTime, $endTime ,$startDate, $pt_userID,$dow);
+					if($response == "success")
+					{
+						$response = "already";
+					}
+				}
 				echo $response;
 				return 0;
+				
 			}
-			$updatequery = "UPDATE REGULARSCHEDULE SET courseTeacher = '$pt_courseTeacher',courseBranch = '$pt_courseBranch', startTime = '$startTime', endTime = '$endTime', startDate = '$startDate',dow = '$dow',extendedDate = '$this->cur_termStart' WHERE userID = '$pt_userID' ";
-			$updateResult = mysqli_query($this->con,$updatequery);
-			echo mysqli_affected_rows($this->con);
-			if(mysqli_affected_rows($this->con) > 0)
+			//filterMonth($pt_courseTeacher, $pt_courseBranch,$startTime, $endTime ,$startDate, $endChangeDate)
+			$filterRes = $this->filterMonth($pt_courseTeacher, $pt_courseBranch,$startTime, $endTime ,$startDate, $this->cur_termEnd, $dow);
+			if($filterRes == "notEmpty")//해당 정기예약이 비어있지 않는 경우...
 			{
-				$response = "successupdate";
-				echo $response;
+				echo "notEmpty";
+				return 0;
 			}else
 			{
-				$insertquery = "INSERT INTO REGULARSCHEDULE (courseTeacher, courseBranch, startTime, endTime, dow, startDate, extendedDate, userID) VALUES ('$pt_courseTeacher', '$pt_courseBranch', '$startTime', '$endTime', '$dow', '$startDate', '$this->cur_termStart', '$pt_userID'  ) ";
-
-				$insertResult = mysqli_query($this->con,$insertquery);
+				$updatequery = "UPDATE REGULARSCHEDULE SET courseTeacher = '$pt_courseTeacher',courseBranch = '$pt_courseBranch', startTime = '$startTime', endTime = '$endTime', startDate = '$startDate',dow = '$dow',extendedDate = '$this->cur_termStart' WHERE userID = '$pt_userID' ";
+				$updateResult = mysqli_query($this->con,$updatequery);
 				if(mysqli_affected_rows($this->con) > 0)
 				{
-					$response = "successInsert";
+					$response = "success";
 				}else
 				{
-					$response = "internet_failllll";
+					$insertquery = "INSERT INTO REGULARSCHEDULE (courseTeacher, courseBranch, startTime, endTime, dow, startDate, extendedDate, userID) VALUES ('$pt_courseTeacher', '$pt_courseBranch', '$startTime', '$endTime', '$dow', '$startDate', '$this->cur_termStart', '$pt_userID'  ) ";
+
+					$insertResult = mysqli_query($this->con,$insertquery);
+					if(mysqli_affected_rows($this->con) > 0)
+					{
+						$response = "success";
+					}else
+					{
+						$response = "internet_fail_insert_Regular";
+						echo $response;
+						return 0;
+					}
 				}
-			}
 
-			if(strtotime($startDate) >= strtotime($this->cur_termStart) && strtotime($startDate) <= strtotime($this->cur_termEnd) )//현 학기를 신청햇다면 
-			{	
+				if(strtotime($startDate) >= strtotime($this->cur_termStart) && strtotime($startDate) <= strtotime($this->cur_termEnd) )//현 학기를 신청햇다면 
+				{	
 
-				$response = $this->changeRegular($pt_courseTeacher, $pt_courseBranch,$startTime, $endTime ,$startDate, $pt_userID, $this->cur_termEnd);//유저가 신청했을 경우 현학기 내부에서만 조절 가능하므로 끝나는 날은 현학기 종료일
+					$response = $this->changeRegular($pt_courseTeacher, $pt_courseBranch,$startTime, $endTime ,$startDate, $pt_userID, $this->cur_termEnd);//유저가 신청했을 경우 현학기 내부에서만 조절 가능하므로 끝나는 날은 현학기 종료일
+					//echo $response. "changeRegular";
+					echo $userName;
+					if($response == "success" && $userName != "admin")
+					{
+						$response = $this->deleteWaitList($pt_courseTeacher, $pt_courseBranch,$startTime, $endTime ,$startDate, $pt_userID,$dow,"no");
+					}
+				}
+				echo $response;
 			}
-			echo $response;
 		}
 
-		function changeRegular($pt_courseTeacher, $pt_courseBranch,$startTime, $endTime ,$startDate, $pt_userID, $endChangeDate)
+		function changeRegular($pt_courseTeacher, $pt_courseBranch,$startTime, $endTime ,$startDate, $pt_userID,$endChangeDate)
 		{
 			$response;
-			$flag = 0;
 			$selectquery = "SELECT startDate FROM BOOKEDLIST WHERE userID = '$pt_userID' AND status = 'BOOKED' AND ownerID = '$pt_userID' ";
 			$fetch = mysqli_query($this->con,$selectquery);
 			if(mysqli_num_rows ( $fetch ) > 0)// 기존 사용자의 경우 기존 정기예약이 있겟지!
@@ -510,7 +549,6 @@
 					$isSameWeek = date('oW', $changedStartDate) === date('oW', $tochangeStartDate) && date('Y', $changedStartDate) === date('Y', $tochangeStartDate);
 					if($isSameWeek || strtotime($startDate) < strtotime($row[0]))
 					{
-						$flag = 1;
 						$deletequery = "DELETE FROM BOOKEDLIST WHERE userID = '$pt_userID' AND status = 'BOOKED' AND ownerID = '$pt_userID' AND startDate = '$row[0]' ";
 						$delete = mysqli_query($this->con,$deletequery);
 						if(mysqli_affected_rows($this->con) > 0)
@@ -518,45 +556,14 @@
 							$response = "success";
 						}else
 						{
-							$response = "internet_fail";
+							$response = "internet_fail_delete_BookedList";
+							return $response;
 						}
-					}//같은 주에 있는 것들 다 삭제
+					}//같은 주에 있는 거부터 변경된 날 이후로 다 삭제
 					
 
 				}
-				if($flag)
-				{
-					// 아래랑 똑같다 ;; //
-					$FormatStart = date('Y-m-d', strtotime($startDate) );
-					$FormatStartTime = date('H:i', strtotime($startTime));
-					$FormatEndTime = date('H:i', strtotime($endTime));
-
-					$tempStart = date('Y-m-d H:i',strtotime("$FormatStart $FormatStartTime")); 
-					$tempEnd = date('Y-m-d H:i',strtotime("$FormatStart $FormatEndTime")); 
-
-					echo $tempStart. " ". $tempEnd. " before";
-					while(strtotime($tempStart) <= strtotime($endChangeDate) && strtotime($tempStart) <= strtotime($this->cur_termEnd) )//시작부터 끝까지(최대 현학기 끝) 삽입해줘 
-					{
-						$insertNewDate = "INSERT BOOKEDLIST (courseTeacher, courseBranch, startDate, endDate, userID, ownerID, status) VALUES ('$pt_courseTeacher', '$pt_courseBranch', '$tempStart', '$tempEnd', '$pt_userID', '$pt_userID', 'BOOKED'  ) ";
-						$insertNewRes = mysqli_query($this->con, $insertNewDate);
-						if($insertNewRes)
-						{
-							$response = "success";
-						}else
-						{
-							$response = "internet_fail";
-						}
-
-						
-						$tempStart = date('Y-m-d H:i',strtotime("+7 day",strtotime($tempStart) ));
-						$tempEnd = date('Y-m-d H:i',strtotime("+7 day",strtotime($tempEnd) ));
-						//echo " FFFFFLAG ".$flag;
-					}
-					// 아래랑 똑같다 ;; //
-				}
-			}else
-			{
-				echo "new";
+				
 				// 아래랑 똑같다 ;; //
 				$FormatStart = date('Y-m-d', strtotime($startDate) );
 				$FormatStartTime = date('H:i', strtotime($startTime));
@@ -565,7 +572,6 @@
 				$tempStart = date('Y-m-d H:i',strtotime("$FormatStart $FormatStartTime")); 
 				$tempEnd = date('Y-m-d H:i',strtotime("$FormatStart $FormatEndTime")); 
 
-				echo $tempStart. " ". $tempEnd. " before";
 				while(strtotime($tempStart) <= strtotime($endChangeDate) && strtotime($tempStart) <= strtotime($this->cur_termEnd) )//시작부터 끝까지(최대 현학기 끝) 삽입해줘 
 				{
 					$insertNewDate = "INSERT BOOKEDLIST (courseTeacher, courseBranch, startDate, endDate, userID, ownerID, status) VALUES ('$pt_courseTeacher', '$pt_courseBranch', '$tempStart', '$tempEnd', '$pt_userID', '$pt_userID', 'BOOKED'  ) ";
@@ -573,13 +579,41 @@
 					if($insertNewRes)
 					{
 						$response = "success";
-						echo $tempStart. " ". $tempEnd. " llll";
 					}else
 					{
-						$response = "internet_fail";
+						$response = "internet_fail_insert_BookedList";
 					}
-					echo "Start". $tempStart. " ". $tempEnd. " End";
 
+					
+					$tempStart = date('Y-m-d H:i',strtotime("+7 day",strtotime($tempStart) ));
+					$tempEnd = date('Y-m-d H:i',strtotime("+7 day",strtotime($tempEnd) ));
+					//echo " FFFFFLAG ".$flag;
+				}
+				// 아래랑 똑같다 ;; //
+				
+			}else
+			{
+				// 아래랑 똑같다 ;; //
+				$FormatStart = date('Y-m-d', strtotime($startDate) );
+				$FormatStartTime = date('H:i', strtotime($startTime));
+				$FormatEndTime = date('H:i', strtotime($endTime));
+
+				$tempStart = date('Y-m-d H:i',strtotime("$FormatStart $FormatStartTime")); 
+				$tempEnd = date('Y-m-d H:i',strtotime("$FormatStart $FormatEndTime")); 
+
+				//echo $tempStart. " ". $tempEnd. " before";
+				while(strtotime($tempStart) <= strtotime($endChangeDate) && strtotime($tempStart) <= strtotime($this->cur_termEnd) )//시작부터 끝까지(최대 현학기 끝) 삽입해줘 
+				{
+					$insertNewDate = "INSERT BOOKEDLIST (courseTeacher, courseBranch, startDate, endDate, userID, ownerID, status) VALUES ('$pt_courseTeacher', '$pt_courseBranch', '$tempStart', '$tempEnd', '$pt_userID', '$pt_userID', 'BOOKED'  ) ";
+					$insertNewRes = mysqli_query($this->con, $insertNewDate);
+					if($insertNewRes)
+					{
+						$response = "success";
+						//echo $tempStart. " ". $tempEnd. " llll";
+					}else
+					{
+						$response = "internet_fail_insert_BookedList";
+					}
 					
 					$tempStart = date('Y-m-d H:i',strtotime("+7 day",strtotime($tempStart) ));
 					$tempEnd = date('Y-m-d H:i',strtotime("+7 day",strtotime($tempEnd) ));
@@ -589,6 +623,86 @@
 			}
 
 			return $response;
+		}
+
+		function deleteWaitList($pt_courseTeacher, $pt_courseBranch,$startTime, $endTime ,$startDate, $pt_userID,$dow,$isEchoNeeded)
+		{
+			//echo $pt_courseTeacher." ".$pt_courseBranch." ".$startTime. " ".$endTime. " ".$pt_userID." ".$dow." ".$startDate;
+			$deleteWait = "DELETE FROM WAITLIST WHERE courseTeacher = '$pt_courseTeacher' AND courseBranch ='$pt_courseBranch' AND startTime = '$startTime' AND endTime = '$endTime' AND startDate = '$startDate' AND dow = '$dow' AND userID = '$pt_userID' ";
+
+			$deleteRes = mysqli_query($this->con,$deleteWait);
+
+			if(mysqli_affected_rows($this->con) > 0)
+			{
+				$response = "success";
+			}else
+			{
+				$response = "internet_fail_delete_WaitList";
+			}
+			if($isEchoNeeded == "yes")
+			{
+				echo "delete_success";
+			}
+			return $response;
+		}
+
+		function filterMonth($pt_courseTeacher, $pt_courseBranch,$startTime, $endTime ,$startDate, $endChangeDate, $dow)
+		{
+			$Formats = date('Y-m-d', strtotime($startDate));
+			$Formatst = date('H:i', strtotime($startTime));
+			$Formatet = date('H:i', strtotime($endTime));
+			$flag = 1;
+			$cand_StartDateTime = date('Y-m-d H:i',strtotime("$Formats $Formatst")); 
+			$cand_EndDateTime = date('Y-m-d H:i',strtotime("$Formats $Formatet")); 
+			//echo "candidate DATETIME".$cand_StartDateTime ."//";
+			if(strtotime($cand_StartDateTime) > strtotime($endChangeDate))//다음학기의 예약인 경우 
+			{
+				$selectSame = "SELECT * FROM REGULARSCHEDULE WHERE courseTeacher = '$pt_courseTeacher'AND courseBranch = '$pt_courseBranch'AND startTime = '$startTime'AND endTime = '$endTime'AND dow = '$dow' AND  status <> 'false' ";
+				$sameRes = mysqli_query($this->con,$selectSame);
+				if(mysqli_num_rows ( $sameRes ) > 0)
+				{
+					return "notEmpty";
+				}
+			}
+			while(strtotime($cand_StartDateTime) <= strtotime($endChangeDate))
+			{
+				//날짜 하나에 대해서 검사
+				$selectBookedDate =  "SELECT startDate, endDate FROM BOOKEDLIST WHERE courseBranch = '$pt_courseBranch' AND courseTeacher = '$pt_courseTeacher' AND status = 'BOOKED' ";
+				$resDate = mysqli_query($this->con, $selectBookedDate);
+				if($resDate)
+				{
+					while($rowDate = mysqli_fetch_array($resDate))
+					{
+						//echo " //rowDate ".$rowDate[0]. " //rowed". $rowDate[1];
+
+						$formatRow = date('Y-m-d H:i',strtotime($rowDate[0]));
+						$formatRow1 =  date('Y-m-d H:i',strtotime($rowDate[1]));
+						
+						if( (strtotime($cand_StartDateTime) >= strtotime($formatRow) && strtotime($cand_StartDateTime) < strtotime($formatRow1)) || (strtotime($cand_EndDateTime) > strtotime($formatRow) && strtotime($cand_EndDateTime)<= strtotime($formatRow1)) )
+						{
+							$flag = 0;
+							break;
+						}else
+						{
+							$flag = 1;
+						}
+					}
+				}
+
+				if($flag == 0) break;
+
+				$cand_StartDateTime = date('Y-m-d H:i',strtotime("+7 day",strtotime($cand_StartDateTime) ));
+				$cand_EndDateTime = date('Y-m-d H:i',strtotime("+7 day",strtotime($cand_EndDateTime) ));
+				//$endTime = date("H:i",strtotime('+60 minutes',$tmpTime));
+			}
+
+			if($flag == 0)
+			{
+				return "notEmpty";
+			}else
+			{
+				return "success";
+			}
 		}
 
 
