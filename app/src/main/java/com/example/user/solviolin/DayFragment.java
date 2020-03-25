@@ -753,6 +753,7 @@ public class DayFragment extends Fragment {
         super.onActivityCreated(b);
 
         TextView tv_canceledTeacher = (TextView) getView().findViewById(R.id.tv_canceledTeacher);
+        TextView tv_canceledBranch = (TextView) getView().findViewById(R.id.tv_canceledBranch);
         Spinner sp_canceledDate = (Spinner) getView().findViewById(R.id.sp_canceledDate);
     }
 
