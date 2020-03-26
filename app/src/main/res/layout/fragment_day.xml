@@ -22,7 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30dp"
-                android:text="취소된 레슨"
+                android:text="취소했던 레슨"
                 android:fontFamily="@font/fontfamily"
                 />
 
@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="10dp"
+
             >
             <TextView
                 android:layout_width="wrap_content"
@@ -56,7 +56,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="예약된 강사"
+                android:hint="선생님"
                 android:fontFamily="@font/fontfamily"
                 android:id="@+id/tv_canceledTeacher"
                 android:textSize="20dp"
@@ -85,8 +85,11 @@
 
         </LinearLayout>
 
-        <Spinner
-            android:id="@+id/sp_canceledDate"
+        <TextView
+            android:textSize="20dp"
+            android:fontFamily="@font/fontfamily"
+            android:id="@+id/tv_canceledDate"
+            android:hint="취소한 수업이 없습니다."
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"

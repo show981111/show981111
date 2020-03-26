@@ -126,7 +126,12 @@ public class fetchBookedList extends AsyncTask<String, Void, BookedList[]> {
                     buffer.add(new MyButton(context, "연장", 60, 0, Color.parseColor("#FF9502"), new MyButtonClickListener() {
                         @Override
                         public void onClick(int pos) {
-                            Toast.makeText(context, "update Click"+pos, Toast.LENGTH_SHORT).show();
+                            Log.d("extend",cur_bookedListArrayList.get(pos).getBookedStartDate());
+                            //Context context ,String userID, String extendTeacher, String extendBranch, String extendStartDate , String extendEndDate,ArrayList<BookedList> bookedLists, BookedListAdapter bookedListAdapter, int pos
+                            extendRequestTask extendRequestTask = new extendRequestTask(context,userID,cur_bookedListArrayList.get(pos).getBookedTeacher(),
+                                    cur_bookedListArrayList.get(pos).getBookedBranch(), cur_bookedListArrayList.get(pos).getBookedStartDate(),
+                                    cur_bookedListArrayList.get(pos).getBookedEndDate(),cur_bookedListArrayList,bookedListAdapter,pos);
+                            extendRequestTask.execute("http://show981111.cafe24.com/extendRequest.php");
                         }
                     }));
                 }

@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         userName = intent.getStringExtra("userName");
         userDuration = intent.getStringExtra("userDuration");
         userCredit = intent.getIntExtra("userCredit", 2);
-        String userPassword = intent.getStringExtra("userPassword");
+
         //Toast.makeText(getApplicationContext(),"got it!"+userID, Toast.LENGTH_SHORT).show();
         String url = "";
 
@@ -263,13 +263,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-        if(!userName.equals("admin"))
-        {
-            initializeButton.setVisibility(View.GONE);
-            termExtendButton.setVisibility(View.GONE);
-            bt_waitList.setVisibility(View.GONE);
-            bt_extendRest.setVisibility(View.GONE);
+        if(userName != null) {
+            if (!userName.equals("admin")) {
+                initializeButton.setVisibility(View.GONE);
+                termExtendButton.setVisibility(View.GONE);
+                bt_waitList.setVisibility(View.GONE);
+                bt_extendRest.setVisibility(View.GONE);
+            }
         }
 
         initializeButton.setOnClickListener(new View.OnClickListener() {

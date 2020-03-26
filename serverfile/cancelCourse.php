@@ -13,8 +13,8 @@
 	//$userBranch = "교대";
 
 	$test = new BookingSystem($cancelBranch);
-	//echo "good";
-	//$test->getTimeForMonth("목","이채정","2020-04-02","30","admin");
+	//echo "good";vv
+	// $test->cancelCourse("test1","김은솔","교대", "2020-03-26 20:00","2020-03-26 08:30");
 	$test->cancelCourse($userID,$cancelTeacher, $cancelBranch, $startDate, $endDate);
 	// getTimeForMonth($courseDay, $courseTeacher, $startDate, $userDuration)
 	

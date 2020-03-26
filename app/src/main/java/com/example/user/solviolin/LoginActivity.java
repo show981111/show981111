@@ -63,7 +63,6 @@ public class LoginActivity extends AppCompatActivity {
                             boolean success = jsonResponse.getBoolean("success");
                             if(success){
                                 String userID = jsonResponse.getString("userID");
-                                String userPassword = jsonResponse.getString("userPassword");
                                 String userBranch = jsonResponse.getString("userBranch");
                                 String userName = jsonResponse.getString("userName");
                                 String userDuration = jsonResponse.getString("userDuration");
@@ -72,7 +71,6 @@ public class LoginActivity extends AppCompatActivity {
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     intent.putExtra("userName", userName);
                                     intent.putExtra("userID", userID);
-                                    intent.putExtra("userPassword", userPassword);
                                     intent.putExtra("userBranch", userBranch);
                                     intent.putExtra("userCredit", userCredit);
                                     intent.putExtra("userDuration", userDuration);

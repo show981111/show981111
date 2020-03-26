@@ -37,6 +37,7 @@ public class ReservationActivity extends AppCompatActivity {
 
         Vp_adapter adapter = new Vp_adapter(getSupportFragmentManager(),arrFragments);
         viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(1);
 
     }
 

@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AlertDialog;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,44 +22,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.toolbox.Volley;
-import com.example.user.solviolin.mMySQL.Downloader2;
-import com.example.user.solviolin.mMySQL.Downloader3;
-import com.example.user.solviolin.mMySQL.Downloader4;
-import com.example.user.solviolin.mMySQL.Downloader5;
-import com.example.user.solviolin.mMySQL.Downloader6;
-
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import static android.view.View.GONE;
-import static com.example.user.solviolin.DayButtonGridAdapter.dayCredit;
-import static com.example.user.solviolin.LoginActivity.InputURL;
-import static com.example.user.solviolin.MainActivity.userBranch;
 import static com.example.user.solviolin.MainActivity.userDuration;
 import static com.example.user.solviolin.MainActivity.userID;
-import static com.example.user.solviolin.MainActivity.userName;
-import static com.example.user.solviolin.MainActivity.delaycredit;
-import static com.example.user.solviolin.mMySQL.DataParser.courseDay;
-import static com.example.user.solviolin.mMySQL.DataParser.courseID;
-import static com.example.user.solviolin.mMySQL.DataParser.courseTeacher;
-import static com.example.user.solviolin.mMySQL.DataParser.courseTime;
-import static com.example.user.solviolin.mMySQL.DataParser1.BookedList;
-import static com.example.user.solviolin.mMySQL.DataParser1.bookedCourseIDList_G;
-import static com.example.user.solviolin.mMySQL.DataParser1.bookedCourseIDList_J;
-import static com.example.user.solviolin.mMySQL.DataParser1.bookedCourseIDList_K;
-import static com.example.user.solviolin.mMySQL.DataParser1.bookedCourseIDList_S;
-import static com.example.user.solviolin.mMySQL.DataParser1.bookedCourseIDList_Y;
-import static com.example.user.solviolin.mMySQL.DataParser3.DayBookedList;
-import static com.example.user.solviolin.mMySQL.DataParser3.personalDayBookedList;
-import static com.example.user.solviolin.mMySQL.DataParser3.personalDayBookedListcur;
-import static com.example.user.solviolin.mMySQL.DataParser4.extendedDateList;
-import static com.example.user.solviolin.mMySQL.DataParser5.exclusionList;
+
 
 
 /**
@@ -118,7 +87,6 @@ public class DayFragment extends Fragment {
     //public static String newlyBookedDate;
     //public static String delayDate;
     //public static boolean delayStatus = false;
-
 
     public void onActivityCreated(Bundle b) {
         /*Downloader3 download = new Downloader3(getContext(), "http://show981111.cafe24.com/DayBookedList.php");
@@ -752,9 +720,73 @@ public class DayFragment extends Fragment {
         }*/
         super.onActivityCreated(b);
 
+
         TextView tv_canceledTeacher = (TextView) getView().findViewById(R.id.tv_canceledTeacher);
         TextView tv_canceledBranch = (TextView) getView().findViewById(R.id.tv_canceledBranch);
-        Spinner sp_canceledDate = (Spinner) getView().findViewById(R.id.sp_canceledDate);
+        TextView tv_canceledDate = (TextView) getView().findViewById(R.id.tv_canceledDate);
+        final TextView tv_selectedNewDate = getView().findViewById(R.id.selectedNewDate);
+        Button bt_chooseDate = getView().findViewById(R.id.chooseChangedDate);
+        final GridView gv_chooseTime = getView().findViewById(R.id.changingTimeGridView);
+        //fetchCanceledListTask(Context context, TextView tv_cancelTeacher, TextView tv_cancelBranch, TextView tv_cancelDate, String option)
+        final fetchCanceledListTask fetchCanceledListTask = new fetchCanceledListTask(getContext(),userID,tv_canceledTeacher, tv_canceledBranch, tv_canceledDate,"cancelAll",bt_chooseDate);
+        fetchCanceledListTask.execute("http://show981111.cafe24.com/getBookedList.php");
+
+        /*get current Date*/
+        final int curYear,curMonth,curDay;
+        GregorianCalendar calendar = new GregorianCalendar();
+        curYear = calendar.get(Calendar.YEAR);
+        curMonth = calendar.get(Calendar.MONTH);
+        curDay= calendar.get(Calendar.DAY_OF_MONTH);
+
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+                String startYear = String.valueOf(year);
+                String startMonth = String.valueOf(month + 1);
+                String startDay = String.valueOf(dayOfMonth);
+
+                String m,d;
+
+                if(month < 9){
+
+                    m = "0" + startMonth;
+
+                }else
+                {
+                    m = String.valueOf(month + 1);
+                }
+                if(dayOfMonth < 10)
+                {
+                    d = "0" + startDay;
+                }else
+                {
+                    d = String.valueOf(dayOfMonth);
+                }
+                String textDate =startYear+"년 "+startMonth + "월 "+ startDay+ "일";
+                tv_selectedNewDate.setText(textDate);
+
+                String selectedDate = startYear+"-"+m+"-"+d;
+                Log.d("fetchCanceledListTask", fetchCanceledListTask.getCanceledDate() );
+                String canceldDate =  fetchCanceledListTask.getCanceledDate();
+                fetchTimeForDayTask fetchTimeForDayTask = new fetchTimeForDayTask(getContext(),DayFragment.this,gv_chooseTime,userID,userDuration,selectedDate, canceldDate );
+                fetchTimeForDayTask.execute("http://show981111.cafe24.com/getTimeForDay.php");
+
+            }
+
+        },curYear,curMonth,curDay
+        );
+
+        FetchTermTask fetchTermTask = new FetchTermTask(datePickerDialog);
+        fetchTermTask.execute("http://show981111.cafe24.com/getTermList.php");
+
+        bt_chooseDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                datePickerDialog.show();
+
+            }
+        });
     }
 
     @Override
