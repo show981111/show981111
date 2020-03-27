@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     final static String urlAddress_S = "http://show981111.cafe24.com/CourseList_S.php";
     final static String urlAddress_K = "http://show981111.cafe24.com/CourseList_K.php";
     final static String urlAddress_G = "http://show981111.cafe24.com/CourseList_G.php";
-    public static ArrayList<BookedCourse> BookedList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,76 +133,6 @@ public class LoginActivity extends AppCompatActivity {
                 RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
                 queue.add(loginRequest);
 
-
-               /*Response.Listener<JSONObject> responseListener1 = new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray jsonResponse = response.getJSONArray("response");
-                            //boolean success = jsonResponse.getBoolean("success");
-                            //JSONArray cast = jsonResponse.getJSONArray(response);
-
-                            if (success) {
-                                BookedList.clear();
-                                BookedCourse bookedCourse = null;
-
-                                String bookedUserID = jsonResponse.getString("userID");
-                                int id = jsonResponse.getInt("courseID");
-                                String courseBranch = jsonResponse.getString("courseBranch");
-                                String bookedCourseTeacher = jsonResponse.getString("courseTeacher");
-                                String bookedCourseDay = jsonResponse.getString("courseDay");
-                                String bookedCourseTime = jsonResponse.getString("courseTime");
-                                bookedCourse = new BookedCourse(bookedUserID, bookedCourseTeacher, bookedCourseDay, bookedCourseTime, id, courseBranch);
-                                BookedList.add(bookedCourse);
-
-
-                            } else {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                                builder.setMessage("데이터 로딩에 실패하였습니다.")
-                                        .setNegativeButton("다시 시도", null)
-                                        .create()
-                                        .show();
-                            }
-
-
-
-                        }catch(Exception e)
-                        {
-                            e.printStackTrace();
-                        }
-
-                    }
-                };*/
-                /*Response.Listener<String> responseListener1 = new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-
-                            JSONArray jsonArray = new JSONArray(response);
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                BookedList.clear();
-                                BookedCourse bookedCourse = null;
-
-                                String bookedUserID = jsonObject.getString("userID");
-                                int id = jsonObject.getInt("courseID");
-                                String courseBranch = jsonObject.getString("courseBranch");
-                                String bookedCourseTeacher = jsonObject.getString("courseTeacher");
-                                String bookedCourseDay = jsonObject.getString("courseDay");
-                                String bookedCourseTime = jsonObject.getString("courseTime");
-                                bookedCourse = new BookedCourse(bookedUserID, bookedCourseTeacher, bookedCourseDay, bookedCourseTime, id, courseBranch);
-                                BookedList.add(bookedCourse);
-                            }
-                        }catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
-                };
-
-                BookedListRequest bookedListRequest = new BookedListRequest(userID, responseListener1);
-                RequestQueue queue1 = Volley.newRequestQueue(LoginActivity.this);
-                queue1.add(bookedListRequest);*/
 
 
             }

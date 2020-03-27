@@ -26,14 +26,63 @@
                 android:fontFamily="@font/fontfamily"
                 />
 
-<!--            <Button-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text = "보강 예약"-->
-<!--                android:fontFamily="@font/fontfamily"-->
-<!--                android:textSize="20dp"-->
-<!--                android:layout_marginLeft="20dp"-->
-<!--                android:id="@+id/delayDoneButton"/>-->
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_adminDayBook"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/cb_isNull"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/fontfamily"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="NULL">
+            </androidx.appcompat.widget.AppCompatCheckBox>
+
+            <EditText
+                android:id="@+id/et_adminDayUser"
+                android:layout_marginLeft="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:hint="아이디"
+                android:fontFamily="@font/fontfamily"
+                />
+
+            <EditText
+                android:id="@+id/et_adminDayBranch"
+                android:layout_marginLeft="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:hint="지점"
+                android:fontFamily="@font/fontfamily"
+                />
+
+            <Button
+                android:id="@+id/bt_adminDaySearch"
+                android:layout_marginLeft="15dp"
+                android:fontFamily="@font/fontfamily"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="검색">
+            </Button>
+
+            <EditText
+                android:id="@+id/et_adminTeacher"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/fontfamily"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="선생님">
+            </EditText>
+
+
         </LinearLayout>
 
         <LinearLayout

@@ -79,7 +79,6 @@ public class fetchTimeForDayTask extends AsyncTask<String, Void, AvailableTimeFo
 
         try {
             Response response = client.newCall(request).execute();
-            Log.d("fetchTimeForDayTask", "res");
             Gson gson = new Gson();
             AvailableTimeForMonth[] times = gson.fromJson(response.body().charStream(), AvailableTimeForMonth[].class);
             return times;

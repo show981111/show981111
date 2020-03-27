@@ -7,6 +7,7 @@ public class BookedList {
     private String bookedBranch;
     private String status;
 
+
     public BookedList(String bookedTeacher, String bookedStartDate, String bookedEndDate, String bookedBranch,String status) {
         this.bookedTeacher = bookedTeacher;
         this.bookedStartDate = bookedStartDate;

@@ -81,6 +81,9 @@ public class extendRequestTask extends AsyncTask<String, Void, String> {
         }else if(s.equals("notEmpty"))
         {
             message ="빈 시간대가 아닙니다.";
+        }else if(s.equals("timeout"))
+        {
+            message = "수업 4시간 전까지만 연장이 가능합니다.";
         }else{
             message = "실패하였습니다.";
         }

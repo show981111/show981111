@@ -120,11 +120,14 @@ public class fetchCanceledListTask extends AsyncTask<String , Void, BookedList[]
             {
                 bookedListArrayList.add(canceledCourse);//이번학기 지난학기 취소했지만 아직 보강을 안잡은 수업을 파싱한다.
             }
+            Log.d("fetchCanceledListTask", String.valueOf(bookedListArrayList.size()));
             if(bookedListArrayList.size() > 0) {
+                choosenewDate.setEnabled(true);
                 tv_cancelTeacher.setText(bookedListArrayList.get(bookedListArrayList.size() - 1).getBookedTeacher());
                 tv_cancelBranch.setText(bookedListArrayList.get(bookedListArrayList.size() - 1).getBookedBranch());
                 tv_cancelDate.setText(bookedListArrayList.get(bookedListArrayList.size() - 1).getBookedStartDate());
                 canceledDate = bookedListArrayList.get(bookedListArrayList.size() - 1).getBookedStartDate();
+                Log.d("fetchCanceledListTask", canceledDate );
             }else{
                 if(!userName.equals("admin")) {
                     choosenewDate.setEnabled(false);

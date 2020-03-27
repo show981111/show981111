@@ -23,20 +23,13 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
-import com.example.user.solviolin.mMySQL.Downloader1;
-import com.example.user.solviolin.mMySQL.Downloader3;
-import com.google.gson.Gson;
+
 
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
-import static com.example.user.solviolin.mMySQL.DataParser3.personalDayBookedList;
+import java.io.IOException;
+
 import static java.lang.Boolean.TRUE;
 
 public class MainActivity extends AppCompatActivity {

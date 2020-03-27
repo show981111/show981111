@@ -17,10 +17,11 @@ public class Result extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
-        Fragment[] arrFragments = new Fragment[2];
+        Fragment[] arrFragments = new Fragment[3];
 
         arrFragments[0] = new pastResult();
         arrFragments[1] = new curResult();
+        arrFragments[2] = new changeListFragment();
 
 
 

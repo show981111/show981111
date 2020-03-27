@@ -61,7 +61,7 @@ public class acceptRegularTask extends AsyncTask<String, Void, String> {
                 .post(formBody)
                 .build();
 
-        Log.d("acceptwait", "going");
+
         try {
             Response response = client.newCall(request).execute();
             return response.body().string();
@@ -81,7 +81,6 @@ public class acceptRegularTask extends AsyncTask<String, Void, String> {
         if(s.equals("success"))
         {
             waitlist_items.remove(position);
-            Log.d("postWaitList", String.valueOf(waitlist_items.size()));
             waitListAdapter.notifyItemRemoved(position);
             waitListAdapter.notifyItemRangeChanged(position, waitlist_items.size());
             waitListAdapter.notifyDataSetChanged();
@@ -101,7 +100,6 @@ public class acceptRegularTask extends AsyncTask<String, Void, String> {
         }else if(s.equals("already"))
         {
             waitlist_items.remove(position);
-            Log.d("postWaitList", String.valueOf(waitlist_items.size()));
             waitListAdapter.notifyItemRemoved(position);
             waitListAdapter.notifyItemRangeChanged(position, waitlist_items.size());
             waitListAdapter.notifyDataSetChanged();
@@ -110,7 +108,6 @@ public class acceptRegularTask extends AsyncTask<String, Void, String> {
             toast.show();
         }else if(s.equals("delete_success")){
             waitlist_items.remove(position);
-            Log.d("postWaitList", String.valueOf(waitlist_items.size()));
             waitListAdapter.notifyItemRemoved(position);
             waitListAdapter.notifyItemRangeChanged(position, waitlist_items.size());
             waitListAdapter.notifyDataSetChanged();

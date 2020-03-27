@@ -39,10 +39,8 @@ class FetchTermTask extends AsyncTask<String, Void, termList[]>
         Request request = new Request.Builder()
                 .url(url)
                 .build();
-        Log.d("termListFetch", "going");
         try {
             Response response = client.newCall(request).execute();
-            Log.d("termListFetch", "try");
             Gson gson = new Gson();
             termList[] termLists = gson.fromJson(response.body().charStream(), termList[].class);
             return termLists;
@@ -61,7 +59,6 @@ class FetchTermTask extends AsyncTask<String, Void, termList[]>
         for(termList termitem : termLists)
         {
             termListsArray.add(termitem);
-            Log.d("termListFetch", termitem.getTermStart());
         }
 
         String maxDate = "";

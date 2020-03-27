@@ -310,14 +310,46 @@
 					echo json_encode($response,JSON_UNESCAPED_UNICODE);
 				}
 			}
+			$this->getTermList("no");
+			if(strtotime($selectedDate) < strtotime($this->today) )
+			{
+				echo $response;
+				return;
+			}
+			$openList = array();
+			$getOpen = "SELECT startDate, endDate FROM OPENDATE WHERE courseBranch = '$r_courseBranch' AND courseTeacher = '$r_courseTeacher' ";
+			$getOpenRes = mysqli_query($this->con,$getOpen);
+			while($openRow = mysqli_fetch_array($getOpenRes))
+			{
+				$startDateFormat = date("Y-m-d", strtotime($openRow[0]));
+				if(strtotime($startDateFormat) == strtotime($selectedDate))
+				{
+					$tempStartOpen =  date("H:i", strtotime($openRow[0]));
+					$tempEndOpen = date("H:i", strtotime($openRow[1]));
+					array_push($openList, $tempStartOpen, $tempEndOpen );
+				}
+			}
+
 			$getTimeQuery = "SELECT startTime, endTime FROM COURSETIMELINE WHERE courseBranch = '$r_courseBranch' AND courseDay = '$dow' AND courseTeacher = '$r_courseTeacher' ";
 			$res_getTimeQuery = mysqli_query($this->con, $getTimeQuery);
 			if(mysqli_num_rows($res_getTimeQuery ) > 0)
 			{
-				while($row = mysqli_fetch_array($res_getTimeQuery) )
+				$count = 0;
+				
+				while( ($row = mysqli_fetch_array($res_getTimeQuery)) || ( ($count + 2) <= count($openList)) )
 				{
-					$tempStartTime = strtotime($row[0]);
-					$tempEndTime = strtotime($row[1]);
+					$tempStartTime;
+					$tempEndTime;
+					if($row)//mysqli_fetch_array($res_getTimeQuery) != null
+					{
+						$tempStartTime = strtotime($row[0]);
+						$tempEndTime = strtotime($row[1]);
+					}else{
+						$tempStartTime = strtotime($openList[$count]);
+						$tempEndTime = strtotime($openList[$count+1]);
+						$count = $count + 2;
+					}
+					
 
 					$addedStartTime = $tempStartTime;
 					$addedEndTime = $this->getAddedTime($userDuration, $addedStartTime);
@@ -331,7 +363,7 @@
 						$candidateTimeE = date('Y-m-d H:i',strtotime("$formatDate $formatTimeE")); 
 						//echo "CANDIDATE S E ".$candidateTimeS. " ~ ". $candidateTimeE . "////";
 
-						$filter = "SELECT startDate, endDate FROM BOOKEDLIST WHERE courseBranch = '$r_courseBranch' AND courseTeacher = '$r_courseTeacher'AND status = 'BOOKED' ";
+						$filter = "SELECT startDate, endDate FROM BOOKEDLIST WHERE courseBranch = '$r_courseBranch' AND courseTeacher = '$r_courseTeacher'AND status = 'BOOKED' order by UNIX_TIMESTAMP(startDate) DESC ";
 						$filterRes = mysqli_query($this->con,$filter);
 						$flag = 1;
 						while($filterRow = mysqli_fetch_array($filterRes) )//check if that candidate is available
@@ -339,8 +371,25 @@
 							$filterRow0Format = date('Y-m-d H:i', strtotime($filterRow[0]));
 							$filterRow1Format = date('Y-m-d H:i', strtotime($filterRow[1]));
 							//echo "FILTER S E ".$filterRow0Format. " ~ ". $filterRow1Format . "////";
-
+							if(strtotime($filterRow0Format) < strtotime($this->today)){ break; }
 							if( (strtotime($candidateTimeS) >= strtotime($filterRow0Format) && strtotime($candidateTimeS) < strtotime($filterRow1Format)) || (strtotime($candidateTimeE) > strtotime($filterRow0Format) && strtotime($candidateTimeE)<= strtotime($filterRow1Format)) )
+							{
+								$flag = 0;
+								break;
+								//not available
+							}
+						}
+
+						$closeFilter = "SELECT start,endDate,courseTeacher, courseBranch FROM EXCLUSION WHERE (courseTeacher = '$r_courseTeacher' OR courseTeacher = '전체') AND (courseBranch = '$r_courseBranch' OR courseBranch = '전체') order by UNIX_TIMESTAMP(start) DESC ";
+						$closeFilterRes = mysqli_query($this->con,$closeFilter);
+						while($closeFilterRow = mysqli_fetch_array($closeFilterRes))
+						{
+							if(strtotime($closeFilterRow[0]) < strtotime($this->today)){ break; }
+							$closeFilterRowS = date('Y-m-d H:i', strtotime($closeFilterRow[0]));
+							$closeFilterRowE = date('Y-m-d H:i', strtotime($closeFilterRow[1]));
+							//echo "FILTER S E ".$filterRow0Format. " ~ ". $filterRow1Format . "////";
+							
+							if( (strtotime($candidateTimeS) >= strtotime($closeFilterRowS) && strtotime($candidateTimeS) < strtotime($closeFilterRowE)) || (strtotime($candidateTimeE) > strtotime($closeFilterRowS) && strtotime($candidateTimeE)<= strtotime($closeFilterRowE)) )
 							{
 								$flag = 0;
 								break;
@@ -431,7 +480,7 @@
 			{
 				$fetchStart= $this->cur_termStart;
 				$fetchEnd = $this->cur_termEnd;
-			}else if($option == "cancelAll")
+			}else if($option == "cancelAll" || $option == "changeRes")
 			{
 				$fetchStart= $this->past_termStart;
 				$fetchEnd = $this->cur_termEnd;
@@ -455,7 +504,11 @@
 				}else if($option == "cancelAll")
 				{
 					$query = "SELECT courseTeacher,courseBranch,startDate,endDate,status FROM BOOKEDLIST WHERE userID = '$userID' AND (status = 'canceled' OR status = 'closeCanceled') order by UNIX_TIMESTAMP(startDate) DESC ";//이번학기 지난학기 취소한 수업을 알기위한 쿼리
-				}else
+				}else if($option == "changeRes")
+				{
+					$query = "SELECT A.courseTeacher,A.courseBranch,A.startDate,A.endDate,A.changeFrom,A.status FROM BOOKEDLIST A LEFT JOIN BOOKEDLIST B ON A.changeFrom = B.startDate WHERE A.userID = '$userID' AND ( A.status <> 'changeDone' AND A.status <> 'extending')  order by UNIX_TIMESTAMP(A.startDate) DESC ";//
+				}
+				else
 				{
 					$query = "SELECT courseTeacher,courseBranch,startDate,endDate,status FROM BOOKEDLIST WHERE userID = '$userID' AND status = 'BOOKED' order by UNIX_TIMESTAMP(startDate) DESC ";//예약되어있는 수업을 파싱
 				}
@@ -473,8 +526,13 @@
 								break;//만약 시작날 끝나는 둘다 파싱하려는 시작날보다 작다면 바로 브레이크 내림차순 정렬이니까 
 							}
 							if( strtotime($fetchStart) <= strtotime($startMonth) && strtotime($endMonth) <= strtotime($fetchEnd) )
-							{
-								array_push($response, array("bookedTeacher"=>$row[0], "bookedBranch"=>$row[1], "bookedStartDate"=>$row[2], "bookedEndDate" => $row[3], "status" => $row[4]));
+							{	
+								if($option == "changeRes")
+								{
+									array_push($response, array("bookedTeacher"=>$row[0], "bookedBranch"=>$row[1], "bookedStartDate"=>$row[2], "bookedEndDate" => $row[4],"status"=>$row[5] ));
+								}else{
+									array_push($response, array("bookedTeacher"=>$row[0], "bookedBranch"=>$row[1], "bookedStartDate"=>$row[2], "bookedEndDate" => $row[3], "status" => $row[4]));
+								}
 							}
 							
 						}
@@ -601,6 +659,34 @@
 			echo $response;
 			return $response;
 		}
+		function getDowKorean($num)
+		{
+			$dow;
+			switch ($num) {
+				case "0":
+					$dow = "일";
+					break;
+				case "1":
+					$dow = "월";
+					break;
+				case "2":
+					$dow = "화";
+					break;
+				case "3":
+					$dow = "수";
+					break;
+				case "4":
+					$dow = "목";
+					break;
+				case "5":
+					$dow = "금";
+					break;
+				case "6":
+					$dow = "토";
+					break;
+			}
+			return $dow;
+		}
 
 		function getWaitList()
 		{
@@ -611,30 +697,7 @@
 			if($result)
 			{
 				while($row = mysqli_fetch_array($result)){
-					$dow;
-					switch ($row[5]) {
-						case "0":
-							$dow = "일";
-							break;
-						case "1":
-							$dow = "월";
-							break;
-						case "2":
-							$dow = "화";
-							break;
-						case "3":
-							$dow = "수";
-							break;
-						case "4":
-							$dow = "목";
-							break;
-						case "5":
-							$dow = "금";
-							break;
-						case "6":
-							$dow = "토";
-							break;
-					}
+					$dow = $this->getDowKorean($row[5]);
 					$startDateAndDow = $row[6]. " ".$dow;
 					$timeTillEnd = $row[3]. " ~ ".$row[4];
 					array_push($response, array("wl_userID"=>$row[2], "wl_userBranch"=>$row[1], "wl_courseTeacher"=>$row[0], "wl_startDate" => $startDateAndDow, "wl_Time" => $timeTillEnd));
@@ -938,6 +1001,17 @@
 			$r_courseBranch = $courseBranch;
 			if( $userName != "admin")
 			{
+				date_default_timezone_set("Asia/Seoul");
+				$todayDate = date('Y-m-d H:i', time());
+				$limitTime = strtotime('-4 hours', strtotime($startDate));
+				if($userID != "admin")
+				{
+					if(strtotime($todayDate) >= $limitTime  )
+					{
+						echo "timeout";
+						return;
+					}
+				}
 				if(strtotime($this->future_termStart) <= strtotime($startDate))
 				{
 					echo "future";
@@ -957,7 +1031,9 @@
 					echo "noRegular";
 					return;
 				}
-
+			}
+			if($canceledDate != "admin")
+			{
 				$already = "SELECT * FROM BOOKEDLIST WHERE userID = '$userID' AND changeFrom = '$canceledDate' ";
 				$alreadyRes = mysqli_query($this->con,$already);
 				if(mysqli_num_rows($alreadyRes) > 0)
@@ -966,6 +1042,7 @@
 					return;
 				}
 			}
+			
 			$candidateTimeS = date('Y-m-d H:i', strtotime($startDate));
 			$temp = $this->getAddedTime($userDuration, strtotime($candidateTimeS));
 			$candidateTimeE = date('Y-m-d H:i', $temp);
@@ -997,16 +1074,21 @@
 
 			if(mysqli_affected_rows($this->con) > 0)
 			{
-				$updateStatus = "UPDATE BOOKEDLIST SET status = 'changeDone' WHERE userID = '$userID' AND courseTeacher = '$r_courseTeacher' AND courseBranch = '$r_courseBranch' AND startDate = '$canceledDate' AND status = 'canceled'  ";
-				$updatequery = mysqli_query($this->con, $updateStatus);
-				if(mysqli_affected_rows($this->con) > 0)
+				if($canceledDate != "admin")//널로 넣어주는 것은 체인지 돈으로 업글해줄 필요가 읍다 
 				{
-					echo "success";
-					return;
-				}else{
-					echo "fail";
-					return;
+					$updateStatus = "UPDATE BOOKEDLIST SET status = 'changeDone' WHERE userID = '$userID' AND courseBranch = '$r_courseBranch' AND startDate = '$canceledDate' AND status = 'canceled'  ";
+					$updatequery = mysqli_query($this->con, $updateStatus);
+					if(mysqli_affected_rows($this->con) > 0)
+					{
+						echo "success";
+						return;
+					}else{
+						echo "fail";
+						return;
+					}
 				}
+				echo "success";
+				return;
 			}else{
 				echo "fail";
 				return;
@@ -1016,8 +1098,41 @@
 		function extendRequest($userID, $extendTeacher,$extendBranch,$extendStartDate, $extendEndDate )
 		{	
 			$this->getTermList("no");
-			$response;
 
+			date_default_timezone_set("Asia/Seoul");
+			$todayDate = date('Y-m-d H:i', time());
+			$limitTime = strtotime('-4 hours', strtotime($extendStartDate));
+			if($userID != "admin")
+			{
+				if(strtotime($todayDate) >= $limitTime  )
+				{
+					echo "timeout";
+					return;
+				}
+			}
+			
+			$response;	
+			$dow = date('w',strtotime($extendEndDate));
+			$dowKorean = $this->getDowKorean($dow);
+			$checkCourseTimeLine = "SELECT startTime, endTime FROM COURSETIMELINE WHERE courseTeacher = '$extendTeacher' AND courseBranch = '$extendBranch' AND courseDay = '$dowKorean'  ";
+			$checkRes = mysqli_query($this->con,$checkCourseTimeLine);
+			$flag = 1;
+			while($checkResRow = mysqli_fetch_array($checkRes))
+			{
+				$tempTimeS = date('H:i', strtotime($extendStartDate));
+				$tempTimeE = date('H:i', strtotime($extendEndDate));
+				if(strtotime($tempTimeE) <= strtotime($checkResRow[1]) && strtotime($tempTimeS) >= strtotime($checkResRow[0])  )
+				{
+					$flag = 1;
+					break;
+				}else{
+					$flag = 0;
+				}
+			}
+			if($flag == 0){
+				echo "notEmpty";
+				return;
+			}
 			$selectNotEmpty = "SELECT * FROM BOOKEDLIST WHERE courseTeacher = '$extendTeacher' AND courseBranch = '$extendBranch' AND startDate ='$extendEndDate'  ";
 			$selectNotEmptyRes = mysqli_query($this->con,$selectNotEmpty);
 			if(mysqli_num_rows ( $selectNotEmptyRes ) > 0)

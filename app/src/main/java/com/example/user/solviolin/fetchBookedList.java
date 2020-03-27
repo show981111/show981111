@@ -34,6 +34,7 @@ public class fetchBookedList extends AsyncTask<String, Void, BookedList[]> {
     private RecyclerView recyclerView;
     private static ArrayList<BookedList> cur_bookedListArrayList = new ArrayList<>();
     private static ArrayList<BookedList> past_bookedListArrayList = new ArrayList<>();
+    private static ArrayList<BookedList> change_bookedListArrayList = new ArrayList<>();
     private String option;
     private BookedListAdapter bookedListAdapter;
 
@@ -85,24 +86,22 @@ public class fetchBookedList extends AsyncTask<String, Void, BookedList[]> {
                 cur_bookedListArrayList.add(bookedListitem);
             }
             bookedListAdapter = new BookedListAdapter(context,cur_bookedListArrayList);
-        }else{
+        }else if(option.equals("past")){
             past_bookedListArrayList.clear();
             for(BookedList bookedListitem : bookedLists)
             {
                 past_bookedListArrayList.add(bookedListitem);
             }
             bookedListAdapter = new BookedListAdapter(context,past_bookedListArrayList);
+        }else{
+            change_bookedListArrayList.clear();
+            for(BookedList bookedListitem : bookedLists)
+            {
+                change_bookedListArrayList.add(bookedListitem);
+            }
+            bookedListAdapter = new BookedListAdapter(context,change_bookedListArrayList,"changeList");
         }
 
-        Log.d("bookedListArrayBEF", String.valueOf(cur_bookedListArrayList.size()));
-//
-//        waitListAdapterinFetch = new waitListAdapter(context,waitListItems);
-//        Log.d("bookedListArrayList", String.valueOf(waitListAdapterinFetch.getItemCount()));
-//        rv_waitList.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false));
-//        rv_waitList.setAdapter(waitListAdapterinFetch);
-
-
-        Log.d("bookedListArrayAFT", String.valueOf(bookedListAdapter.getItemCount()));
 
         recyclerView.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false));
         recyclerView.setAdapter(bookedListAdapter);

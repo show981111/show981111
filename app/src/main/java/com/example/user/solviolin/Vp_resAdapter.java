@@ -20,14 +20,16 @@ public class Vp_resAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 
     public CharSequence getPageTitle(int i){
         if(i == 0) {
-            return "지난학기";
-        }else {
-            return "현재학기";
+            return "지난 달";
+        }else if(i == 1) {
+            return "이번 달";
+        }else{
+            return "변경 내역";
         }
     }
 }

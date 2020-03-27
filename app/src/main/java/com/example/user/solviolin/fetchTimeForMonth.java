@@ -72,13 +72,6 @@ public class fetchTimeForMonth extends AsyncTask<String, Void, AvailableTimeForM
                 .add("userDuration", gv_userDuration)
                 .add("userName",userName)
                 .build();
-        Log.d("fetchTimeForMonth",gv_userBranch);
-        Log.d("fetchTimeForMonth",this.courseDay);
-        Log.d("fetchTimeForMonth",this.courseTeacher);
-        Log.d("fetchTimeForMonth",this.startDate);
-        Log.d("fetchTimeForMonth", gv_userDuration);
-        Log.d("fetchTimeForMonth",userName);
-        Log.d("fetchTimeForMonth",gv_userID);
 
         Request request = new Request.Builder()
                 .url(url)
@@ -87,7 +80,6 @@ public class fetchTimeForMonth extends AsyncTask<String, Void, AvailableTimeForM
 
         try {
             Response response = client.newCall(request).execute();
-            Log.d("fetchTimeForMonth", "res");
             Gson gson = new Gson();
             AvailableTimeForMonth[] times = gson.fromJson(response.body().charStream(), AvailableTimeForMonth[].class);
             return times;
@@ -113,7 +105,6 @@ public class fetchTimeForMonth extends AsyncTask<String, Void, AvailableTimeForM
         if(times != null) {
             for (AvailableTimeForMonth time : times) {
                 timeList.add(time.getRegular_Time());
-                Log.d("fetchTimeForMonth", time.getRegular_Time());
             }
 
             ButtonGridAdapter buttonGridAdapter = new ButtonGridAdapter(context, timeList, parent,courseTeacher,startDate,courseDay,gv_userID,gv_userBranch,gv_userDuration);

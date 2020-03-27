@@ -149,13 +149,17 @@ public class ButtonGridAdapter extends BaseAdapter {
                             .create();
                     dialog.show();
                 }else if(option.equals("day")){
-                    startDate = startDate + " "+startTime;
+                    String temp = startDate;
+                    Log.d("start",startTime);
+                    temp = temp +" " +startTime;
+
                     AlertDialog.Builder builder = new AlertDialog.Builder(parent.getContext());
-                    AlertDialog dialog = builder.setMessage(startDate + " 에 레슨을 예약하시겠습니까?")
+                    AlertDialog dialog = builder.setMessage(temp + " 에 레슨을 예약하시겠습니까?")
                             .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    putNewlyBookedDateTask putNewlyBookedDateTask = new putNewlyBookedDateTask(courseTeacher,courseBranch,userID,startDate,canceledDate,userDuration);
+                                    Log.d("start",startDate+" " +startTime);
+                                    putNewlyBookedDateTask putNewlyBookedDateTask = new putNewlyBookedDateTask(courseTeacher,courseBranch,userID, startDate+" " +startTime,canceledDate,userDuration);
                                     putNewlyBookedDateTask.execute("http://show981111.cafe24.com/putNewlyDate.php");
 
                                 }
@@ -228,7 +232,6 @@ public class ButtonGridAdapter extends BaseAdapter {
                     .post(formBody)
                     .build();
 
-            Log.d("postWaitList", "going");
             try {
                 Response response = client.newCall(request).execute();
                 return response.body().string();
@@ -333,17 +336,16 @@ public class ButtonGridAdapter extends BaseAdapter {
 //            Log.d("putNewlyBookedDateTaskT",courseTeacher);
 //            Log.d("putNewlyBookedDateTaskB",courseBranch);
 //            Log.d("putNewlyBookedDateTaskI",userID);
-//            Log.d("putNewlyBookedDateTaskD",startDate);
+            Log.d("putNewlyBookedDateTaskD",startDate);
 //            Log.d("putNewlyBookedDateTaskC",canceledDate);
 //            Log.d("putNewlyBookedDateTaskU",userDuration);
-//            Log.d("putNewlyBookedDateTaskN",userName);
+            Log.d("putNewlyBookedDateTaskN",userName);
 
             Request request = new Request.Builder()
                     .url(url)
                     .post(formBody)
                     .build();
 
-            Log.d("putNewlyBookedDateTask", "going");
             try {
                 Response response = client.newCall(request).execute();
                 return response.body().string();
@@ -359,12 +361,13 @@ public class ButtonGridAdapter extends BaseAdapter {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Log.d("putNewlyBookedDateTask",s);
+            Log.d("putNewlyBookedDateTaskR",s);
             String message = "실패하였습니다.";
             if(s.equals("success"))
             {
                 message = "성공적으로 변경하였습니다.";
             }else if(s.equals("past") || s.equals("future")) {
+                Log.d("putNewlyBookedDateTaskN",s);
                 message = "날짜를 다시한번 확인해주세요";
 
             }else if(s.equals("isBooked"))

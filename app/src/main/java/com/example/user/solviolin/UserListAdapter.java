@@ -12,8 +12,7 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
-import com.example.user.solviolin.mMySQL.Downloader1;
-import com.example.user.solviolin.mMySQL.Downloader3;
+
 
 import org.json.JSONObject;
 
@@ -85,13 +84,7 @@ public class UserListAdapter extends BaseAdapter{
         checkResultButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AdminUserID = userList.get(position).getUserID();
-                Downloader1 result2 =new Downloader1( parentActivity,"http://show981111.cafe24.com/BookedCourseList.php");
-                result2.execute();
-                new Downloader3(parentActivity, "http://show981111.cafe24.com/DayBookedList.php").execute();
-                //new Downloader3(parentActivity, "http://show981111.cafe24.com/DayBookedList.php").execute();
-                Intent intent = new Intent(parentActivity, Result.class );
-                parentActivity.startActivity(intent);
+
 
             }
         });
