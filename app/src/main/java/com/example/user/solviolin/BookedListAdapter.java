@@ -54,6 +54,7 @@ public class BookedListAdapter extends RecyclerView.Adapter<BookedListHolder> {
         holder.bookedBranch.setText(bookedList.getBookedBranch());
         if(option.equals("changeList"))
         {
+
             if(bookedList.getBookedEndDate().equals(""))//보강이 잡히지 않은 수업들
             {
                 holder.bookedStartDate.setText(bookedList.getBookedStartDate());

@@ -163,6 +163,7 @@ public class fetchCanceledListTask extends AsyncTask<String , Void, BookedList[]
                     .add("cancelBranch",cancelBranch)
                     .add("startDate",startDate)
                     .add("endDate",endDate)
+                    .add("userName",userName)
                     .build();
 
             Request request = new Request.Builder()
