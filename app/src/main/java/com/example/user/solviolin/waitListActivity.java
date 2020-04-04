@@ -3,10 +3,9 @@ package com.example.user.solviolin;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import okhttp3.FormBody;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import android.content.Context;
@@ -14,6 +13,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.user.solviolin.Data.waitlist_item;
+import com.example.user.solviolin.adapter.waitListAdapter;
 import com.google.gson.Gson;
 
 import java.io.IOException;

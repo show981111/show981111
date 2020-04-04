@@ -3,13 +3,12 @@ package com.example.user.solviolin;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.annotation.RequiresApi;
+
 import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AlertDialog;
+
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -20,18 +19,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.user.solviolin.Data.userData;
+import com.example.user.solviolin.getData.FetchTermTask;
+import com.example.user.solviolin.getData.fetchCanceledListTask;
+import com.example.user.solviolin.getData.fetchTimeForDayTask;
 import com.google.gson.Gson;
 
 import java.io.IOException;

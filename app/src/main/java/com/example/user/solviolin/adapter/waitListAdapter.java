@@ -1,16 +1,20 @@
-package com.example.user.solviolin;
+package com.example.user.solviolin.adapter;
 
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.user.solviolin.Data.waitlist_item;
+import com.example.user.solviolin.R;
+import com.example.user.solviolin.getData.acceptRegularTask;
+import com.example.user.solviolin.holder.waitListHolder;
 
 public class waitListAdapter extends RecyclerView.Adapter<waitListHolder> {
 

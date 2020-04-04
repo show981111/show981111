@@ -1,10 +1,13 @@
-package com.example.user.solviolin;
+package com.example.user.solviolin.getData;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
+
+import com.example.user.solviolin.adapter.waitListAdapter;
+import com.example.user.solviolin.Data.waitlist_item;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,7 +27,7 @@ public class acceptRegularTask extends AsyncTask<String, Void, String> {
     private String pt_startTime;
     private String pt_startDateAndDow;
     private String reject;
-    waitListAdapter waitListAdapter;
+    com.example.user.solviolin.adapter.waitListAdapter waitListAdapter;
     int position;
     ArrayList<waitlist_item> waitlist_items = new ArrayList<>();
 

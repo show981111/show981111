@@ -1,4 +1,4 @@
-package com.example.user.solviolin;
+package com.example.user.solviolin.adapter;
 
 
 import android.content.Context;
@@ -21,7 +21,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
+import com.example.user.solviolin.MainActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;

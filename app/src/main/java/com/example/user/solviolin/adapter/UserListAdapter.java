@@ -1,7 +1,7 @@
-package com.example.user.solviolin;
+package com.example.user.solviolin.adapter;
 
 import android.content.Context;
-import android.content.Intent;
+
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +12,9 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.example.user.solviolin.Data.User;
+import com.example.user.solviolin.R;
+import com.example.user.solviolin.getData.DeleteRequest;
 
 
 import org.json.JSONObject;
@@ -65,7 +68,7 @@ public class UserListAdapter extends BaseAdapter{
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        View v = View.inflate(context,R.layout.user, null);
+        View v = View.inflate(context, R.layout.user, null);
         final TextView userID = (TextView) v.findViewById(R.id.userID);
         final TextView userPassword = (TextView) v.findViewById(R.id.userPassword);
         final TextView userName = (TextView) v.findViewById(R.id.userName);

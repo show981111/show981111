@@ -1,12 +1,13 @@
-package com.example.user.solviolin;
+package com.example.user.solviolin.holder;
 
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.user.solviolin.R;
+import com.example.user.solviolin.adapter.BookedListAdapter;
 
 public class BookedListHolder extends RecyclerView.ViewHolder{
     public TextView bookedTeacher;
@@ -14,7 +15,7 @@ public class BookedListHolder extends RecyclerView.ViewHolder{
     public TextView bookedStartDate;
     public TextView bookedEndDate;
 
-    private BookedListAdapter BookedListAdapter;
+    private com.example.user.solviolin.adapter.BookedListAdapter BookedListAdapter;
 
     public BookedListHolder(@NonNull View itemView, BookedListAdapter BookedListAdapter) {
         super(itemView);

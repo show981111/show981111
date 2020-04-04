@@ -8,6 +8,9 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.example.user.solviolin.Data.User;
+import com.example.user.solviolin.adapter.UserListAdapter;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -17,7 +20,7 @@ import java.util.List;
 public class ManagementActivity extends AppCompatActivity {
 
     private ListView listView;
-    private  UserListAdapter adapter;
+    private UserListAdapter adapter;
     private List<User> userList;
     private List<User> saveList;
 

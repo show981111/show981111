@@ -1,13 +1,15 @@
-package com.example.user.solviolin;
+package com.example.user.solviolin.holder;
 
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.user.solviolin.R;
+import com.example.user.solviolin.adapter.waitListAdapter;
 
 public class waitListHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
     public TextView tv_wl_userID;
@@ -19,7 +21,7 @@ public class waitListHolder extends RecyclerView.ViewHolder implements View.OnCl
     public Button bt_accept;
     public Button bt_reject;
 
-    private waitListAdapter waitListAdapter;
+    private com.example.user.solviolin.adapter.waitListAdapter waitListAdapter;
 
 
     public waitListHolder(@NonNull View itemView, waitListAdapter waitListAdapter) {

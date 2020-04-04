@@ -1,4 +1,4 @@
-package com.example.user.solviolin;
+package com.example.user.solviolin.getData;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,6 +10,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.user.solviolin.Data.BookedList;
+import com.example.user.solviolin.adapter.BookedListAdapter;
+import com.example.user.solviolin.ReservationActivity;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -22,7 +25,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import static com.example.user.solviolin.MainActivity.userCredit;
 import static com.example.user.solviolin.MainActivity.userName;
 
 

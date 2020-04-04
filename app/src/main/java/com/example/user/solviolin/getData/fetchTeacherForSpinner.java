@@ -1,4 +1,4 @@
-package com.example.user.solviolin;
+package com.example.user.solviolin.getData;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.example.user.solviolin.Data.courseTimeLine;
 import com.google.gson.Gson;
 
 import java.io.IOException;

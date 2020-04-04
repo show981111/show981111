@@ -1,10 +1,10 @@
-package com.example.user.solviolin;
+package com.example.user.solviolin.getData;
 
 import android.app.DatePickerDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.user.solviolin.termList;
+import com.example.user.solviolin.Data.termList;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -20,7 +20,7 @@ import okhttp3.Response;
 
 import static com.example.user.solviolin.MainActivity.userName;
 
-class FetchTermTask extends AsyncTask<String, Void, termList[]>
+public class FetchTermTask extends AsyncTask<String, Void, termList[]>
 {
     private ArrayList<termList> termListsArray = new ArrayList<>();
     private  DatePickerDialog datePickerDialog;

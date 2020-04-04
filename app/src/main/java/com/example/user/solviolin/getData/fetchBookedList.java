@@ -1,13 +1,9 @@
-package com.example.user.solviolin;
+package com.example.user.solviolin.getData;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,12 +12,13 @@ import java.util.List;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import okhttp3.FormBody;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import com.example.user.solviolin.Data.BookedList;
+import com.example.user.solviolin.adapter.BookedListAdapter;
 import com.example.user.solviolin.helper.MyButtonClickListener;
 import com.example.user.solviolin.helper.mySwipeHelper;
 import com.google.gson.Gson;

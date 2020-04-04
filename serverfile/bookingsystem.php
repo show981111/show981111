@@ -511,7 +511,7 @@
 					$query = "SELECT courseTeacher,courseBranch,startDate,endDate,status FROM BOOKEDLIST WHERE userID = '$userID' AND (status = 'canceled' OR status = 'closeCanceled') order by UNIX_TIMESTAMP(startDate) DESC ";//이번학기 지난학기 취소한 수업을 알기위한 쿼리
 				}else if($option == "changeRes")
 				{
-					$query = "SELECT A.courseTeacher,A.courseBranch,A.startDate,A.endDate,A.changeFrom,A.status FROM BOOKEDLIST A LEFT JOIN BOOKEDLIST B ON A.changeFrom = B.startDate AND A.userID = B.userID WHERE A.userID = '$userID' AND ( A.status <> 'changeDone' AND A.status <> 'extending')  order by UNIX_TIMESTAMP(A.startDate) DESC ";//
+					$query = "SELECT A.courseTeacher,A.courseBranch,A.startDate,A.endDate,A.changeFrom,A.status FROM BOOKEDLIST A LEFT JOIN BOOKEDLIST B ON A.changeFrom = B.startDate AND A.userID = B.userID WHERE A.userID = '$userID' order by UNIX_TIMESTAMP(A.startDate) DESC ";//
 				}
 				else
 				{
@@ -534,7 +534,7 @@
 							{	
 								if($option == "changeRes")
 								{
-									if($row[5] == "BOOKED" && ($row[4] == "" || $row[4] == "admin"))
+									if($row[5] != "canceled" && ($row[4] == "" || $row[4] == "admin"))//보강이 아닌것들은 패스, 단 취소햇는데 아직 보강 안잡은것들은 푸쉬 
 									{
 										continue;
 									}
