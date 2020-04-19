@@ -3,27 +3,42 @@ package com.example.user.solviolin;
 import android.content.Intent;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.example.user.solviolin.Data.BookedList;
+import com.example.user.solviolin.Data.termList;
+import com.example.user.solviolin.Data.userData;
 import com.example.user.solviolin.getData.LoginRequest;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class LoginActivity extends AppCompatActivity {
 
-    public static String InputURL;
-    final static String urlAddress_J = "http://show981111.cafe24.com/CourseList_J.php";
-    final static String urlAddress_Y = "http://show981111.cafe24.com/CourseList_Y.php";
-    final static String urlAddress_S = "http://show981111.cafe24.com/CourseList_S.php";
-    final static String urlAddress_K = "http://show981111.cafe24.com/CourseList_K.php";
-    final static String urlAddress_G = "http://show981111.cafe24.com/CourseList_G.php";
+    private static String token;
+    private static String userID;
+    private static String userPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,88 +64,60 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                userID = idText.getText().toString();
+                userPassword = passwordText.getText().toString();
+                loginTask loginTask = new loginTask();
+                loginTask.execute("http://show981111.cafe24.com/loginSetToken.php");
 
-                final String userID = idText.getText().toString();
-                final String userPassword = passwordText.getText().toString();
-
-
-                Response.Listener<String> responseListener = new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try{
-                            JSONObject jsonResponse = new JSONObject(response);
-                            boolean success = jsonResponse.getBoolean("success");
-                            if(success){
-                                String userID = jsonResponse.getString("userID");
-                                String userBranch = jsonResponse.getString("userBranch");
-                                String userName = jsonResponse.getString("userName");
-                                String userDuration = jsonResponse.getString("userDuration");
-                                int userCredit = jsonResponse.getInt("userCredit");
-                                if(!userDuration.equals("45")) {
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    intent.putExtra("userName", userName);
-                                    intent.putExtra("userID", userID);
-                                    intent.putExtra("userBranch", userBranch);
-                                    intent.putExtra("userCredit", userCredit);
-                                    intent.putExtra("userDuration", userDuration);
-                                    LoginActivity.this.startActivity(intent);
-                                    //new Downloader1(LoginActivity.this, "http://show981111.cafe24.com/BookedCourseList.php").execute();
-                                    //new Downloader3(LoginActivity.this, "http://show981111.cafe24.com/DayBookedList.php").execute();
-                                }else
-                                {
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                                    builder.setMessage("45분 수업을 받는 학생은 웹사이트를 이용해주세요.")
-                                            .setNegativeButton("다시 시도", null)
-                                            .create()
-                                            .show();
-                                }
-                               // Intent intent1 = new Intent(LoginActivity.this, MonthFragment.class);
-                                //intent1.putExtra("userID", userID);
-                               // intent1.putExtra("userBranch", userBranch);
-
-                                //new Downloader1(LoginActivity.this, "http://show981111.cafe24.com/BookedCourseList.php").execute();
-
-
-                                switch (userBranch){
-                                    case "잠실":
-                                        InputURL = urlAddress_J;
-                                        break;
-                                    case "여의도":
-                                        InputURL = urlAddress_Y;
-                                        break;
-                                    case "시청":
-                                        InputURL = urlAddress_S;
-                                        break;
-                                    case "교대":
-                                        InputURL = urlAddress_K;
-                                        break;
-                                    case "광화문":
-                                        InputURL = urlAddress_G;
-                                        break;
-
-                                }
-
-
-                            }
-                            else{
-                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                                builder.setMessage("로그인에 실패하였습니다")
-                                        .setNegativeButton("다시 시도", null)
-                                        .create()
-                                        .show();
-                            }
-
-                        }catch(Exception e)
-                        {
-                            e.printStackTrace();
-                        }
-
-                    }
-                };
-
-                LoginRequest loginRequest = new LoginRequest(userID, userPassword, responseListener);
-                RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
-                queue.add(loginRequest);
+//                Response.Listener<String> responseListener = new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        try{
+//                            JSONObject jsonResponse = new JSONObject(response);
+//                            boolean success = jsonResponse.getBoolean("success");
+//                            if(success){
+//                                String userID = jsonResponse.getString("userID");
+//                                String userBranch = jsonResponse.getString("userBranch");
+//                                String userName = jsonResponse.getString("userName");
+//                                String userDuration = jsonResponse.getString("userDuration");
+//                                int userCredit = jsonResponse.getInt("userCredit");
+//                                FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( LoginActivity.this,  new OnSuccessListener<InstanceIdResult>() {
+//                                    @Override
+//                                    public void onSuccess(InstanceIdResult instanceIdResult) {
+//                                        token = instanceIdResult.getToken();
+//                                        Log.d("token",token);
+//
+//                                    }
+//                                });
+//
+//                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                                intent.putExtra("userName", userName);
+//                                intent.putExtra("userID", userID);
+//                                intent.putExtra("userBranch", userBranch);
+//                                intent.putExtra("userCredit", userCredit);
+//                                intent.putExtra("userDuration", userDuration);
+////                                intent.putExtra("token", token);
+////                                Log.d("token",token);
+//                                LoginActivity.this.startActivity(intent);
+//                            }
+//                            else{
+//                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+//                                builder.setMessage("로그인에 실패하였습니다")
+//                                        .setNegativeButton("다시 시도", null)
+//                                        .create()
+//                                        .show();
+//                            }
+//
+//                        }catch(Exception e)
+//                        {
+//                            e.printStackTrace();
+//                        }
+//
+//                    }
+//                };
+//                LoginRequest loginRequest = new LoginRequest(userID, userPassword ,responseListener);
+//                RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
+//                queue.add(loginRequest);
 
 
 
@@ -140,5 +127,73 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+    }
+
+    class loginTask extends AsyncTask<String, Void, userData[]>{
+
+        private ArrayList<userData> userDataArrayList = new ArrayList<>();
+        @Override
+        protected userData[] doInBackground(String... strings) {
+            String url = strings[0];
+            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( LoginActivity.this,  new OnSuccessListener<InstanceIdResult>() {
+                @Override
+                public void onSuccess(InstanceIdResult instanceIdResult) {
+                    token = instanceIdResult.getToken();
+                    Log.d("token",token);
+
+                }
+            });
+
+            OkHttpClient okHttpClient = new OkHttpClient();
+
+            RequestBody formBody = new FormBody.Builder()
+                    .add("userID", userID )
+                    .add("userPassword", userPassword)
+                    .add("token",token)
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(formBody)
+                    .build();
+
+            try {
+                Response response = okHttpClient.newCall(request).execute();
+                Log.d("loginTask", "res");
+                Gson gson = new Gson();
+                userData[] client = gson.fromJson(response.body().charStream(), userData[].class);
+                return client;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.d("loginTask", e.getMessage());
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(userData[] userDatas) {
+            super.onPostExecute(userDatas);
+
+            for(userData item : userDatas)
+            {
+                userDataArrayList.add(item);
+            }
+
+            if(userDataArrayList.size() > 0) {
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra("userName", userDataArrayList.get(0).getUserName());
+                intent.putExtra("userID", userDataArrayList.get(0).getUserName());
+                intent.putExtra("userBranch", userDataArrayList.get(0).getUserName());
+                intent.putExtra("userDuration", userDataArrayList.get(0).getUserName());
+                LoginActivity.this.startActivity(intent);
+            }else{
+                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                builder.setMessage("로그인에 실패하였습니다")
+                        .setNegativeButton("다시 시도", null)
+                        .create()
+                        .show();
+            }
+        }
     }
 }

@@ -36,12 +36,12 @@ import static java.lang.Boolean.TRUE;
 public class MainActivity extends AppCompatActivity {
 
     public static String userID;
-    public static int userCredit; // 크레딧 조절을 위해 조절되는 값
     public static String userBranch;
     public static String userName;
     public static String userDuration;
     public static int delaycredit = 0;
     public static int curcount = 0;
+    public static String getToken = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +54,8 @@ public class MainActivity extends AppCompatActivity {
         userBranch = intent.getStringExtra("userBranch");
         userName = intent.getStringExtra("userName");
         userDuration = intent.getStringExtra("userDuration");
-        userCredit = intent.getIntExtra("userCredit", 2);
 
         //Toast.makeText(getApplicationContext(),"got it!"+userID, Toast.LENGTH_SHORT).show();
-        String url = "";
 
 //        switch (userBranch) {
 //            case "잠실":

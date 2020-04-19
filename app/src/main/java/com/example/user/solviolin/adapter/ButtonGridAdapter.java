@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static com.example.user.solviolin.MainActivity.userBranch;
-import static com.example.user.solviolin.MainActivity.userCredit;
 import static com.example.user.solviolin.MainActivity.userName;
 
 public class ButtonGridAdapter extends BaseAdapter {
@@ -292,7 +291,6 @@ public class ButtonGridAdapter extends BaseAdapter {
                 goToMain.putExtra("userName", userName);
                 goToMain.putExtra("userID", userID);
                 goToMain.putExtra("userBranch", userBranch);
-                goToMain.putExtra("userCredit", userCredit);
                 goToMain.putExtra("userDuration", userDuration);
                 context.startActivity(goToMain);
             }
@@ -389,7 +387,6 @@ public class ButtonGridAdapter extends BaseAdapter {
                 goToMain.putExtra("userName", userName);
                 goToMain.putExtra("userID", userID);
                 goToMain.putExtra("userBranch", userBranch);
-                goToMain.putExtra("userCredit", userCredit);
                 goToMain.putExtra("userDuration", userDuration);
                 context.startActivity(goToMain);
 
