@@ -68,59 +68,6 @@ public class LoginActivity extends AppCompatActivity {
                 userPassword = passwordText.getText().toString();
                 loginTask loginTask = new loginTask();
                 loginTask.execute("http://show981111.cafe24.com/loginSetToken.php");
-
-//                Response.Listener<String> responseListener = new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try{
-//                            JSONObject jsonResponse = new JSONObject(response);
-//                            boolean success = jsonResponse.getBoolean("success");
-//                            if(success){
-//                                String userID = jsonResponse.getString("userID");
-//                                String userBranch = jsonResponse.getString("userBranch");
-//                                String userName = jsonResponse.getString("userName");
-//                                String userDuration = jsonResponse.getString("userDuration");
-//                                int userCredit = jsonResponse.getInt("userCredit");
-//                                FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( LoginActivity.this,  new OnSuccessListener<InstanceIdResult>() {
-//                                    @Override
-//                                    public void onSuccess(InstanceIdResult instanceIdResult) {
-//                                        token = instanceIdResult.getToken();
-//                                        Log.d("token",token);
-//
-//                                    }
-//                                });
-//
-//                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                                intent.putExtra("userName", userName);
-//                                intent.putExtra("userID", userID);
-//                                intent.putExtra("userBranch", userBranch);
-//                                intent.putExtra("userCredit", userCredit);
-//                                intent.putExtra("userDuration", userDuration);
-////                                intent.putExtra("token", token);
-////                                Log.d("token",token);
-//                                LoginActivity.this.startActivity(intent);
-//                            }
-//                            else{
-//                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-//                                builder.setMessage("로그인에 실패하였습니다")
-//                                        .setNegativeButton("다시 시도", null)
-//                                        .create()
-//                                        .show();
-//                            }
-//
-//                        }catch(Exception e)
-//                        {
-//                            e.printStackTrace();
-//                        }
-//
-//                    }
-//                };
-//                LoginRequest loginRequest = new LoginRequest(userID, userPassword ,responseListener);
-//                RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
-//                queue.add(loginRequest);
-
-
-
             }
         });
 
@@ -162,6 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d("loginTask", "res");
                 Gson gson = new Gson();
                 userData[] client = gson.fromJson(response.body().charStream(), userData[].class);
+                Log.d("loginTask", "got");
                 return client;
 
             } catch (IOException e) {
@@ -172,20 +120,23 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(userData[] userDatas) {
-            super.onPostExecute(userDatas);
+        protected void onPostExecute(userData[] client) {
+            super.onPostExecute(client);
 
-            for(userData item : userDatas)
+            for(userData item : client)
             {
                 userDataArrayList.add(item);
             }
-
             if(userDataArrayList.size() > 0) {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.putExtra("userName", userDataArrayList.get(0).getUserName());
-                intent.putExtra("userID", userDataArrayList.get(0).getUserName());
-                intent.putExtra("userBranch", userDataArrayList.get(0).getUserName());
-                intent.putExtra("userDuration", userDataArrayList.get(0).getUserName());
+                intent.putExtra("userID", userDataArrayList.get(0).getUserID());
+                intent.putExtra("userBranch", userDataArrayList.get(0).getUserBranch());
+                intent.putExtra("userDuration", userDataArrayList.get(0).getUserDuration());
+                Log.d("login",userDataArrayList.get(0).getUserName());
+                Log.d("login",userDataArrayList.get(0).getUserID());
+                Log.d("login",userDataArrayList.get(0).getUserBranch());
+                Log.d("login",userDataArrayList.get(0).getUserDuration());
                 LoginActivity.this.startActivity(intent);
             }else{
                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);

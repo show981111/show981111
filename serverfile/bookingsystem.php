@@ -747,6 +747,7 @@
 
 		function putWaitList($courseTeacher, $courseBranch, $userID, $startTime, $endTime, $dow,$startDate, $todayDateTime)
 		{
+
 			$response = "fail";
 
 			if(strtotime($todayDateTime) > strtotime($startDate))
@@ -773,7 +774,7 @@
 			while($NowRow = mysqli_fetch_array($NowRes))
 			{
 				if( (strtotime($NowRow[0]) <= strtotime($startTime) && strtotime($startTime) < strtotime($NowRow[1])) || 
-					(strtotime($NowRow[0]) <= strtotime($endTime) && strtotime($endTime) <= strtotime($NowRow[1])) )
+					(strtotime($NowRow[0]) < strtotime($endTime) && strtotime($endTime) <= strtotime($NowRow[1])) )
 				{
 					$response = "alreadyBooked";
 					echo $response;
@@ -804,6 +805,11 @@
 			}else
 			{
 				$response = "internet_fail";
+			}
+			if($response == "success")
+			{
+				//echo "success";
+				//$this->send_notification("admin");
 			}
 
 			echo $response;
@@ -1777,6 +1783,57 @@
 
 			echo json_encode($response,JSON_UNESCAPED_UNICODE);
 		}
+
+		function send_notification ($userName)
+		{
+
+			$sql = "SELECT token FROM USER WHERE userName = '$userName' AND token <> '' ";
+
+			$result = mysqli_query($this->con,$sql);
+			$tokens = array();
+
+			if(mysqli_num_rows($result) > 0 ){
+
+				while ($row = mysqli_fetch_array($result)) {
+					$tokens[] = $row[0];
+				}
+			}
+
+			mysqli_close($conn);
+
+			$message = array();
+			$message['title'] = "title";
+			$message['body'] = "test body";
+			
+			$url = 'https://fcm.googleapis.com/fcm/send';
+			$fields = array(
+				 'registration_ids' => $tokens,
+				 'data' => $message
+				);
+
+			$headers = array(
+				'Authorization:key = AAAAxVbNMaU:APA91bEyzf4ZnRJf-XJVsGdhlpUFZyLTZAt46M5ZnqlLBn---LFgaBroonpilsI43vnmEIAPly2Y9eExnUtRc6g45tQxVrpJZFD_5e860-zt8_KZ2bbh1WmOPG2f2yft8yvlbN6z4sO3 ',
+				'Content-Type: application/json'
+			);
+
+		    $ch = curl_init();
+	        curl_setopt($ch, CURLOPT_URL, $url);
+	        curl_setopt($ch, CURLOPT_POST, true);
+	        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+	        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	        curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);  
+	        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+	        $result = curl_exec($ch);           
+	        if ($result === FALSE) {
+	            die('Curl failed: ' . curl_error($ch));
+	        }
+	        curl_close($ch);
+	        echo $result;
+	        return $result;
+		}
+
+
 
 		
 	}

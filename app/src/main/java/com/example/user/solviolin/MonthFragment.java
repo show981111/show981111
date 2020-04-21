@@ -297,6 +297,7 @@ public class MonthFragment extends Fragment {
         Button bt_searchUser;
         if(!userName.equals("admin"))
         {
+            Log.d("userName",userName);
             linearLayout.setVisibility(View.GONE);
         }else
         {
@@ -340,7 +341,9 @@ public class MonthFragment extends Fragment {
         final fetchTeacherForSpinner fetchCourseTimeLine = new fetchTeacherForSpinner(teacherSpinner,getContext(),send_userBranch);
         if(!userName.equals("admin"))
         {
+            Log.d("fetchCourseTimeLine", "called");
             fetchCourseTimeLine.execute("http://show981111.cafe24.com/getCourseTimeLine.php");
+            Log.d("fetchCourseTimeLine", "pass");
         }
         /*spinner setting end*/
 

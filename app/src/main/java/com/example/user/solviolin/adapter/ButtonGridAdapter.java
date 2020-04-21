@@ -226,6 +226,8 @@ public class ButtonGridAdapter extends BaseAdapter {
                     .add("startTime",pt_startTime)
                     .build();
 
+            Log.d("postWaitList", startTime);
+
             Request request = new Request.Builder()
                     .url(url)
                     .post(formBody)

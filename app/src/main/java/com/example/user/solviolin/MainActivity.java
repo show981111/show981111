@@ -54,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
         userBranch = intent.getStringExtra("userBranch");
         userName = intent.getStringExtra("userName");
         userDuration = intent.getStringExtra("userDuration");
+        Log.d("main",userID);
+        Log.d("main",userBranch);
+        Log.d("main",userName);
+        Log.d("main",userDuration);
 
         //Toast.makeText(getApplicationContext(),"got it!"+userID, Toast.LENGTH_SHORT).show();
 
@@ -146,46 +150,7 @@ public class MainActivity extends AppCompatActivity {
         reservationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = "";
 
-//                switch (userBranch) {
-//                    case "잠실":
-//                        url = "http://show981111.cafe24.com/BookedCourseList_J.php";
-//                        break;
-//                    case "여의도":
-//                        url = "http://show981111.cafe24.com/BookedCourseList_Y.php";
-//                        break;
-//                    case "시청":
-//                        url = "http://show981111.cafe24.com/BookedCourseList_S.php";
-//                        break;
-//                    case "교대":
-//                        url = "http://show981111.cafe24.com/BookedCourseList_K.php";
-//                        break;
-//                    case "광화문":
-//                        url = "http://show981111.cafe24.com/BookedCourseList_G.php";
-//                        break;
-//                }
-//
-//                new Downloader1(MainActivity.this, url).execute(); //get booked list by oldversion
-//                delaycredit = 0;//이월된 보강 갯수
-//                curcount = 0;
-//                for(int i = 0; i < personalDayBookedList.size(); i++)
-//                {
-//                    if(personalDayBookedList.get(i).getNewlyBookedDate().equals("다음달 중으로 할 예정(이월된 보강은 다음달까지만 가능합니다)") && (personalDayBookedList.get(i).getDataStatus().equals("going") || personalDayBookedList.get(i).getDataStatus().equals("cur") ))
-//                    {
-//                        delaycredit = delaycredit + 1;
-//
-//                    }
-//                    if(personalDayBookedList.get(i).getCanceledCourseDate().substring(0,1).equals("[") && personalDayBookedList.get(i).getNewlyBookedDate().equals("다음달 중으로 할 예정(이월된 보강은 다음달까지만 가능합니다)") && (personalDayBookedList.get(i).getDataStatus().equals("going")|| personalDayBookedList.get(i).getDataStatus().equals("cur")))
-//                    {
-//                        delaycredit = delaycredit + 1;
-//
-//                    }
-//                    if( personalDayBookedList.get(i).getDataStatus().equals("cur"))
-//                    {
-//                        curcount = curcount + 1;
-//                    }
-//                }
                 Intent reservationIntent = new Intent(MainActivity.this, ReservationActivity.class);
                 MainActivity.this.startActivity(reservationIntent);
             }
