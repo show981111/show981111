@@ -475,6 +475,7 @@
 				if(mysqli_affected_rows($this->con) > 0)
 				{
 					$response = "success";
+					$this->send_notification($courseTeacher,$userID." / ".$userBranch." / ".$startDate, "수업이 변경됬어요!");
 				}else{
 					$response = "fail";
 				}
@@ -750,11 +751,11 @@
 
 			$response = "fail";
 
-			if(strtotime($todayDateTime) > strtotime($startDate))
-			{
-				echo "past";
-				return;
-			}
+			// if(strtotime($todayDateTime) > strtotime($startDate))
+			// {
+			// 	echo "past";
+			// 	return;
+			// }
 			$this->getTermList("no");
 			
 			$getStatus = "SELECT status FROM USER WHERE userID = '$userID' ";
@@ -808,8 +809,7 @@
 			}
 			if($response == "success")
 			{
-				//echo "success";
-				//$this->send_notification("admin");
+				$this->send_notification("admin",$courseTeacher." / ".$courseBranch." / ".$userID." / ".$startTime."/".$endTime."/".$startDate , "정기예약 신청이 왔습니다");
 			}
 
 			echo $response;
@@ -1113,7 +1113,7 @@
 						return;
 					}
 				}
-				if(strtotime($this->future_termStart) < strtotime($startDate))
+				if(strtotime($this->future_termStart) < strtotime(date('Y-m-d',strtotime($startDate) )) )
 				{
 					echo "future";
 					return;
@@ -1176,7 +1176,7 @@
 			//"INSERT INTO BOOKEDLIST (courseTeacher, courseBranch, startDate, endDate, userID, ownerID, status) VALUES ('$row[0]', '$row[1]', '$cand_StartDateTime', '$cand_EndDateTime', '$row[2]', '$row[2]', 'BOOKED'  ) ";
 			$put = "INSERT INTO BOOKEDLIST (courseTeacher, courseBranch, startDate, endDate, userID, status, changeFrom) VALUES ('$r_courseTeacher', '$r_courseBranch', '$startDate', '$candidateTimeE', '$userID','BOOKED','$canceledDate'  ) ";
 			$putquery = mysqli_query($this->con,$put);
-
+			$res = "success";
 			if(mysqli_affected_rows($this->con) > 0)
 			{
 				if($canceledDate != "admin")//널로 넣어주는 것은 체인지 돈으로 업글해줄 필요가 읍다 체인지 돈이면 그 수업으로 보강 잡을 수 없다. 
@@ -1185,18 +1185,23 @@
 					$updatequery = mysqli_query($this->con, $updateStatus);
 					if(mysqli_affected_rows($this->con) > 0)
 					{
-						echo"success";
-						return;
+						$res = "success";
 					}else{
 						echo "fail";
 						return;
 					}
 				}
-				echo "success";
-				return;
+				$res = "success";
 			}else{
 				echo "fail";
 				return;
+			}
+
+			if($res == "success")
+			{
+
+				$aka = $this->send_notification($courseTeacher,$userID." / ".$courseBranch." / ".$startDate, "수업이 변경됬어요!");
+				echo $res;
 			}
 		}
 
@@ -1784,7 +1789,7 @@
 			echo json_encode($response,JSON_UNESCAPED_UNICODE);
 		}
 
-		function send_notification ($userName)
+		function send_notification ($userName, $messageContent, $titleContent)
 		{
 
 			$sql = "SELECT token FROM USER WHERE userName = '$userName' AND token <> '' ";
@@ -1798,18 +1803,19 @@
 					$tokens[] = $row[0];
 				}
 			}
-
-			mysqli_close($conn);
-
-			$message = array();
-			$message['title'] = "title";
-			$message['body'] = "test body";
+			// $message = array();
+			// $message['title'] = "NOTIFICATON!";
+			// $message["body"] = $rq_userID." / ". $rq_userBranch. " / ".$rq_courseTeacher;
+			$message = array(
+			    "title"     => $titleContent,
+			    "message"   => $messageContent
+			);
 			
 			$url = 'https://fcm.googleapis.com/fcm/send';
 			$fields = array(
 				 'registration_ids' => $tokens,
 				 'data' => $message
-				);
+			);
 
 			$headers = array(
 				'Authorization:key = AAAAxVbNMaU:APA91bEyzf4ZnRJf-XJVsGdhlpUFZyLTZAt46M5ZnqlLBn---LFgaBroonpilsI43vnmEIAPly2Y9eExnUtRc6g45tQxVrpJZFD_5e860-zt8_KZ2bbh1WmOPG2f2yft8yvlbN6z4sO3 ',
@@ -1824,13 +1830,91 @@
 	        curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);  
 	        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
-	        $result = curl_exec($ch);           
+	        $result = curl_exec($ch);   
+	        $res;        
 	        if ($result === FALSE) {
 	            die('Curl failed: ' . curl_error($ch));
+	            $res = "fail";
+	        }else{
+	        	$res = "success";
 	        }
 	        curl_close($ch);
-	        echo $result;
 	        return $result;
+		}
+
+		function calculateIncome($branch)
+		{
+
+			$this->getTermList("no");
+			$start = $this->cur_termStart;
+			$end = $this->cur_termEnd;
+			//echo $start. " ".$end;
+			$incomeList = array();
+			$select = "SELECT A.Teacher, B.userID FROM TEACHERLIST A JOIN USER B ON A.Teacher = B.userName AND A.Branch = '$branch' AND B.userBranch ='$branch'  ";
+			$selectQuery = mysqli_query($this->con, $select);
+			
+			while($teacherRow = mysqli_fetch_array($selectQuery))
+			{
+				
+				$income = 0;
+				$getIncome = "SELECT startDate, endDate,courseTeacher FROM BOOKEDLIST WHERE courseBranch = '$branch' AND courseTeacher = '$teacherRow[0]' AND status = 'BOOKED' AND userID <> '$teacherRow[1]' order by UNIX_TIMESTAMP(startDate) DESC";
+				$getIncomeQuery = mysqli_query($this->con, $getIncome);
+				//echo " ////////////////// ";
+				while($incomeRow = mysqli_fetch_array($getIncomeQuery))
+				{
+					
+					if( strtotime(date("Y-m-d",strtotime($incomeRow[0]))) >= strtotime($start) && strtotime(date("Y-m-d",strtotime($incomeRow[1]))) <= strtotime($end))
+					{
+						
+						$startTime = date('H:i', strtotime($incomeRow[0])) ;
+						$endTime = date('H:i', strtotime($incomeRow[1])) ;
+						//$criterion = strtotime('16:00');
+						$startTimeSplit = explode(":", $startTime);
+						$endTimeSplit = explode(":", $endTime);
+						$startTimeInMinute = $startTimeSplit[0]*60 + $startTimeSplit[1];
+						$endTimeInMinute = $endTimeSplit[0]*60 + $endTimeSplit[1];
+						$criterion = 16*60;
+
+						$intervalFront = $startTimeInMinute - $criterion;
+						$intervalAfter = $endTimeInMinute - $criterion;
+						// echo "TIME: ".$startTime. " ~ ". $endTime;
+						// echo " => ".$intervalFront. " + ". $intervalAfter;
+						$getDow = date('w',strtotime($incomeRow[0]));
+						$weekend = false;
+						if($getDow == 0 || $getDow == 6)
+						{
+							$weekend = true;
+						}
+						if( $intervalFront < 0 && $intervalAfter <= 0 && !$weekend )
+						{
+							// echo "fir";
+							$income = $income + ($intervalAfter - $intervalFront)/15 * 5500;//16:00 시 전 
+						}else if( ($intervalFront >= 0 && $intervalAfter > 0) || $weekend )
+						{
+							// echo "mid";
+							$income = $income+ ($intervalAfter - $intervalFront)/15 * 6250;// 16:00 이후
+						}else{
+							//echo "else";
+							$income = $income+((-$intervalFront)/15 )* 5500 + $intervalAfter/15 * 6250;
+						}
+						// if($incomeRow[2] == "현효원")
+						// {
+						// 	echo $incomeRow[0];
+						// }
+						//echo " ICOME ".$income . "EE";
+					}
+					if(strtotime($incomeRow[0]) < strtotime($start) )
+					{
+						break;
+					}
+					
+					
+				}
+				array_push($incomeList, array($teacherRow[0] => $income) );
+
+			}
+
+			echo json_encode($incomeList,JSON_UNESCAPED_UNICODE);
 		}
 
 

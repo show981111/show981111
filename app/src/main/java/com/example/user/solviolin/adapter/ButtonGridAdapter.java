@@ -250,7 +250,7 @@ public class ButtonGridAdapter extends BaseAdapter {
             super.onPostExecute(s);
             Log.d("postWaitList",s);
             String message = "실패하였습니다.";
-            if(s.equals("success"))
+            if(s.substring(0,1).equals("s"))
             {
 //                for(String time : newtimeList)
 //                {

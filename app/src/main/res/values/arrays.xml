@@ -5,6 +5,8 @@
         <item>시청</item>
         <item>교대</item>
         <item>잠실</item>
+        <item>광화문</item>
+        <item>마곡</item>
     </string-array>
 
     <string-array name = "credit">
