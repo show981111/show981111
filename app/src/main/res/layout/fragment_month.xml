@@ -13,6 +13,20 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <TextView
+            android:padding="7dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17dp"
+            android:textColor="@color/colorRed"
+            android:textStyle="bold"
+            android:fontFamily="@font/fontfamily"
+            android:layout_gravity="center_vertical"
+            android:text="여기는 향후 모!든! 수업에 대한 시간을 바꾸는 예약입니다. ⭐️단순히 하루예약⭐ ️을 바꾸고 싶다면 오른쪽 탭을 사용해주세요!!!!!"
+            >
+
+        </TextView>
+
         <LinearLayout
             android:id="@+id/layout_adminUserRegister"
             android:layout_width="wrap_content"
@@ -58,12 +72,16 @@
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:id="@+id/courseTeacherSpinner"></Spinner>
+                android:id="@+id/courseTeacherSpinner">
+
+            </Spinner>
 
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:id="@+id/courseDaySpinner"></Spinner>
+                android:id="@+id/courseDaySpinner">
+
+            </Spinner>
 
             <Button
                 android:layout_width="wrap_content"
@@ -93,7 +111,9 @@
                 android:id="@+id/startDateTextView"
                 android:textSize="17dp"
                 android:layout_gravity="center_vertical"
-                ></TextView>
+                >
+
+            </TextView>
 
             <Button
                 android:layout_width="wrap_content"
@@ -110,7 +130,9 @@
             android:id="@+id/ButtonGridView"
             android:numColumns="4"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"></GridView>
+            android:layout_marginLeft="10dp">
+
+        </GridView>
 
 
     </LinearLayout>
