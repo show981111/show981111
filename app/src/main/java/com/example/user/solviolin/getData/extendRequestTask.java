@@ -70,7 +70,7 @@ public class extendRequestTask extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         String message;
-        if(s.substring(0,1).equals("2"))//새로운 끝나는 시간을 받아온다... 따라서 첫글자는 2갯지
+        if(s != null && s.length() > 2 &&s.substring(0,1).equals("2"))//새로운 끝나는 시간을 받아온다... 따라서 첫글자는 2갯지
         {
             bookedLists.get(pos).setBookedEndDate(s);
             Log.d("extendRequestTask", String.valueOf(bookedLists.size()));

@@ -25,9 +25,9 @@ public class Vp_adapter extends FragmentPagerAdapter {
 
     public CharSequence getPageTitle(int i){
         if(i == 0) {
-            return "바꿔줘요 쌤";
+            return "모든수업 변경";
         }else {
-            return "미안해요 쌤";
+            return "한번수업 변경";
         }
     }
 }

@@ -1,10 +1,12 @@
 package com.example.user.solviolin.getData;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.user.solviolin.Data.courseTimeLine;
 import com.google.gson.Gson;

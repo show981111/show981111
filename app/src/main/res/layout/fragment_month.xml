@@ -18,11 +18,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="17dp"
-            android:textColor="@color/colorRed"
+            android:textColor="@color/colorWarning"
             android:textStyle="bold"
             android:fontFamily="@font/fontfamily"
             android:layout_gravity="center_vertical"
-            android:text="여기는 향후 모!든! 수업에 대한 시간을 바꾸는 예약입니다. ⭐️단순히 하루예약⭐ ️을 바꾸고 싶다면 오른쪽 탭을 사용해주세요!!!!!"
+            android:text="여기는 향후 모!든! 수업에 대한 시간을 바꾸는 예약입니다. ⭐️단순히 하루예약⭐ ️을 바꾸고 싶다면 \n⭐오른쪽 탭⭐을 사용해주세요!!!!!"
             >
 
         </TextView>

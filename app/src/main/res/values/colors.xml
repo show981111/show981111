@@ -12,4 +12,5 @@
     <color name="colorPrimary">#8FBC8F</color>
     <color name="colorPrimaryDark">#556B2F</color>
     <color name="colorRed">#750d0d</color>
+    <color name="colorWhite">#ffffff</color>
 </resources>

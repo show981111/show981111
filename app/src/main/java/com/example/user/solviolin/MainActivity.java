@@ -24,6 +24,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.user.solviolin.getData.initializeRequest;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 
 import org.json.JSONObject;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         userBranch = intent.getStringExtra("userBranch");
         userName = intent.getStringExtra("userName");
         userDuration = intent.getStringExtra("userDuration");
+        getToken = intent.getStringExtra("token");
         Log.d("main",userID);
         Log.d("main",userBranch);
         Log.d("main",userName);
@@ -92,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         Button termExtendButton = (Button)findViewById(R.id.bt_termExtend);
         Button bt_waitList = findViewById(R.id.bt_waitList);
         Button bt_extendRest = findViewById(R.id.bt_extendRest);
+        Button bt_qrCheckIn = findViewById(R.id.bt_qrCheckIn);
 
         bt_extendRest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -210,6 +213,18 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.solviolin.com"));
                 startActivity(myIntent);
+            }
+        });
+
+        bt_qrCheckIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent qrScannerActivity = new Intent(MainActivity.this, QrScannerActivity.class);
+                intent.putExtra("userID", userID);
+                intent.putExtra("token", getToken);
+                Log.d("mainAc", userID);
+                Log.d("mainAc", getToken);
+                MainActivity.this.startActivity(qrScannerActivity);
             }
         });
 

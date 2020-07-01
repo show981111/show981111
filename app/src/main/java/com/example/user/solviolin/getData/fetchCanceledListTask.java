@@ -109,38 +109,38 @@ public class fetchCanceledListTask extends AsyncTask<String , Void, BookedList[]
 
     @Override
     protected void onPostExecute(BookedList[] fetchedBookedLists) {
-
+        super.onPostExecute(fetchedBookedLists);
         //send cancel request
-        if(option.equals("cancel_cur")) {
-            cancelRequestTask cancelRequestTask = new cancelRequestTask();
-            cancelRequestTask.execute("http://show981111.cafe24.com/cancelCourse.php");//왜 굳이 파싱을 하고 하지? 의미가 있냐?
-        }else if(option.equals("cancelAll"))
-        {
-            bookedListArrayList = new ArrayList<>();
-            bookedListArrayList.clear();
-            for(BookedList canceledCourse : fetchedBookedLists)
-            {
-                bookedListArrayList.add(canceledCourse);//이번학기 지난학기 취소했지만 아직 보강을 안잡은 수업을 파싱한다.
-            }
-            Log.d("fetchCanceledListTask", String.valueOf(bookedListArrayList.size()));
-            if(bookedListArrayList.size() > 0) {
-                choosenewDate.setEnabled(true);
-                tv_cancelTeacher.setText(bookedListArrayList.get(bookedListArrayList.size() - 1).getBookedTeacher());
-                tv_cancelBranch.setText(bookedListArrayList.get(bookedListArrayList.size() - 1).getBookedBranch());
-                tv_cancelDate.setText(bookedListArrayList.get(bookedListArrayList.size() - 1).getBookedStartDate());
-                canceledDate = bookedListArrayList.get(bookedListArrayList.size() - 1).getBookedStartDate();
-                Log.d("fetchCanceledListTask", canceledDate );
-            }else{
-                if(!userName.equals("admin")) {
-                    choosenewDate.setEnabled(false);
-                    Toast toast = Toast.makeText(context, "먼저 수업을 취소해주세요.", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
-                }else{
-                    canceledDate = "admin";
+        if(fetchedBookedLists != null) {
+            if (option.equals("cancel_cur")) {
+                cancelRequestTask cancelRequestTask = new cancelRequestTask();
+                cancelRequestTask.execute("http://show981111.cafe24.com/cancelCourse.php");//왜 굳이 파싱을 하고 하지? 의미가 있냐?
+            } else if (option.equals("cancelAll")) {
+                bookedListArrayList = new ArrayList<>();
+                bookedListArrayList.clear();
+                for (BookedList canceledCourse : fetchedBookedLists) {
+                    bookedListArrayList.add(canceledCourse);//이번학기 지난학기 취소했지만 아직 보강을 안잡은 수업을 파싱한다.
                 }
-            }
+                Log.d("fetchCanceledListTask", String.valueOf(bookedListArrayList.size()));
+                if (bookedListArrayList.size() > 0) {
+                    choosenewDate.setEnabled(true);
+                    tv_cancelTeacher.setText(bookedListArrayList.get(bookedListArrayList.size() - 1).getBookedTeacher());
+                    tv_cancelBranch.setText(bookedListArrayList.get(bookedListArrayList.size() - 1).getBookedBranch());
+                    tv_cancelDate.setText(bookedListArrayList.get(bookedListArrayList.size() - 1).getBookedStartDate());
+                    canceledDate = bookedListArrayList.get(bookedListArrayList.size() - 1).getBookedStartDate();
+                    Log.d("fetchCanceledListTask", canceledDate);
+                } else {
+                    if (!userName.equals("admin")) {
+                        choosenewDate.setEnabled(false);
+                        Toast toast = Toast.makeText(context, "먼저 수업을 취소해주세요.", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                    } else {
+                        canceledDate = "admin";
+                    }
+                }
 
+            }
         }
 
 
@@ -148,8 +148,6 @@ public class fetchCanceledListTask extends AsyncTask<String , Void, BookedList[]
 //        {
 //            canceledList.add(bookedListitem);
 //        }
-
-        super.onPostExecute(fetchedBookedLists);
     }
 
     class cancelRequestTask extends AsyncTask<String, Void, String> {

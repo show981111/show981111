@@ -8,32 +8,31 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/reservationButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="70dp"
-        android:text="레슨예약"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:fontFamily="@font/fontfamily"
-        />
-
-
-    <Button
         android:id="@+id/resultButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="예약내역"
+        android:layout_marginTop="70dp"
+        android:text="예약 내역/취소"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reservationButton"
+        app:layout_constraintTop_toTopOf="parent"
         android:fontFamily="@font/fontfamily"/>
+
+    <Button
+        android:id="@+id/reservationButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="보강예약"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/resultButton"
+        android:fontFamily="@font/fontfamily"
+        />
 
     <Button
         android:id="@+id/gotohompageButton"
@@ -47,7 +46,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/resultButton" />
+        app:layout_constraintTop_toBottomOf="@+id/reservationButton" />
 
     <Button
         android:id="@+id/bt_termExtend"
@@ -63,39 +62,71 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gotohompageButton" />
 
-    <TextView
-        android:id="@+id/usingtip0"
+    <Button
+        android:id="@+id/bt_qrCheckIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/fontfamily"
-        android:text="헉! 수업 못갈각!!!!!!!!!"
-        android:textColor="#ff4500"
-        android:textSize="23dp"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="QR체크인"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bt_termExtend"
-        app:layout_constraintVertical_bias="0.325" />
+        app:layout_constraintTop_toBottomOf="@+id/gotohompageButton" />
+
+<!--    <TextView-->
+<!--        android:id="@+id/usingtip0"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="8dp"-->
+<!--        android:layout_marginEnd="8dp"-->
+<!--        android:fontFamily="@font/fontfamily"-->
+<!--        android:text="헉! 수업 못갈각!!!!!!!!!"-->
+<!--        android:textColor="#ff4500"-->
+<!--        android:textSize="23dp"-->
+<!--        android:gravity="center"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/bt_termExtend"-->
+<!--        app:layout_constraintVertical_bias="0.325" />-->
 
     <TextView
         android:id="@+id/usingtip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/fontfamily"
-        android:text="레슨 취소 : 예약내역 버튼 -> 취소하고싶은 수업 swipe"
-        android:textColor="#eee9e9"
-        android:textSize="17dp"
+        android:text="레슨 취소"
+        android:textColor="@color/colorWhite"
+        android:textSize="28sp"
         android:layout_gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usingtip0" />
+        app:layout_constraintTop_toBottomOf="@+id/bt_qrCheckIn" />
+
+    <TextView
+        android:id="@+id/usingtip0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/fontfamily"
+        android:text="예약내역/취소 버튼 -> 취소하고싶은 수업 swipe"
+        android:textColor="@color/PaleGreen"
+        android:textSize="17sp"
+        android:layout_gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usingtip" />
+
     <TextView
         android:id="@+id/usingtip1"
         android:layout_width="wrap_content"
@@ -104,13 +135,30 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/fontfamily"
-        android:text="레슨 보강 : 레슨예약 버튼 -> 날짜 선택"
-        android:textColor="#eee9e9"
-        android:textSize="18dp"
+        android:text="레슨 보강"
+        android:textColor="@color/colorWhite"
+        android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usingtip" />
+        app:layout_constraintTop_toBottomOf="@+id/usingtip0" />
+
+    <TextView
+        android:id="@+id/usingtip2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/fontfamily"
+        android:text="보강예약 버튼 -> 날짜 선택"
+        android:textColor="@color/PaleGreen"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usingtip1" />
+
 
     <Button
     android:id="@+id/bt_waitList"

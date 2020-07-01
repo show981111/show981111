@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/fontfamily"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:hint="선생님"/>
 
         <TextView
@@ -23,7 +23,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:hint=" / "/>
         <TextView
             android:id="@+id/tv_bookedBranch"
@@ -31,7 +31,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:hint="지점"/>
     </LinearLayout>
     <LinearLayout
@@ -45,7 +45,7 @@
             android:layout_marginLeft="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:hint="취소한 날짜"/>
 
         <TextView
@@ -54,7 +54,7 @@
             android:layout_marginLeft="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:hint="9999-99-99 14:00"/>
 
     </LinearLayout>
@@ -70,7 +70,7 @@
             android:layout_marginLeft="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:hint="보강 날짜"/>
 
         <TextView
@@ -79,7 +79,7 @@
             android:layout_marginLeft="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:hint="아직 예약하신 보강이 없습니다"/>
 
     </LinearLayout>

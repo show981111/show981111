@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
+    buildToolsVersion '28.0.3'
     signingConfigs {
         config {
         }
@@ -8,9 +9,9 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.solviolinTeam.user.solviolin"
-        minSdkVersion 17
+        minSdkVersion 24
         targetSdkVersion 28
-        versionCode 14
+        versionCode 16
         versionName "2.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -20,7 +21,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
+repositories {
+    jcenter()
+}
+
+
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 dependencies {
@@ -44,4 +54,9 @@ dependencies {
 
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'com.google.firebase:firebase-messaging:17.4.0'
+
+    implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+
+
 }

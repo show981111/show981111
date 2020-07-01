@@ -52,7 +52,7 @@
         android:layout_gravity="center_horizontal|center_vertical|center"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/fontfamily"
-        android:text="웹사이트/ 안드로이드 앱을 통해 운영 됩니다."
+        android:text="웹사이트/ios/안드로이드 앱을 통해 운영 됩니다."
         android:textSize="15dp"
         android:textColor="#eee9e9"
 

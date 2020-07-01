@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@drawable/cand4"
+    android:background="@drawable/submain"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ReservationActivity">
@@ -16,6 +16,7 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
+            app:tabTextColor="@color/colorWhite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

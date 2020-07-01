@@ -21,8 +21,9 @@
                 android:layout_marginLeft="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30dp"
+                android:textSize="30sp"
                 android:text="취소했던 레슨"
+                android:textColor="@color/colorWhite"
                 android:fontFamily="@font/fontfamily"
                 />
 
@@ -49,7 +50,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:hint="아이디"
                 android:fontFamily="@font/fontfamily"
                 />
@@ -59,7 +60,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:hint="지점"
                 android:fontFamily="@font/fontfamily"
                 />
@@ -95,8 +96,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="강사"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:fontFamily="@font/fontfamily"
+                android:textColor="@color/colorWhite"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
@@ -108,7 +110,9 @@
                 android:hint="선생님"
                 android:fontFamily="@font/fontfamily"
                 android:id="@+id/tv_canceledTeacher"
-                android:textSize="20dp"
+                android:textSize="20sp"
+                android:textColorHint="@color/colorWhite"
+                android:textColor="@color/colorWhite"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
                 />
@@ -116,8 +120,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint=" / "
+                android:textColorHint="@color/colorWhite"
                 android:fontFamily="@font/fontfamily"
-                android:textSize="20dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="20sp"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
                 />
@@ -126,8 +132,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="지점"
+                android:textColorHint="@color/colorWhite"
                 android:fontFamily="@font/fontfamily"
-                android:textSize="20dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="20sp"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp" />
 
@@ -135,10 +143,12 @@
         </LinearLayout>
 
         <TextView
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:fontFamily="@font/fontfamily"
             android:id="@+id/tv_canceledDate"
             android:hint="취소한 수업이 없습니다."
+            android:textColorHint="@color/colorWhite"
+            android:textColor="@color/colorWhite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -158,7 +168,7 @@
 <!--                android:layout_marginBottom="10dp"-->
 <!--                android:text="날짜 선택"-->
 <!--                android:fontFamily="@font/fontfamily"-->
-<!--                android:textSize="20dp"-->
+<!--                android:textSize="20sp"-->
 <!--                android:id="@+id/chooseCancelDate"/>-->
 <!--            <TextView-->
 <!--                android:layout_width="wrap_content"-->
@@ -166,7 +176,7 @@
 <!--                android:hint="선택된 날짜"-->
 <!--                android:fontFamily="@font/fontfamily"-->
 <!--                android:id="@+id/selectedDate"-->
-<!--                android:textSize="20dp"-->
+<!--                android:textSize="20sp"-->
 <!--                android:layout_marginBottom="10dp"-->
 <!--                android:layout_marginLeft="10dp"-->
 <!--                android:layout_marginRight="10dp"/>-->
@@ -208,8 +218,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30dp"
+            android:textSize="30sp"
             android:text="예약할 레슨"
+            android:textColor="@color/colorWhite"
             android:fontFamily="@font/fontfamily"
             android:layout_marginTop="8dp"
             android:layout_marginLeft="10dp"/>
@@ -227,7 +238,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:text="날짜 선택"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:fontFamily="@font/fontfamily"
                 android:id="@+id/chooseChangedDate"/>
             <TextView
@@ -235,8 +246,10 @@
                 android:layout_height="wrap_content"
                 android:hint="선택된 날짜"
                 android:fontFamily="@font/fontfamily"
+                android:textColorHint="@color/colorWhite"
                 android:id="@+id/selectedNewDate"
-                android:textSize="20dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="20sp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp"

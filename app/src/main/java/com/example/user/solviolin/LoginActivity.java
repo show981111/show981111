@@ -133,6 +133,7 @@ public class LoginActivity extends AppCompatActivity {
                 intent.putExtra("userID", userDataArrayList.get(0).getUserID());
                 intent.putExtra("userBranch", userDataArrayList.get(0).getUserBranch());
                 intent.putExtra("userDuration", userDataArrayList.get(0).getUserDuration());
+                intent.putExtra("token", token);
                 Log.d("login",userDataArrayList.get(0).getUserName());
                 Log.d("login",userDataArrayList.get(0).getUserID());
                 Log.d("login",userDataArrayList.get(0).getUserBranch());
