@@ -45,11 +45,10 @@ public class QrScannerActivity extends AppCompatActivity {
             if(result.getContents() == null) {
                 Toast.makeText(this, "취소되었습니다!", Toast.LENGTH_LONG).show();
             } else {
-                Log.d("QRbefore", userID);
-                Log.d("QRbefore", result.getContents());
-                Log.d("QRbefore", getToken);
-                QrcheckIn qrcheckIn = new QrcheckIn(userID,result.getContents() ,getToken);
-                qrcheckIn.execute("http://show981111.cafe24.com/qrCheckIn.php");
+                if(userID != null ) {
+                    QrcheckIn qrcheckIn = new QrcheckIn(userID, result.getContents(), getToken);
+                    qrcheckIn.execute("http://show981111.cafe24.com/qrCheckIn.php");
+                }
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);

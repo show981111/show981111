@@ -136,7 +136,7 @@ public class DayFragment extends Fragment {
                     .add("userID", get_userID)
                     .add("userBranch", get_userBranch)
                     .build();
-            Log.d("getUserDataTask",get_userBranch);
+            //Log.d("getUserDataTask",get_userBranch);
 
             Request request = new Request.Builder()
                     .url(url)
@@ -145,14 +145,14 @@ public class DayFragment extends Fragment {
 
             try {
                 Response response = client.newCall(request).execute();
-                Log.d("getUserDataTask", "res");
+                //Log.d("getUserDataTask", "res");
                 Gson gson = new Gson();
                 userData[] userData = gson.fromJson(response.body().charStream(), userData[].class);
                 return userData;
 
             } catch (IOException e) {
                 e.printStackTrace();
-                Log.d("FetchUSer", e.getMessage());
+                //Log.d("FetchUSer", e.getMessage());
                 return null;
             }
         }
@@ -165,7 +165,7 @@ public class DayFragment extends Fragment {
             {
                 userDataArrayList.add(user);
             }
-            Log.d("getUserTasksize", String.valueOf(userDataArrayList.size()));
+            //Log.d("getUserTasksize", String.valueOf(userDataArrayList.size()));
             if(userDataArrayList.size() == 1)
             {
                 Toast.makeText(context,"매치되었습니다.",Toast.LENGTH_SHORT).show();

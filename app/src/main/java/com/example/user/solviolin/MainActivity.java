@@ -13,6 +13,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -40,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
     public static String userBranch;
     public static String userName;
     public static String userDuration;
-    public static int delaycredit = 0;
-    public static int curcount = 0;
     public static String getToken = "";
 
     @Override
@@ -50,42 +49,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //new Downloader3(MainActivity.this, "http://show981111.cafe24.com/DayBookedList.php").execute();
 
-        Intent intent = getIntent();
-        userID = intent.getStringExtra("userID");
-        userBranch = intent.getStringExtra("userBranch");
-        userName = intent.getStringExtra("userName");
-        userDuration = intent.getStringExtra("userDuration");
-        getToken = intent.getStringExtra("token");
-        Log.d("main",userID);
-        Log.d("main",userBranch);
-        Log.d("main",userName);
-        Log.d("main",userDuration);
+        if(getIntent() != null) {
+            Intent intent = getIntent();
+            userID = intent.getStringExtra("userID");
+            userBranch = intent.getStringExtra("userBranch");
+            userName = intent.getStringExtra("userName");
+            userDuration = intent.getStringExtra("userDuration");
+            getToken = intent.getStringExtra("token");
+        }
 
-        //Toast.makeText(getApplicationContext(),"got it!"+userID, Toast.LENGTH_SHORT).show();
-
-//        switch (userBranch) {
-//            case "잠실":
-//                url = "http://show981111.cafe24.com/BookedCourseList_J.php";
-//                break;
-//            case "여의도":
-//                url = "http://show981111.cafe24.com/BookedCourseList_Y.php";
-//                break;
-//            case "시청":
-//                url = "http://show981111.cafe24.com/BookedCourseList_S.php";
-//                break;
-//            case "교대":
-//                url = "http://show981111.cafe24.com/BookedCourseList_K.php";
-//                break;
-//            case "광화문":
-//                url = "http://show981111.cafe24.com/BookedCourseList_G.php";
-//                break;
-//        }
-//
-//        new Downloader1(MainActivity.this, url).execute(); //get booked list by oldversion
-//
-//
-//        Downloader3 download = new Downloader3(MainActivity.this, "http://show981111.cafe24.com/DayBookedList.php");
-//        download.execute();
 
         Button reservationButton = (Button) findViewById(R.id.reservationButton);
         Button resultButton = (Button) findViewById(R.id.resultButton);
@@ -162,47 +134,6 @@ public class MainActivity extends AppCompatActivity {
         resultButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                String url = "";
-//                switch (userBranch) {
-//                    case "잠실":
-//                        url = "http://show981111.cafe24.com/BookedCourseList_J.php";
-//                        break;
-//                    case "여의도":
-//                        url = "http://show981111.cafe24.com/BookedCourseList_Y.php";
-//                        break;
-//                    case "시청":
-//                        url = "http://show981111.cafe24.com/BookedCourseList_S.php";
-//                        break;
-//                    case "교대":
-//                        url = "http://show981111.cafe24.com/BookedCourseList_K.php";
-//                        break;
-//                    case "광화문":
-//                        url = "http://show981111.cafe24.com/BookedCourseList_G.php";
-//                        break;
-//                }
-//                new Downloader1(MainActivity.this, url).execute();
-//                delaycredit = 0;//이월된 보강 갯수
-//                curcount = 0;
-//                for(int i = 0; i < personalDayBookedList.size(); i++)
-//                {
-//                    if(personalDayBookedList.get(i).getNewlyBookedDate().equals("다음달 중으로 할 예정(이월된 보강은 다음달까지만 가능합니다)") && (personalDayBookedList.get(i).getDataStatus().equals("going") || personalDayBookedList.get(i).getDataStatus().equals("cur") ))
-//                    {
-//                        delaycredit = delaycredit + 1;
-//
-//                    }
-//                    if(personalDayBookedList.get(i).getCanceledCourseDate().substring(0,1).equals("[") && personalDayBookedList.get(i).getNewlyBookedDate().equals("다음달 중으로 할 예정(이월된 보강은 다음달까지만 가능합니다)") && (personalDayBookedList.get(i).getDataStatus().equals("going")|| personalDayBookedList.get(i).getDataStatus().equals("cur")))
-//                    {
-//                        delaycredit = delaycredit + 1;
-//
-//                    }
-//                    if( personalDayBookedList.get(i).getDataStatus().equals("cur"))
-//                    {
-//                        curcount = curcount + 1;
-//                    }
-//                }
-//                Downloader3 download = new Downloader3(MainActivity.this, "http://show981111.cafe24.com/DayBookedList.php");
-//                download.execute();
-
                 Intent resultIntent = new Intent(MainActivity.this, Result.class);
                 MainActivity.this.startActivity(resultIntent);
             }
@@ -220,10 +151,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent qrScannerActivity = new Intent(MainActivity.this, QrScannerActivity.class);
-                intent.putExtra("userID", userID);
-                intent.putExtra("token", getToken);
-                Log.d("mainAc", userID);
-                Log.d("mainAc", getToken);
+//                qrScannerActivity.putExtra("userID", userID);
+//                qrScannerActivity.putExtra("token", getToken);
+//                //Log.d("mainAc", userID);
+                //Log.d("mainAc", getToken);
                 MainActivity.this.startActivity(qrScannerActivity);
             }
         });
@@ -343,7 +274,7 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 okhttp3.Response response = client.newCall(request).execute();
-                //Log.d("response", response.body().string());
+                ////Log.d("response", response.body().string());
                 return response.body().string();
 
             } catch (IOException e) {
@@ -355,25 +286,25 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Log.d("response",s);
+            //Log.d("response",s);
             if(s.equals("success"))
             {
-                Log.d("response",s);
+                //Log.d("response",s);
                 Toast.makeText(c, "완료되었습니다",Toast.LENGTH_SHORT).show();
             }else if(s.equals("notMatched"))
             {
-                Log.d("response",s);
+                //Log.d("response",s);
                 Toast.makeText(c, "형식을 확인해주세요!",Toast.LENGTH_SHORT).show();
             }else if(s.equals("redunt"))
             {
-                Log.d("response",s);
+                //Log.d("response",s);
                 Toast.makeText(c, "이미 연장된 날짜입니다.",Toast.LENGTH_SHORT).show();
             }else if(s.equals("nothing"))
             {
-                Log.d("response",s);
+                //Log.d("response",s);
                 Toast.makeText(c, "연장할 사람이 없습니다.",Toast.LENGTH_SHORT).show();
             }else {
-                Log.d("response",s);
+                //Log.d("response",s);
                 Toast.makeText(c, "날짜를 다시 확인해주세요",Toast.LENGTH_SHORT).show();
             }
         }

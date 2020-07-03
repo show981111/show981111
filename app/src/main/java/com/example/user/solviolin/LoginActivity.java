@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -36,7 +37,7 @@ import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static String token;
+    private static String token = "fail";
     private static String userID;
     private static String userPassword;
 
@@ -86,58 +87,61 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(InstanceIdResult instanceIdResult) {
                     token = instanceIdResult.getToken();
-                    Log.d("token",token);
 
                 }
             });
 
             OkHttpClient okHttpClient = new OkHttpClient();
 
-            RequestBody formBody = new FormBody.Builder()
-                    .add("userID", userID )
-                    .add("userPassword", userPassword)
-                    .add("token",token)
-                    .build();
+            if(userID != null && userPassword != null && token != null ) {
+                RequestBody formBody = new FormBody.Builder()
+                        .add("userID", userID)
+                        .add("userPassword", userPassword)
+                        .add("token", token)
+                        .build();
 
-            Request request = new Request.Builder()
-                    .url(url)
-                    .post(formBody)
-                    .build();
+                Request request = new Request.Builder()
+                        .url(url)
+                        .post(formBody)
+                        .build();
 
-            try {
-                Response response = okHttpClient.newCall(request).execute();
-                Log.d("loginTask", "res");
-                Gson gson = new Gson();
-                userData[] client = gson.fromJson(response.body().charStream(), userData[].class);
-                Log.d("loginTask", "got");
-                return client;
 
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.d("loginTask", e.getMessage());
-                return null;
+                try {
+                    Response response = okHttpClient.newCall(request).execute();
+                    //Log.d("loginTask", "res");
+                    Gson gson = new Gson();
+                    userData[] client = gson.fromJson(response.body().charStream(), userData[].class);
+                    //Log.d("loginTask", "got");
+                    return client;
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    //Log.d("loginTask", e.getMessage());
+                    return null;
+                }
             }
+
+            return null;
         }
 
         @Override
         protected void onPostExecute(userData[] client) {
             super.onPostExecute(client);
-
-            for(userData item : client)
+            if(client != null)
             {
-                userDataArrayList.add(item);
+                for(userData item : client)
+                {
+                    userDataArrayList.add(item);
+                }
             }
-            if(userDataArrayList.size() > 0) {
+            if(userDataArrayList.size() > 0 && userDataArrayList.get(0).getUserID() != null && !TextUtils.isEmpty(userDataArrayList.get(0).getUserID())) {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.putExtra("userName", userDataArrayList.get(0).getUserName());
                 intent.putExtra("userID", userDataArrayList.get(0).getUserID());
                 intent.putExtra("userBranch", userDataArrayList.get(0).getUserBranch());
                 intent.putExtra("userDuration", userDataArrayList.get(0).getUserDuration());
                 intent.putExtra("token", token);
-                Log.d("login",userDataArrayList.get(0).getUserName());
-                Log.d("login",userDataArrayList.get(0).getUserID());
-                Log.d("login",userDataArrayList.get(0).getUserBranch());
-                Log.d("login",userDataArrayList.get(0).getUserDuration());
+
                 LoginActivity.this.startActivity(intent);
             }else{
                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
