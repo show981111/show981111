@@ -48,6 +48,9 @@ public class fetchBookedList extends AsyncTask<String, Void, BookedList[]> {
 
         OkHttpClient okHttpClient = new OkHttpClient();
 
+        if(userID == null || option == null){
+            return null;
+        }
         RequestBody formBody = new FormBody.Builder()
                 .add("userID", userID )
                 .add("option", option)

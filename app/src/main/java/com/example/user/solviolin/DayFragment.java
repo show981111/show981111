@@ -203,7 +203,7 @@ public class DayFragment extends Fragment {
 
         final CheckBox cb_isNull = getView().findViewById(R.id.cb_isNull);
 
-        if(!userName.equals("admin"))
+        if(userName != null && !userName.equals("admin"))
         {
             linearLayout.setVisibility(View.GONE);
         }

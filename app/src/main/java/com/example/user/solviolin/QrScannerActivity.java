@@ -104,7 +104,7 @@ public class QrScannerActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Log.d("Qrafter", s);
+            if(s == null) return;
             if(s.equals("success")){
                 AlertDialog.Builder builder = new AlertDialog.Builder(QrScannerActivity.this);
                 builder.setMessage("체크인에 성공하였습니다!")
