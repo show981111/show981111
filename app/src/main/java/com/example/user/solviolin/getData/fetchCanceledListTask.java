@@ -82,6 +82,8 @@ public class fetchCanceledListTask extends AsyncTask<String , Void, BookedList[]
         String url = strings[0];
 
         OkHttpClient client = new OkHttpClient();
+        if(userID == null || option == null) return null;
+
         RequestBody formBody = new FormBody.Builder()
                 .add("userID",userID)
                 .add("option",option)

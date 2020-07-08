@@ -53,7 +53,6 @@ public class fetchTeacherForSpinner extends AsyncTask<String, Void, courseTimeLi
         RequestBody formBody = new FormBody.Builder()
                 .add("userBranch", fetch_userBranch)
                 .build();
-        Log.d("userBranchInFetch",fetch_userBranch);
 
         Request request = new Request.Builder()
                 .url(url)
@@ -85,6 +84,7 @@ public class fetchTeacherForSpinner extends AsyncTask<String, Void, courseTimeLi
         super.onPostExecute(courseTimeLines);
         courseTimeLineArrayList.clear();
         TeacherList.clear();
+        if(courseTimeLines == null) return;
         for(courseTimeLine courseTimeLine : courseTimeLines)
         {
             if(courseTimeLine != null) {

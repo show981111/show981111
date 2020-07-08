@@ -94,6 +94,7 @@ public class fetchTimeForDayTask extends AsyncTask<String, Void, AvailableTimeFo
 
     @Override
     protected void onPostExecute(AvailableTimeForMonth[] times) {
+        if(times == null) return;
         timeList.clear();
         for(AvailableTimeForMonth time : times)
         {

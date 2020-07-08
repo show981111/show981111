@@ -78,6 +78,7 @@ public class fetchBookedList extends AsyncTask<String, Void, BookedList[]> {
     @Override
     protected void onPostExecute(BookedList[] bookedLists) {
         super.onPostExecute(bookedLists);
+        if(bookedLists == null) return;
         if(option.equals("cur"))
         {
             cur_bookedListArrayList.clear();

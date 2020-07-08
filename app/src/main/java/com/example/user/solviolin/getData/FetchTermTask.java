@@ -55,7 +55,7 @@ public class FetchTermTask extends AsyncTask<String, Void, termList[]>
     @Override
     protected void onPostExecute(termList[] termLists) {
         super.onPostExecute(termLists);
-
+        if(termLists == null) return;
         for(termList termitem : termLists)
         {
             termListsArray.add(termitem);

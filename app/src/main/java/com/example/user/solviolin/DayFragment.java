@@ -203,9 +203,12 @@ public class DayFragment extends Fragment {
 
         final CheckBox cb_isNull = getView().findViewById(R.id.cb_isNull);
 
-        if(userName != null && !userName.equals("admin"))
+        if(userName != null)
         {
-            linearLayout.setVisibility(View.GONE);
+            if(!userName.equals("admin"))
+            {
+                linearLayout.setVisibility(View.GONE);
+            }
         }
         bt_chooseDate.setEnabled(false);
         bt_searchUser.setOnClickListener(new View.OnClickListener() {

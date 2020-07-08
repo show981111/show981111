@@ -80,7 +80,7 @@ public class acceptRegularTask extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        Log.d("postWaitList",s);
+        if(s == null) return;
         if(s.equals("success"))
         {
             waitlist_items.remove(position);
