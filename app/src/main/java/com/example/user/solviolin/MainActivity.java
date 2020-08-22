@@ -150,28 +150,51 @@ public class MainActivity extends AppCompatActivity {
         bt_qrCheckIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent qrScannerActivity = new Intent(MainActivity.this, QrScannerActivity.class);
-//                qrScannerActivity.putExtra("userID", userID);
-//                qrScannerActivity.putExtra("token", getToken);
-//                //Log.d("mainAc", userID);
-                //Log.d("mainAc", getToken);
-                MainActivity.this.startActivity(qrScannerActivity);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                AlertDialog dialog = builder.setMessage("발열 증상이 있습니까?")
+                        .setPositiveButton("없습니다", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent qrScannerActivity = new Intent(MainActivity.this, QrScannerActivity.class);
+                                //                qrScannerActivity.putExtra("userID", userID);
+                                //                qrScannerActivity.putExtra("token", getToken);
+                                //                //Log.d("mainAc", userID);
+                                                                //Log.d("mainAc", getToken);
+                                MainActivity.this.startActivity(qrScannerActivity);
+                            }
+                        })
+                        .setNegativeButton("있습니다", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                                builder.setMessage("발열증상이 있을 경우 학원 입장이 불가합니다!")
+                                        .setNegativeButton("확인", null)
+                                        .create()
+                                        .show();
+                            }
+                        }).create();
+                dialog.show();
+//                Intent qrScannerActivity = new Intent(MainActivity.this, QrScannerActivity.class);
+////                qrScannerActivity.putExtra("userID", userID);
+////                qrScannerActivity.putExtra("token", getToken);
+////                //Log.d("mainAc", userID);
+//                //Log.d("mainAc", getToken);
+//                MainActivity.this.startActivity(qrScannerActivity);
             }
         });
 
-
-
-
-
-
+        initializeButton.setVisibility(View.GONE);
+        termExtendButton.setVisibility(View.GONE);
+        bt_waitList.setVisibility(View.GONE);
+        bt_extendRest.setVisibility(View.GONE);
 
 
         if(userName != null) {
-            if (!userName.equals("admin")) {
-                initializeButton.setVisibility(View.GONE);
-                termExtendButton.setVisibility(View.GONE);
-                bt_waitList.setVisibility(View.GONE);
-                bt_extendRest.setVisibility(View.GONE);
+            if (userName.equals("admin")) {
+                initializeButton.setVisibility(View.VISIBLE);
+                termExtendButton.setVisibility(View.VISIBLE);
+                bt_waitList.setVisibility(View.VISIBLE);
+                bt_extendRest.setVisibility(View.VISIBLE);
             }
         }
 

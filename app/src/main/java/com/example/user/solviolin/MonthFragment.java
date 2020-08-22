@@ -295,10 +295,11 @@ public class MonthFragment extends Fragment {
         final EditText et_adminUser;
         final EditText et_adminBranch;
         Button bt_searchUser;
-        if(!userName.equals("admin"))
+        linearLayout.setVisibility(View.GONE);
+
+        if(userName != null && userName.equals("admin"))
         {
-            Log.d("userName",userName);
-            linearLayout.setVisibility(View.GONE);
+            linearLayout.setVisibility(View.VISIBLE);
         }else
         {
             et_adminUser = getView().findViewById(R.id.et_adminUser);

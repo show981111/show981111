@@ -202,12 +202,12 @@ public class DayFragment extends Fragment {
         final Button bt_chooseDate = getView().findViewById(R.id.chooseChangedDate);
 
         final CheckBox cb_isNull = getView().findViewById(R.id.cb_isNull);
-
+        linearLayout.setVisibility(View.GONE);
         if(userName != null)
         {
-            if(!userName.equals("admin"))
+            if(userName.equals("admin"))
             {
-                linearLayout.setVisibility(View.GONE);
+                linearLayout.setVisibility(View.VISIBLE);
             }
         }
         bt_chooseDate.setEnabled(false);
@@ -224,9 +224,12 @@ public class DayFragment extends Fragment {
 
         final GridView gv_chooseTime = getView().findViewById(R.id.changingTimeGridView);
         //fetchCanceledListTask(Context context, TextView tv_cancelTeacher, TextView tv_cancelBranch, TextView tv_cancelDate, String option)
-        if(!userName.equals("admin")) {
-            fetchCanceledListTask = new fetchCanceledListTask(getContext(), send_userID, tv_canceledTeacher, tv_canceledBranch, tv_canceledDate, "cancelAll", bt_chooseDate);
-            fetchCanceledListTask.execute("http://show981111.cafe24.com/getBookedList.php");
+
+        if(userName != null) {
+            if (!userName.equals("admin")) {
+                fetchCanceledListTask = new fetchCanceledListTask(getContext(), send_userID, tv_canceledTeacher, tv_canceledBranch, tv_canceledDate, "cancelAll", bt_chooseDate);
+                fetchCanceledListTask.execute("http://show981111.cafe24.com/getBookedList.php");
+            }
         }
 
         /*get current Date*/
